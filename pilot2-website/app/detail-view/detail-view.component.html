@@ -1,0 +1,16 @@
+
+<!--<button (click)="gotoDetail()">View Details</button>-->
+
+<div *ngIf="qualification">
+  <div *ngIf="qualification.prefLabel"><h1>{{qualification.prefLabel}}</h1></div>
+</div>
+
+<div *ngIf="qualification">
+  <nav>
+    <a *ngFor = "let data of tabDatas" [routerLink]="['/detail',data.index]" routerLinkActive="active" fragment="{{fragment}}">{{data.name}}
+    </a>
+  </nav>
+
+  <detail-view-tab [data]="selectedTabData"></detail-view-tab>
+
+</div>

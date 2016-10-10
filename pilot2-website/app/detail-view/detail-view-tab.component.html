@@ -1,0 +1,14 @@
+
+<br>
+
+<div *ngIf="data">
+  <!--{{data.name}}-->
+
+  <div *ngIf="data.elements">
+    <li *ngFor = "let element of data.elements">
+      <span [innerHTML]="element.value[0]" ></span>: <span [innerHTML]="element.value[1]" ></span>
+    </li>
+  </div>
+</div>
+
+<br>
