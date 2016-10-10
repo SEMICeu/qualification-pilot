@@ -17,13 +17,25 @@ import {TabDataElement} from "./tab-data-element";
 export class DetailView implements OnInit {
     setupNeeded = true;
 
+    currentLanguage = "en";
+
+    selectedTabData: TabData;
+    selectedTabIndex = -1;
+
+    qualification: Qualification;
+
+    tabDatas: TabData[] = [];
+
+    fragment: String;
+
     ngOnInit(): void {
 
 
         this.route.fragment.forEach((fragment: String) => {
             if (fragment) {
                 this.fragment = fragment;
-                var uri = this.getUriFromFragment();
+                console.log("here");
+                var uri = this.getUriFromFragmentAndSetLang();
                 if (uri) this.setupDataFromUri(uri);
             }
         });
@@ -46,37 +58,36 @@ export class DetailView implements OnInit {
 
     ) {
     }
-    selectedTabData: TabData;
-    selectedTabIndex = -1;
 
-    qualification: Qualification;
-
-    tabDatas: TabData[] = [];
-
-    fragment: String;
-
-    getUriFromFragment(): String {
+    getUriFromFragmentAndSetLang(): String {
+        var uri;
         var split1 = this.fragment.split("&");
         for (let str of split1) {
             var split2 = str.split("=");
-            if (split2.length == 2 && split2[0] == "detailUri") {
-                return split2[1];
+            if (split2.length == 2) {
+                if (split2[0] == "detailUri") {
+                    uri = split2[1];
+                }
+                if (split2[0] == "lang") {
+                    this.currentLanguage = split2[1];
+                }
             }
         }
-        return null;
+        return uri;
     }
 
     generateTabData() {
         this.tabDatas = [];
 
         this.tabDatas.push(new TabData("General", 0));
-        this.tabDatas[0].addElement(new TabDataElement(["Title", "<i>" + this.qualification.prefLabels + "</i>"]));
+        this.tabDatas[0].addElement(new TabDataElement(["Title", "<i>" + this.qualification.prefLabels.get(this.currentLanguage)[0] + "</i>"]));
+        this.tabDatas[0].addElement(new TabDataElement(["Reference Language", this.qualification.referenceLanguage]));
+        this.tabDatas[0].addElement(new TabDataElement(["Definition", this.qualification.definitions.get(this.currentLanguage)[0]]));
 
-        this.tabDatas.push(new TabData("Language", 1));
-        this.tabDatas[1].addElement(new TabDataElement(["Reference Language", this.qualification.referenceLanguage]));
+        this.tabDatas.push(new TabData("Accreditation/Recognition", 1));
+        this.tabDatas[1].addElement(new TabDataElement(["EQF-level", this.qualification.eqfTarget]));
 
-        this.tabDatas.push(new TabData("Definition", 2));
-        this.tabDatas[2].addElement(new TabDataElement(["Definition", this.qualification.definitions]));
+        this.tabDatas.push(new TabData("Learning outcomes", 2));
 
         if (this.selectedTabIndex == -1) {
             this.selectedTabData = this.tabDatas[0];
@@ -84,16 +95,15 @@ export class DetailView implements OnInit {
         else {
             this.selectedTabData = this.tabDatas[this.selectedTabIndex];
         }
-
     }
 
     setupDataFromUri(uri:String): void {
-        if (this.qualificationService.hasSameDetailedQualificationUri(uri)) {
+        if (this.qualificationService.hasSameState(uri, this.currentLanguage)) {
             this.setupExistingData();
         }
         else {
 
-            this.qualificationService.getQualificationDetailed(uri)
+            this.qualificationService.getQualificationDetailed(uri, this.currentLanguage)
                 .then(qualification => {
                     this.qualification = qualification;
                     this.generateTabData();

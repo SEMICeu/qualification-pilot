@@ -19,6 +19,7 @@ var DetailView = (function () {
         this.router = router;
         this.route = route;
         this.setupNeeded = true;
+        this.currentLanguage = "en";
         this.selectedTabIndex = -1;
         this.tabDatas = [];
     }
@@ -27,7 +28,8 @@ var DetailView = (function () {
         this.route.fragment.forEach(function (fragment) {
             if (fragment) {
                 _this.fragment = fragment;
-                var uri = _this.getUriFromFragment();
+                console.log("here");
+                var uri = _this.getUriFromFragmentAndSetLang();
                 if (uri)
                     _this.setupDataFromUri(uri);
             }
@@ -39,25 +41,32 @@ var DetailView = (function () {
             }
         });
     };
-    DetailView.prototype.getUriFromFragment = function () {
+    DetailView.prototype.getUriFromFragmentAndSetLang = function () {
+        var uri;
         var split1 = this.fragment.split("&");
         for (var _i = 0, split1_1 = split1; _i < split1_1.length; _i++) {
             var str = split1_1[_i];
             var split2 = str.split("=");
-            if (split2.length == 2 && split2[0] == "detailUri") {
-                return split2[1];
+            if (split2.length == 2) {
+                if (split2[0] == "detailUri") {
+                    uri = split2[1];
+                }
+                if (split2[0] == "lang") {
+                    this.currentLanguage = split2[1];
+                }
             }
         }
-        return null;
+        return uri;
     };
     DetailView.prototype.generateTabData = function () {
         this.tabDatas = [];
         this.tabDatas.push(new tab_data_1.TabData("General", 0));
-        this.tabDatas[0].addElement(new tab_data_element_1.TabDataElement(["Title", "<i>" + this.qualification.prefLabels + "</i>"]));
-        this.tabDatas.push(new tab_data_1.TabData("Language", 1));
-        this.tabDatas[1].addElement(new tab_data_element_1.TabDataElement(["Reference Language", this.qualification.referenceLanguage]));
-        this.tabDatas.push(new tab_data_1.TabData("Definition", 2));
-        this.tabDatas[2].addElement(new tab_data_element_1.TabDataElement(["Definition", this.qualification.definitions]));
+        this.tabDatas[0].addElement(new tab_data_element_1.TabDataElement(["Title", "<i>" + this.qualification.prefLabels.get(this.currentLanguage)[0] + "</i>"]));
+        this.tabDatas[0].addElement(new tab_data_element_1.TabDataElement(["Reference Language", this.qualification.referenceLanguage]));
+        this.tabDatas[0].addElement(new tab_data_element_1.TabDataElement(["Definition", this.qualification.definitions.get(this.currentLanguage)[0]]));
+        this.tabDatas.push(new tab_data_1.TabData("Accreditation/Recognition", 1));
+        this.tabDatas[1].addElement(new tab_data_element_1.TabDataElement(["EQF-level", this.qualification.eqfTarget]));
+        this.tabDatas.push(new tab_data_1.TabData("Learning outcomes", 2));
         if (this.selectedTabIndex == -1) {
             this.selectedTabData = this.tabDatas[0];
         }
@@ -67,11 +76,11 @@ var DetailView = (function () {
     };
     DetailView.prototype.setupDataFromUri = function (uri) {
         var _this = this;
-        if (this.qualificationService.hasSameDetailedQualificationUri(uri)) {
+        if (this.qualificationService.hasSameState(uri, this.currentLanguage)) {
             this.setupExistingData();
         }
         else {
-            this.qualificationService.getQualificationDetailed(uri)
+            this.qualificationService.getQualificationDetailed(uri, this.currentLanguage)
                 .then(function (qualification) {
                 _this.qualification = qualification;
                 _this.generateTabData();

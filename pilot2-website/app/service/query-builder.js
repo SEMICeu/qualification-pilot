@@ -5,6 +5,9 @@ var QueryBuilder = (function () {
         this._languageCodes = ["EN"];
         this.prefixes = [];
         this.binds = [];
+        this.freeFormFilters = [];
+        this.freeFormVariables = [];
+        this.extraGroupBy = [];
     }
     Object.defineProperty(QueryBuilder.prototype, "languageCodes", {
         set: function (value) {
@@ -21,6 +24,15 @@ var QueryBuilder = (function () {
     };
     QueryBuilder.prototype.addTriple = function (triple) {
         this.triples.push(triple);
+    };
+    QueryBuilder.prototype.addFreeFormFilter = function (filter) {
+        this.freeFormFilters.push(filter);
+    };
+    QueryBuilder.prototype.addFreeFormVariable = function (variable) {
+        this.freeFormVariables.push(variable);
+    };
+    QueryBuilder.prototype.addGroupBy = function (groupBy) {
+        this.extraGroupBy.push(groupBy);
     };
     QueryBuilder.prototype.buildSelect = function () {
         var prefixesString = "";
@@ -60,16 +72,28 @@ var QueryBuilder = (function () {
                 filtersString += ") \n";
             }
             if (triple._filterNodeLiteralByLang) {
-                filtersString += "FILTER(langMatches(str(" + triple._object + "), str(" + this._languageCodes[0] + "))";
+                filtersString += "FILTER((str(" + triple._object + ") = str(" + this._languageCodes[0] + "))";
                 for (var i = 1; i < this._languageCodes.length; ++i) {
-                    filtersString += " || langMatches(str(" + triple._object + "),str(" + this._languageCodes[i] + "))";
+                    filtersString += " || (str(" + triple._object + ") = str(" + this._languageCodes[i] + "))";
                 }
                 filtersString += ") \n";
             }
         }
+        for (var _f = 0, _g = this.freeFormFilters; _f < _g.length; _f++) {
+            var filter = _g[_f];
+            filtersString += filter + "\n";
+        }
+        for (var _h = 0, _j = this.freeFormVariables; _h < _j.length; _h++) {
+            var variable = _j[_h];
+            variablesString += variable + " ";
+        }
+        for (var _k = 0, _l = this.extraGroupBy; _k < _l.length; _k++) {
+            var groupBy = _l[_k];
+            groupBysString += groupBy + " ";
+        }
         this.query =
             prefixesString +
-                "SELECT " + variablesString + "WHERE { \n" +
+                "SELECT DISTINCT " + variablesString + "WHERE { \n" +
                 triplesString +
                 filtersString +
                 "}\n" +
@@ -79,7 +103,7 @@ var QueryBuilder = (function () {
     QueryBuilder.prototype.makeGroupConcat = function (varName, withLangGroup) {
         var result = "(CONCAT('[\"',GROUP_CONCAT(DISTINCT " + varName + ";separator='\",\"'),'\"]') as " + varName + "_group) ";
         if (withLangGroup) {
-            result += "(CONCAT('[\"',GROUP_CONCAT(DISTINCT LANG( " + varName + ");separator='\",\"'),'\"]') as " + varName + "_lang_group) ";
+            result = "(CONCAT('[\"',GROUP_CONCAT(DISTINCT CONCAT(STR(" + varName + "), CONCAT('@', LANG(" + varName + ")));separator='\",\"'),'\"]') as " + varName + "_lang_group) ";
         }
         return result;
     };

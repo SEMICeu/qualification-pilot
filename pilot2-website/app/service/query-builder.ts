@@ -13,6 +13,12 @@ export class QueryBuilder {
 
     private binds: Prefix[] = [];
 
+    private freeFormFilters: String[] = [];
+
+    private freeFormVariables: String[] = [];
+
+    private extraGroupBy: String[] = [];
+
     set languageCodes(value: String[]) {
         this._languageCodes = value;
     }
@@ -27,6 +33,15 @@ export class QueryBuilder {
 
     addTriple (triple: Triple) : void {
         this.triples.push(triple)
+    }
+    addFreeFormFilter(filter:String) {
+        this.freeFormFilters.push(filter);
+    }
+    addFreeFormVariable(variable:String) {
+        this.freeFormVariables.push(variable);
+    }
+    addGroupBy(groupBy: String) {
+        this.extraGroupBy.push(groupBy);
     }
 
     buildSelect () : String {
@@ -68,17 +83,27 @@ export class QueryBuilder {
                 filtersString += ") \n";
             }
             if (triple._filterNodeLiteralByLang) {
-                filtersString += "FILTER(langMatches(str(" + triple._object + "), str(" + this._languageCodes[0] + "))";
+                filtersString += "FILTER((str(" + triple._object + ") = str(" + this._languageCodes[0] + "))";
                 for (let i = 1; i < this._languageCodes.length; ++i) {
-                    filtersString += " || langMatches(str(" + triple._object + "),str(" + this._languageCodes[i] + "))";
+                    filtersString += " || (str(" + triple._object + ") = str(" + this._languageCodes[i] + "))";
                 }
                 filtersString += ") \n";
             }
         }
 
+        for (let filter of this.freeFormFilters) {
+            filtersString += filter + "\n";
+        }
+        for (let variable of this.freeFormVariables) {
+            variablesString += variable + " ";
+        }
+        for (let groupBy of this.extraGroupBy) {
+            groupBysString += groupBy + " ";
+        }
+
         this.query =
             prefixesString +
-            "SELECT " + variablesString + "WHERE { \n" +
+            "SELECT DISTINCT " + variablesString + "WHERE { \n" +
             triplesString +
             filtersString +
             "}\n" +
@@ -90,10 +115,12 @@ export class QueryBuilder {
     private makeGroupConcat(varName:String, withLangGroup: boolean): String {
         var result = "(CONCAT('[\"',GROUP_CONCAT(DISTINCT " + varName + ";separator='\",\"'),'\"]') as " + varName + "_group) ";
         if (withLangGroup) {
-            result += "(CONCAT('[\"',GROUP_CONCAT(DISTINCT LANG( " + varName + ");separator='\",\"'),'\"]') as " + varName + "_lang_group) ";
+            result = "(CONCAT('[\"',GROUP_CONCAT(DISTINCT CONCAT(STR(" + varName + "), CONCAT('@', LANG(" + varName + ")));separator='\",\"'),'\"]') as " + varName + "_lang_group) ";
         }
         return result;
     }
+
+
 }
 
 class Prefix {
