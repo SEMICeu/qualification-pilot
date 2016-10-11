@@ -45,7 +45,6 @@ export class DetailView implements OnInit {
             if (params.hasOwnProperty("tab")) {
                 this.selectedTabIndex = +params['tab'];
                 this.setupExistingData();
-
             }
         });
 
