@@ -1,19 +1,21 @@
 
 
 import {Injectable} from "@angular/core";
-import {Http, Headers} from "@angular/http";
+import {Http} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 import {Qualification} from "../model/qualification";
 import {QueryBuilder, Triple} from "./query-builder";
-import {LearningOutcome} from "../model/learning-outcome";
 import {Skill} from "../model/skill";
+import {endPointUrl, endPointHeaders} from "./end-point-configs";
+import {SkillService} from "./skill.service";
 
 @Injectable()
 export class QualificationService {
 
-    constructor(private http: Http) { };
+    constructor(private http: Http, private skillService: SkillService) { };
 
-    url = "http://localhost:8080/rdf4j-server/repositories/QPilot2";
+    url = endPointUrl;
+    headers =  endPointHeaders;
     prefLang:String = "en";
 
     detailedQualification: Qualification;
@@ -44,22 +46,20 @@ export class QualificationService {
 
 
     queryQualificationDetailed(uri: String, prefLang:String): Promise<Qualification> {
-        let headers = new Headers({
-            'content-type': 'application/sparql-query',
-            'accept': 'application/json'
-        });
 
         console.log(this.makeDetailQuery("<" + uri + ">", prefLang));
 
         return this.http
-            .post(this.url, this.makeDetailQuery("<" + uri + ">", "en") ,  {headers: headers})
+            .post(this.url, this.makeDetailQuery("<" + uri + ">", "en") ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                     let values = res.json().results.bindings[0];
                     console.log(res.json().results);
                     let qualification = new Qualification(uri);
 
-                    if (values.referenceLanguage) qualification.referenceLanguage = values.referenceLanguage.value;
+                    if (values.referenceLanguage_group) {
+                        qualification.referenceLanguage = this.makeArrayFromConcat(values.referenceLanguage_group.value);
+                    }
                     if (values.prefLabel_lang_group) {
                         qualification.prefLabels = this.makeMapFromLangConcat(values.prefLabel_lang_group.value);
                     }
@@ -68,17 +68,6 @@ export class QualificationService {
                     }
                     if (values.definition_lang_group) {
                         qualification.definitions = this.makeMapFromLangConcat(values.definition_lang_group.value)
-                    }
-
-                    if (values.LOAssocUri_group && values.skillUri_group)  {
-                        let LOUris = this.makeArrayFromConcat(values.LOAssocUri_group.value);
-                        let skillUris = this.makeArrayFromConcat(values.skillUri_group.value);
-
-                        var los:LearningOutcome[] = [];
-                        if (LOUris.length == skillUris.length) for (let i = 0; i < LOUris.length; i++) {
-                            los.push(new LearningOutcome(LOUris[i], new Skill(skillUris[i])));
-                        }
-                        qualification.learningOutcomes = los;
                     }
                     if (values.description_lang_group) {
                         qualification.descriptions = this.makeMapFromLangConcat(values.description_lang_group.value)
@@ -94,8 +83,31 @@ export class QualificationService {
                     }
                     if (values.eCTSCredits) qualification.eCTSCredits = values.eCTSCredits.value;
                     if (values.volumeOfLearning) qualification.volumeOfLearning = values.volumeOfLearning.value;
+                    if (values.isPartialQualification) qualification.isPartialQualification = values.isPartialQualification.value;
+                    if (values.waysToAcquire_group) qualification.waysToAcquire = this.makeArrayFromConcat(values.waysToAcquire_group.value);
+                    if (values.entryRequirement_group) {
+                        qualification.entryRequirements = this.makeStringTupleArrayFromConcat(values.entryRequirement_group.value)
+                    }
+                    if (values.expiryPeriod) qualification.expiryPeriod = values.expiryPeriod.value;
+                    if (values.skillUri_group)  {
+                        qualification.loSkillUris = this.makeArrayFromConcat(values.skillUri_group.value);
+                    }
+                    if (values.homepage_group) {
+                        qualification.homepages = this.makeArrayFromConcat(values.homepage_group.value);
+                    }
+                    if (values.landingPage_group) {
+                        qualification.landingPages = this.makeArrayFromConcat(values.landingPage_group.value);
+                    }
+                    if (values.supplementaryDoc_group) {
+                        qualification.supplementaryDocs = this.makeArrayFromConcat(values.supplementaryDoc_group.value);
+                    }
+                    if (values.issued)  qualification.issued = values.issued.value;
+                    if (values.modified) qualification.modified = values.modified.value;
+                    if (values.additionalNote_lang_group) {
+                        qualification.additionalNotes = this.makeMapFromLangConcat(values.additionalNote_lang_group.value)
+                    }
+                    if (values.status) qualification.status = values.status.value;
 
-                    console.log(qualification);
                     return qualification;
                 }
             )
@@ -129,6 +141,10 @@ export class QualificationService {
         return map;
     }
 
+    private makeStringTupleArrayFromConcat(concat: string): [String, String][] {
+        return JSON.parse(concat) as [String, String][];
+    }
+
     private handleError(error: any): Promise<any> {
         console.error('Query failed,', error); // for demo purposes only
         return Promise.reject(error.message || error);
@@ -151,12 +167,13 @@ export class QualificationService {
         queryBuild.addPrefix("prov", "<http://www.w3.org/ns/prov#>");
         queryBuild.addPrefix("dcat", "<http://www.w3.org/ns/dcat#>");
         queryBuild.addPrefix("skosXl", "<http://www.w3.org/2008/05/skos-xl#>");
+        queryBuild.addPrefix("iso-thes","<http://purl.org/iso25964/skos-thes#>");
 
         queryBuild.addBind ('?uri', uri);
 
         queryBuild.addTriple( new Triple().subject("?uri").predicate("rdf:type").object("esco:Qualification") );
 
-        queryBuild.addTriple( new Triple().subject("?uri").predicate("esco:referenceLanguage").selectObject("?referenceLanguage") );
+        queryBuild.addTriple( new Triple().subject("?uri").predicate("esco:referenceLanguage").selectObject("?referenceLanguage").groupConcat() );
 
         queryBuild.addTriple( new Triple().subject("?uri").predicate("skos:prefLabel").selectObject("?prefLabel").langGroupConcat().filterByLang() );
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("skos:altLabel").selectObject("?altLabel").after("}").langGroupConcat().filterByLang() );
@@ -165,12 +182,6 @@ export class QualificationService {
         queryBuild.addTriple( new Triple().subject("?definitionNode").predicate("esco:language").object("?definition_lang") );
         queryBuild.addTriple( new Triple().subject("?definitionNode").predicate("esco:nodeLiteral").object("?definition_value").after("}") );
         queryBuild.addFreeFormVariable( "(CONCAT( '[\"', (GROUP_CONCAT (DISTINCT CONCAT(str(?definition_value),'@',?definition_lang);separator='\",\"')),'\"]') as ?definition_lang_group)");
-
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasAssociation").selectObject("?LOAssocUri").groupConcat() );
-        queryBuild.addTriple( new Triple().subject("?LOAssocUri").predicate("esco:targetFramework").object("<http://data.europa.eu/esco/concept-scheme/skills>") );
-        queryBuild.addTriple( new Triple().subject("?LOAssocUri").predicate("esco:target").selectObject("?skillUri").groupConcat().after("}") );
-        //queryBuild.addTriple( new Triple().subject("?skillUri").predicate("skosXl:prefLabel").object("?skillPrefLabelNode") );
-        //queryBuild.addTriple( new Triple().subject("?skillPrefLabelNode").predicate("skosXl:literalForm").selectObject("?skillPrefLabel").after("}").langGroupConcat().filterByLang() );
 
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:description").object("?descriptionNode"));
         queryBuild.addTriple( new Triple().subject("?descriptionNode").predicate("esco:language").object("?description_lang").filterNodeLiteralByLang() );
@@ -189,23 +200,58 @@ export class QualificationService {
 
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasECTSCreditPoints").selectObject("?eCTSCredits").after("}"));
 
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasECTSCreditPoints").selectObject("?ectsCredits").after("}"));
-
-        queryBuild.addTriple( new Triple().before("{").subject("?uri").predicate("esco:additionalNote").object("?additionalNoteNode") );
-        queryBuild.addTriple( new Triple().subject("?additionalNoteNode").predicate("esco:language").object("?additionalNotes_lang"));
-        queryBuild.addTriple( new Triple().subject("?additionalNoteNode").predicate("esco:nodeLiteral").object("?additionalNotes_value").after("}"));
-        queryBuild.addFreeFormVariable( "(CONCAT( '[\"', (GROUP_CONCAT (DISTINCT CONCAT(str(?additionalNotes_value),'@',?additionalNotes_lang);separator='\",\"')),'\"]') as ?additionalNotes_lang_group)");
-
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:volumeOfLearning").selectObject("?volumeOfLearning").after("}"));
 
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:isPartialQualification").selectObject("?isPartialQualification").after("}"));
 
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:waysToAcquire").selectObject("?waysToAcquire").after("}").groupConcat() );
 
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasEntryRequirement").object("?entryRequirement") );
+        queryBuild.addTriple( new Triple().subject("?entryRequirement").predicate("dcterms:type").object("?entryReqType"));
+        queryBuild.addTriple( new Triple().subject("?entryRequirement").predicate("esco:requirementLevel").object("?entryReqLevel").after("}"));
+        queryBuild.addFreeFormVariable( "(CONCAT( '[', (GROUP_CONCAT (DISTINCT CONCAT('[\"',str(?entryReqType),'\",\"',str(?entryReqLevel),'\"]');separator=',')),']') as ?entryRequirement_group)");
 
-        // queryBuild.addTriple("OPTIONAL {", "?uri", false, "esco:hasAssociation", "?LOAssocUri", true, "", false);
-        // queryBuild.addTriple("", "?LOAssocUri", false, "esco:targetFramework", "<http://data.europa.eu/esco/concept-scheme/skills>", false, "}", false);
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:expiryPeriod").selectObject("?expiryPeriod").after("}") );
 
-        //queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("foaf:homepage").selectObject("?homepage").after("}").groupConcat());
-        //optional {  ?uri foaf:homepage ?homepage }
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasAssociation").object("?LOAssocUri") );
+        queryBuild.addTriple( new Triple().subject("?LOAssocUri").predicate("esco:targetFramework").object("<http://data.europa.eu/esco/concept-scheme/skills>") );
+        queryBuild.addTriple( new Triple().subject("?LOAssocUri").predicate("esco:target").selectObject("?skillUri").groupConcat().after("}") );
+
+        //Missing related occupation
+
+        //TODO recognition
+
+        //TODO awarding activity
+
+        //TODO accreditation
+
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("foaf:homepage").selectObject("?homepage").after("}").groupConcat());
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcat:landingPage").selectObject("?landingPage").after("}").groupConcat());
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:supplementaryDoc").selectObject("?supplementaryDoc").after("}").groupConcat());
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:issued").selectObject("?issued").after("}"));
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:modified").selectObject("?modified").after("}"));
+
+        //TODO changeNote
+
+        //TODO historyNote
+
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:additionalNote").object("?additionalNoteNode") );
+        queryBuild.addTriple( new Triple().subject("?additionalNoteNode").predicate("esco:language").object("?additionalNote_lang"));
+        queryBuild.addTriple( new Triple().subject("?additionalNoteNode").predicate("esco:nodeLiteral").object("?additionalNote_value").after("}"));
+        queryBuild.addFreeFormVariable( "(CONCAT( '[\"', (GROUP_CONCAT (DISTINCT CONCAT(str(?additionalNote_value),'@',?additionalNote_lang);separator='\",\"')),'\"]') as ?additionalNote_lang_group)");
+
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("iso-thes:status").selectObject("?status").after("}"));
+
+        //Missing replaces qualification
+
+        //Missing replaced by qualification
+
+        //TODO owner
+
+        //TODO provenance agent
+
+        //TODO publisher
+
 
         return queryBuild.buildSelect();
     }

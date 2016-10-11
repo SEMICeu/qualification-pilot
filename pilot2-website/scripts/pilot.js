@@ -427,62 +427,71 @@ function addFilter(selection, property) {
 
 function loadDetail(uri) {
 
-  var query = "select distinct * where {" +
-      "  bind(<" + uri + "> as ?uri)" +
-      "  ?uri rdf:type esco:Qualification ." +
-      "  ?uri esco:referenceLanguage ?referenceLanguage ." +
-      "  ?uri skos:prefLabel ?prefLabel ." +
-      "  optional {?uri skos:definition ?definitionNode ." +
-      "            ?definitionNode esco:nodeLiteral ?definition }" +
-      "  optional { ?uri esco:hasAssociation ?eqfConcept . ?eqfConcept esco:targetFramework <http://data.europa.eu/esco/ConceptScheme/EQF2012/ConceptScheme> }" +
-      "  optional {  ?uri esco:hasISCED-FCode ?foetConcept. }" +
-      "  optional { " +
-      "?uri esco:hasAwardingActivity ?awardingLocationActivity . " +
-      "?awardingLocationActivity prov:atLocation ?countryUri }" +
-      " optional {  ?uri dcterms:description ?descriptionNode . ?descriptionNode esco:nodeLiteral ?description }" +
-      " optional {  ?uri esco:additionalNote ?additionalNoteNode . ?additionalNoteNode esco:nodeLiteral ?additionalNotes }" +
-      " optional {  ?uri skos:altLabel ?altLabel }" +
-      " optional {  ?uri foaf:homepage ?homepage }" +
-      " optional {  ?uri esco:supplementaryDoc ?supplementaryDoc }" +
-      " optional {  ?uri esco:hasAwardingActivity ?awardingBodyActivity ." +
-      "              ?awardingBodyActivity prov:wasAssociatedWith ?abUri ." +
-      "                   optional { ?abUri foaf:name ?abName }" +
-      "                   optional {?abUri foaf:mbox ?abEmail } " +
-      "                   optional {?abUri foaf:homePage ?abHomepage } } " +
-      " optional {  ?uri dcterms:creator ?ownerUri . " +
-      "                  optional {  ?ownerUri foaf:name ?ownerName  } " +
-      "                  optional {  ?ownerUri foaf:mbox ?ownerEmail } " +
-      "                  optional {  ?ownerUri foaf:homepage ?ownerHomepage } }" +
-      " optional {  ?uri dcterms:publisher ?publisherUri . " +
-      "                  optional {  ?publisherUri foaf:name ?publisherName } " +
-      "                  optional {  ?publisherUri foaf:mbox ?publisherEmail } }" +
-      " optional {  ?uri esco:hasECTSCreditPoints ?hasECTSCreditPoints . }" +
-      " optional {  ?uri esco:isPartialQualification ?isPartialQualification . }" +
-      " optional {  ?uri esco:waysToAcquire ?waysToAcquire . }" +
-      " optional {  ?uri esco:volumeOfLearning ?volumeOfLearning . }" +
-      " optional {  ?uri dcterms:issued ?issued . }" +
-      " optional {  ?uri dcterms:modified ?modified . }" +
-      " optional {  ?uri dcat:landingPage ?landingPage . }" +
-      " optional {  ?uri esco:hasAssociation ?nqfAssoc . " +
-      "              ?nqfAssoc esco:targetName ?nqfValue . " +
-      "              ?nqfAssoc dcterms:type <http://data.europa.eu/esco/association-type#qf-level> . }" +
-      " optional { ?uri esco:hasAssociation ?LOAssoc ." +
-      "            ?LOAssoc dcterms:type <http://data.europa.eu/esco/association-type#learning-outcome> ." +
-      "            ?LOAssoc esco:targetFramework <http://data.europa.eu/esco/concept-scheme/skills> ." +
-      "            ?LOAssoc esco:target ?skill ." +
-      "            ?skill skosXl:prefLabel ?skillPrefLabel ." +
-      "            ?skillPrefLabel skosXl:literalForm ?skillLabel }" +
-      "}";
+  $("#detailContainer").html("");
+  showScreen("detailScreen");
 
-  var errorQuery = function () {
-    //$("#result").html("<div class=\"alert alert-danger fade in\">Query failed</div>");
-    alert("Query failed");
-    $("#overlay").hide();
-  };
-  $("#overlay").show();
-  executeQuery(query, function (data) {
-    successDetailQuery(data, uri);
-  }, errorQuery);
+  detailUri = uri;
+
+  updateHash("lang=" + language + "&detailUri=" + detailUri);
+
+  // var query = "select distinct * where {" +
+  //     "  bind(<" + uri + "> as ?uri)" +
+  //     "  ?uri rdf:type esco:Qualification ." +
+  //     "  ?uri esco:referenceLanguage ?referenceLanguage ." +
+  //     "  ?uri skos:prefLabel ?prefLabel ." +
+  //     "  optional {?uri skos:definition ?definitionNode ." +
+  //     "            ?definitionNode esco:nodeLiteral ?definition }" +
+  //     "  optional { ?uri esco:hasAssociation ?eqfConcept . ?eqfConcept esco:targetFramework <http://data.europa.eu/esco/ConceptScheme/EQF2012/ConceptScheme> }" +
+  //     "  optional {  ?uri esco:hasISCED-FCode ?foetConcept. }" +
+  //     "  optional { " +
+  //     "?uri esco:hasAwardingActivity ?awardingLocationActivity . " +
+  //     "?awardingLocationActivity prov:atLocation ?countryUri }" +
+  //     " optional {  ?uri dcterms:description ?descriptionNode . ?descriptionNode esco:nodeLiteral ?description }" +
+  //     " optional {  ?uri esco:additionalNote ?additionalNoteNode . ?additionalNoteNode esco:nodeLiteral ?additionalNotes }" +
+  //     " optional {  ?uri skos:altLabel ?altLabel }" +
+  //     " optional {  ?uri foaf:homepage ?homepage }" +
+  //     " optional {  ?uri esco:supplementaryDoc ?supplementaryDoc }" +
+  //     " optional {  ?uri esco:hasAwardingActivity ?awardingBodyActivity ." +
+  //     "              ?awardingBodyActivity prov:wasAssociatedWith ?abUri ." +
+  //     "                   optional { ?abUri foaf:name ?abName }" +
+  //     "                   optional {?abUri foaf:mbox ?abEmail } " +
+  //     "                   optional {?abUri foaf:homePage ?abHomepage } } " +
+  //     " optional {  ?uri dcterms:creator ?ownerUri . " +
+  //     "                  optional {  ?ownerUri foaf:name ?ownerName  } " +
+  //     "                  optional {  ?ownerUri foaf:mbox ?ownerEmail } " +
+  //     "                  optional {  ?ownerUri foaf:homepage ?ownerHomepage } }" +
+  //     " optional {  ?uri dcterms:publisher ?publisherUri . " +
+  //     "                  optional {  ?publisherUri foaf:name ?publisherName } " +
+  //     "                  optional {  ?publisherUri foaf:mbox ?publisherEmail } }" +
+  //     " optional {  ?uri esco:hasECTSCreditPoints ?hasECTSCreditPoints . }" +
+  //     " optional {  ?uri esco:isPartialQualification ?isPartialQualification . }" +
+  //     " optional {  ?uri esco:waysToAcquire ?waysToAcquire . }" +
+  //     " optional {  ?uri esco:volumeOfLearning ?volumeOfLearning . }" +
+  //     " optional {  ?uri dcterms:issued ?issued . }" +
+  //     " optional {  ?uri dcterms:modified ?modified . }" +
+  //     " optional {  ?uri dcat:landingPage ?landingPage . }" +
+  //     " optional {  ?uri esco:hasAssociation ?nqfAssoc . " +
+  //     "              ?nqfAssoc esco:targetName ?nqfValue . " +
+  //     "              ?nqfAssoc dcterms:type <http://data.europa.eu/esco/association-type#qf-level> . }" +
+  //     " optional { ?uri esco:hasAssociation ?LOAssoc ." +
+  //     "            ?LOAssoc dcterms:type <http://data.europa.eu/esco/association-type#learning-outcome> ." +
+  //     "            ?LOAssoc esco:targetFramework <http://data.europa.eu/esco/concept-scheme/skills> ." +
+  //     "            ?LOAssoc esco:target ?skill ." +
+  //     "            ?skill skosXl:prefLabel ?skillPrefLabel ." +
+  //     "            ?skillPrefLabel skosXl:literalForm ?skillLabel }" +
+  //     "}";
+  //
+  // var errorQuery = function () {
+  //   //$("#result").html("<div class=\"alert alert-danger fade in\">Query failed</div>");
+  //   alert("Query failed");
+  //   $("#overlay").hide();
+  // };
+  // $("#overlay").show();
+  // executeQuery(query, function (data) {
+  //   successDetailQuery(data, uri);
+  // }, errorQuery);
+
+
 }
 var detailHasEqf;
 var detailGrouped;
@@ -508,14 +517,12 @@ function successDetailQuery(data, uri) {
 }
 
 function fillInDetailContent(row) {
-  //if (row.hasOwnProperty("prefLabel-" + language) && row["prefLabel-" + language].length > 0)$("#pageTitle").html(row["prefLabel-" + language][0]);
-  //else $("#pageTitle").html(row["prefLabel"][0]);
+
   $("#pageTitle").html(getLanguageRows(row, "prefLabel")[0]);
 
   detailHasEqf = (row.eqf && row.eqf.length > 0);
   var content = "";
 
-  //content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"EQFlevel\" qp-lang-field=\"html\">" + qp_translations["EQFlevel"][language] + "</span></span>: <span class=\"fieldInfo\">" + addCell(row.eqf, false, "No EQF set") + "</span></h6>"
   content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"EQFlevel\" qp-lang-field=\"html\">" + qp_translations["EQFlevel"][language] + "</span></span>: <span class=\"fieldInfo\">";
   if (!row.eqfConcept || row.eqfConcept.length == 0) {
     content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"level0\" qp-lang-field=\"html\">" + qp_translations["level0"][language] + "</span>";
@@ -532,7 +539,6 @@ function fillInDetailContent(row) {
   content += "<div class=\"" + getFlag(row) + "\"></div>";
 
 
-  //content += "<h6><span style=\"padding:0;color: #284F75;background:none;\">FoET:</span> <span class=\"fieldInfo\">" + addCell(row.foet, false, "No FoET set") + "</span></h6>";
   content += "<h6><span style=\"padding:0;color: #284F75;background:none;\">ISCED FoET 2013:</span> <span class=\"fieldInfo\">";
   if (!row.foetConcept || row.foetConcept.length == 0) {
     content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"noFoETset\" qp-lang-field=\"html\">" + qp_translations["noFoETset"][language] + "</span>";
@@ -546,7 +552,6 @@ function fillInDetailContent(row) {
   content += "</span></h6>";
 
 
-  //content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"country\" qp-lang-field=\"html\">" + qp_translations["country"][language] + "</span> <span class=\"fieldInfo\">" + addCell(row.country, false, "No Country set") + "</span></h6>"
   content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"country\" qp-lang-field=\"html\">" + qp_translations["country"][language] + "</span> <span class=\"fieldInfo\">";
   if (!row.countryUri || row.countryUri.length == 0) {
     content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"noCountrySet\" qp-lang-field=\"html\">" + qp_translations["noCountrySet"][language] + "</span>";

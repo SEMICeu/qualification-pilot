@@ -1,9 +1,7 @@
 
 <!--<button (click)="gotoDetail()">View Details</button>-->
 
-<div *ngIf="qualification">
-  <div *ngIf="qualification.prefLabel"><h1>{{qualification.prefLabel}}</h1></div>
-</div>
+<h1 *ngIf="header">{{header}}</h1>
 
 <div *ngIf="qualification">
   <nav>

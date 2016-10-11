@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import {QualificationService} from "../service/qualification.service";
+import {SkillService} from "../service/skill.service";
 
 @Component({
   moduleId: module.id,
   selector: 'my-app',
-  providers: [QualificationService],
+  providers: [QualificationService, SkillService],
   template:`
 <!--{{title}}<br/>-->
   <router-outlet></router-outlet>

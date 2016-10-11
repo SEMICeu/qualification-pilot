@@ -12,13 +12,13 @@ export class TabData {
     name:String;
     index: number;
 
-    elements: TabDataElement[] = [];
-
-    // addElement(value: [String, String]) {
-    //     this.elements.push(new TabDataElement(value));
-    // }
+    private _elements: TabDataElement[] = [];
 
     addElement(element: TabDataElement) {
-        this.elements.push(element);
+        this._elements.push(element);
+    }
+
+    get elements(): TabDataElement[] {
+        return this._elements;
     }
 }

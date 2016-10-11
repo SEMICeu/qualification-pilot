@@ -5,9 +5,37 @@
   <!--{{data.name}}-->
 
   <div *ngIf="data.elements">
-    <li *ngFor = "let element of data.elements">
-      <span [innerHTML]="element.value[0]" ></span>: <span [innerHTML]="element.value[1]" ></span>
-    </li>
+    <ul>
+      <span *ngFor = "let element of data.elements" >
+
+        <li *ngIf="element.values && element.values[1]">
+          <span [innerHTML]="element.values[0]" class="propertyName"></span>
+          <span  *ngIf="element.values[1].length == 1" [innerHTML]="element.values[1]"></span>
+          <ul *ngIf="element.values[1].length > 1">
+            <li *ngFor = "let value of element.values[1]">
+              <span [innerHTML]="value" ></span>
+            </li>
+          </ul>
+        </li>
+
+        <li *ngIf="element.linkValues && element.linkValues[1]">
+          <span [innerHTML]="element.linkValues[0]" class="propertyName"></span>
+
+          <span *ngIf="element.linkValues[1].length == 1">
+            <span  *ngFor = "let linkValue of element.linkValues[1]">
+              <a href='{{linkValue[1]}}' [innerHTML]="linkValue[0]" ></a>
+            </span>
+          </span>
+
+          <ul *ngIf="element.linkValues[1].length > 1">
+            <li *ngFor = "let linkValue of element.linkValues[1]">
+              <a href='{{linkValue[1]}}' [innerHTML]="linkValue[0]" ></a>
+          </li>
+          </ul>
+        </li>
+
+      </span>
+    </ul>
   </div>
 </div>
 

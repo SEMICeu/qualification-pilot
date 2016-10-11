@@ -15,6 +15,8 @@ export class QueryBuilder {
 
     private freeFormFilters: String[] = [];
 
+    private freeFromTriples: String[] = [];
+
     private freeFormVariables: String[] = [];
 
     private extraGroupBy: String[] = [];
@@ -37,6 +39,9 @@ export class QueryBuilder {
     addFreeFormFilter(filter:String) {
         this.freeFormFilters.push(filter);
     }
+    addFreeFormTriple(triple:String) {
+        this.freeFromTriples.push(triple);
+    }
     addFreeFormVariable(variable:String) {
         this.freeFormVariables.push(variable);
     }
@@ -57,6 +62,10 @@ export class QueryBuilder {
 
         for (let bind of this.binds) {
             triplesString += "BIND (" + bind.uri + " as " + bind.prefix + ")\n";
+        }
+
+        for (let triple of this.freeFromTriples) {
+            triplesString += triple + "\n";
         }
 
         for (let triple of this.triples) {

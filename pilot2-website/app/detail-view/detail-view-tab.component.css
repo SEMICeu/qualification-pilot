@@ -1,0 +1,17 @@
+a {
+    color: #000000;
+    font-weight: normal;
+    text-shadow: none;
+}
+a:hover, a:focus, a:active {
+    color: #000000;
+    text-decoration: underline;
+}
+/*ul {*/
+    /*list-style: none;*/
+    /*display: inline;*/
+    /*padding-left: 0;*/
+/*}*/
+.propertyName {
+    color: #707090;
+}

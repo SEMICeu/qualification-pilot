@@ -1,11 +1,19 @@
 
-
 export class TabDataElement {
 
-    constructor(value: [String, String]) {
-        this.value = value;
+
+    setValues(values:[String, String[]]) {
+        this.values = values;
+        return this;
+    }
+    setLinkValues(linkValues:[String, [String,String][]]) {
+        this.linkValues = linkValues;
+        return this;
     }
 
-    value:[String, String];
+    values:[String, String[]];
+    linkValues:[String, [String,String][]];
     color:[String, String];
+    idHtml: String;
+    classHtml: String;
 }
