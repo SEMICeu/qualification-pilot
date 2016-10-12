@@ -2,9 +2,10 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 
-import {QueryBuilder, Triple} from "./query-builder";
+import {QueryBuilder, Triple} from "./support/query-builder";
 import {Skill} from "../model/skill";
-import {endPointUrl, endPointHeaders} from "./end-point-configs";
+import {endPointUrl, endPointHeaders} from "../end-point-configs";
+import {ConcatsParser} from "./support/concats-parser";
 
 @Injectable()
 export class SkillService {
@@ -13,7 +14,6 @@ export class SkillService {
 
     url = endPointUrl;
     headers =  endPointHeaders;
-    prefLang:String = "en";
 
     getSkills (uris: String[], langs:String[]):Promise<Skill[]> {
 
@@ -28,36 +28,14 @@ export class SkillService {
                 for (let values of objects) {
                     if (values.uri && values.prefLabel_lang_group) {
                         skills.push(new Skill(values.uri));
-                        skills[skills.length-1].prefLabels = this.makeMapFromLangConcat(values.prefLabel_lang_group.value);
+                        skills[skills.length-1].prefLabels = ConcatsParser.makeMapOfStringArrays(values.prefLabel_lang_group.value);
                         if (values.descriptions_lang_group) {
-                            skills[skills.length-1].prefLabels = this.makeMapFromLangConcat(values.descriptions_lang_group.value);
+                            skills[skills.length-1].prefLabels = ConcatsParser.makeMapOfStringArrays(values.descriptions_lang_group.value);
                         }
                     }
                 }
                 return skills;
             });
-
-    }
-    private makeMapFromLangConcat (concat: string): Map<String, String[]> {
-        let array = JSON.parse(concat) as String[];
-
-        var map = new Map<String, String[]>();
-
-        if (array == [""]) return map;
-
-        for (let item of array) {
-            let split = item.split("@");
-            if (split.length == 2) {
-
-                if (map.has(split[1])) {
-                    map.get(split[1]).push(split[0]);
-                }
-                else {
-                    map.set(split[1], [split[0]]);
-                }
-            }
-        }
-        return map;
     }
 
     makeSkillsQuery (uris: String[], langs:String[]):String {
@@ -72,11 +50,7 @@ export class SkillService {
 
         queryBuild.addPrefix("esco", "<http://data.europa.eu/esco/model#>");
         queryBuild.addPrefix("rdf", "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>");
-        queryBuild.addPrefix("skos", "<http://www.w3.org/2004/02/skos/core#>");
         queryBuild.addPrefix("dcterms", "<http://purl.org/dc/terms/>");
-        queryBuild.addPrefix("foaf", "<http://xmlns.com/foaf/0.1/>");
-        queryBuild.addPrefix("prov", "<http://www.w3.org/ns/prov#>");
-        queryBuild.addPrefix("dcat", "<http://www.w3.org/ns/dcat#>");
         queryBuild.addPrefix("skosXl", "<http://www.w3.org/2008/05/skos-xl#>");
 
         var values = "VALUES ?uri {";

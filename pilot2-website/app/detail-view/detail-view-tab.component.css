@@ -15,3 +15,10 @@ a:hover, a:focus, a:active {
 .propertyName {
     color: #707090;
 }
+
+.elementsGroup {
+
+    border: solid;
+    border-width: 1px;
+    list-style: none;
+}

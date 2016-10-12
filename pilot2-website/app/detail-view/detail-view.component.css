@@ -7,8 +7,9 @@ label {
 }
 h1 {
   color: #607D8B;
-  font-weight: bold;
+  font-weight: normal;
   text-shadow: none;
+  text-align: center;
 }
 a {
   color: #607D8B;

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 
-import {Router, ActivatedRoute, Params, Data} from "@angular/router";
+import {Router, ActivatedRoute, Params} from "@angular/router";
 import {QualificationService} from "../service/qualification.service";
 import {Qualification} from "../model/qualification";
 import {TabData} from "./tab-data";
 import {TabDataElement} from "./tab-data-element";
-import {Skill} from "../model/skill";
 import {SkillService} from "../service/skill.service";
+import {QfService} from "../service/qf.service";
 
 @Component({
     moduleId: module.id,
@@ -22,6 +22,8 @@ export class DetailView implements OnInit {
 
     lang = "en";
 
+    n:number = 0;
+
     selectedTabData: TabData;
     selectedTabIndex = -1;
 
@@ -34,6 +36,7 @@ export class DetailView implements OnInit {
 
 
     ngOnInit(): void {
+
         this.route.fragment.forEach((fragment: String) => {
             if (fragment) {
                 this.fragment = fragment;
@@ -46,7 +49,7 @@ export class DetailView implements OnInit {
 
             if (params.hasOwnProperty("tab")) {
                 this.selectedTabIndex = +params['tab'];
-                this.setupExistingData();
+                this.selectedTabData = this.tabDatas[this.selectedTabIndex];
             }
         });
     }
@@ -54,17 +57,15 @@ export class DetailView implements OnInit {
     constructor(
         private qualificationService: QualificationService,
         private skillService: SkillService,
+        private qfService: QfService,
         private router: Router,
-        private route: ActivatedRoute,
-
-    ) {
-    }
+        private route: ActivatedRoute,) {}
 
     getUriFromFragmentAndSetLang(): String {
-        var uri;
+        let uri;
         var split1 = this.fragment.split("&");
         for (let str of split1) {
-            var split2 = str.split("=");
+            let split2 = str.split("=");
             if (split2.length == 2) {
                 if (split2[0] == "detailUri") {
                     uri = split2[1];
@@ -78,36 +79,40 @@ export class DetailView implements OnInit {
     }
 
     setupDataFromUri(uri:String): void {
-        if (this.qualificationService.hasSameState(uri, this.lang)) {
-            this.setupExistingData();
-        }
-        else {
+        if (this.qualificationService.hasNewState(uri, this.lang)) {
 
             this.qualificationService.getQualificationDetailed(uri, this.lang)
                 .then(qualification => {
-                    this.qualification = qualification;
-                    if (this.qualification.loSkillUris) {
-                        this.setSkillDataThenGenerateTabData();
-                    }
-                    else {
+                    if (qualification) {
+                        this.qualification = qualification;
+                        console.log(qualification);
                         this.generateTabData();
+
+                        if (this.qualification.loSkillUris) {
+                            this.setSkillData();
+                        }
+                        if (this.qualification.qfAssociationUris) {
+                            this.setQfData();
+                        }
                     }
                 });
         }
     }
 
-    setupExistingData(): void {
-        if (this.qualificationService.hasExistingDetailedQualification()) {
-            this.qualification = this.qualificationService.getExistingQualificationDetailed();
-            this.generateTabData();
-        }
-    }
-
-    setSkillDataThenGenerateTabData() {
-        this.skillService.getSkills(this.qualification.loSkillUris, this.qualification.referenceLanguage.concat(["en", this.lang]))
+    setSkillData() {
+        let langCodes = this.qualification.referenceLanguage ? this.qualification.referenceLanguage.concat(this.lang, "en") : [this.lang, "en"];
+        this.skillService.getSkills(this.qualification.loSkillUris, langCodes)
             .then(skills => {
                 this.qualification.learningOutcomes = skills;
-                this.generateTabData();
+                this.generateSkillTabData();
+            });
+    }
+    setQfData() {
+        let langCodes = this.qualification.referenceLanguage ? this.qualification.referenceLanguage.concat(this.lang, "en") : [this.lang, "en"];
+        this.qfService.getQualificationFrameworks(this.qualification.uri, langCodes)
+            .then(qfs => {
+                this.qualification.qualificationFrameworks = qfs;
+                this.generateQfTabData();
             });
     }
 
@@ -115,7 +120,6 @@ export class DetailView implements OnInit {
         this.tabDatas = [];
 
         let qualification = this.qualification;
-        console.log(qualification);
         let lang = this.lang;
 
         this.header = qualification.getPrefLabels(lang);
@@ -134,7 +138,7 @@ export class DetailView implements OnInit {
         this.tabDatas[1].addElement(new TabDataElement().setValues(["Is Partial Qualification:", [qualification.isPartialQualification]]));
         this.tabDatas[1].addElement(new TabDataElement().setValues(["Ways to Acquire:", qualification.waysToAcquire]));
         let entryReqs:String[] = [];
-        for (let entryReq of qualification.entryRequirements) {
+        if (qualification.entryRequirements) for (let entryReq of qualification.entryRequirements) {
             entryReqs.push("Type: " + entryReq[0]);
             entryReqs.push("Level: " + entryReq[1]);
         }
@@ -148,10 +152,9 @@ export class DetailView implements OnInit {
         this.tabDatas[1].addElement(new TabDataElement().setValues(["Status:", [qualification.status]]));
 
         this.tabDatas.push(new TabData("Accreditation/Recognition", 2));
-        this.tabDatas[2].addElement(new TabDataElement().setValues(["EQF-level:", [qualification.eqfTarget]]));
+        //this.tabDatas[2].addElement(new TabDataElement().setValues(["EQF-level:", [qualification.eqfTarget]]));
 
         this.tabDatas.push(new TabData("Learning outcomes", 3));
-        this.tabDatas[3].addElement( new TabDataElement().setLinkValues(["Learning Outcomes:", qualification.getAllSkillLinks(lang)]));
 
         this.tabDatas.push(new TabData("Description",4));
         this.tabDatas[4].addElement( new TabDataElement().setValues(["Description:",qualification.getDescriptions(lang)]));
@@ -165,6 +168,33 @@ export class DetailView implements OnInit {
 
         if (this.selectedTabIndex == -1) this.selectedTabData = this.tabDatas[0];
         else this.selectedTabData = this.tabDatas[this.selectedTabIndex];
+    }
+
+    generateSkillTabData () {
+        this.tabDatas[3].addElement( new TabDataElement().setLinkValues(["Learning Outcomes:", this.qualification.getAllSkillLinks(this.lang)]));
+
+    }
+
+    generateQfTabData () {
+        let qualification = this.qualification;
+        let lang = this.lang;
+
+        if (qualification.qualificationFrameworks) for (let qf of qualification.qualificationFrameworks) {
+            var qfValues:TabDataElement[] = [];
+            qfValues.push(new TabDataElement().setValues(["Description: ",qf.getDescriptions(lang, this.qualification.referenceLanguage)]));
+            qfValues.push(new TabDataElement().setValues(["Issued:",[qf.issued]]));
+            qfValues.push(new TabDataElement().setValues(["Target Framework:",[qf.targetFrameWork]]));
+            qfValues.push(new TabDataElement().setValues(["Target Framework Version:",[qf.targetFrameworkVersion]]));
+            qfValues.push(new TabDataElement().setValues(["Target:",[qf.target]]));
+            qfValues.push(new TabDataElement().setValues(["Target Description: ",qf.getTargetDescriptions(lang, this.qualification.referenceLanguage)]));
+            qfValues.push(new TabDataElement().setValues(["Target Notation:",qf.targetNotations]));
+            qfValues.push(new TabDataElement().setValues(["Target Name: ",qf.getTargetNames(lang, this.qualification.referenceLanguage)]));
+            qfValues.push(new TabDataElement().setValues(["Target URL:",[qf.targetUrl]]));
+            qfValues.push(new TabDataElement().setValues(["Homepage:",qf.homepages]));
+            qfValues.push(new TabDataElement().setValues(["Trusted:",[qf.trusted]]));
+
+            this.tabDatas[2].addElement(new TabDataElement().setElementsGroup(qfValues));
+        }
     }
 
     // gotoDetail(): void {

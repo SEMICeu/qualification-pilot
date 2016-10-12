@@ -173,6 +173,7 @@ function executeFindRelatedQualifications(eqf, foet, countryUri) {
 var successSearchQueryHash;
 var toShowTitle = "pageTitle-search";
 function showScreen(toShow) {
+  $("#titleDiv").show();
   $("#searchScreen").hide();
   $("#searchResultScreen").hide();
   $("#detailScreen").hide();
@@ -433,6 +434,8 @@ function loadDetail(uri) {
   detailUri = uri;
 
   updateHash("lang=" + language + "&detailUri=" + detailUri);
+
+  $("#titleDiv").hide();
 
   // var query = "select distinct * where {" +
   //     "  bind(<" + uri + "> as ?uri)" +

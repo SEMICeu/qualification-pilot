@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 
 // import { Foo } from './foo';
 // import {FOOS} from './foo-test-data'
-import { QueryBuilder } from './query-builder';
+import { QueryBuilder } from './support/query-builder';
 import {Qualification} from "../model/qualification";
 
 @Injectable()

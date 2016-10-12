@@ -1,6 +1,7 @@
 
 
 
+import {ConcatsParser} from "./concats-parser";
 export class QueryBuilder {
 
     private query:String;
@@ -89,14 +90,14 @@ export class QueryBuilder {
                 for (let i = 1; i < this._languageCodes.length; ++i) {
                     filtersString += " || langMatches(lang(" + triple._selectVar + "),str(" + this._languageCodes[i] + "))";
                 }
-                filtersString += ") \n";
+                filtersString += " || !BOUND(" + triple._selectVar + ")) \n";
             }
             if (triple._filterNodeLiteralByLang) {
                 filtersString += "FILTER((str(" + triple._object + ") = str(" + this._languageCodes[0] + "))";
                 for (let i = 1; i < this._languageCodes.length; ++i) {
                     filtersString += " || (str(" + triple._object + ") = str(" + this._languageCodes[i] + "))";
                 }
-                filtersString += ") \n";
+                filtersString += " || !BOUND(" + triple._object + ")) \n";
             }
         }
 
@@ -122,9 +123,9 @@ export class QueryBuilder {
     }
 
     private makeGroupConcat(varName:String, withLangGroup: boolean): String {
-        var result = "(CONCAT('[\"',GROUP_CONCAT(DISTINCT " + varName + ";separator='\",\"'),'\"]') as " + varName + "_group) ";
+        var result = "(GROUP_CONCAT(DISTINCT " + varName + ";separator='" + ConcatsParser.defaultDelimiter + "') as " + varName + "_group) ";
         if (withLangGroup) {
-            result = "(CONCAT('[\"',GROUP_CONCAT(DISTINCT CONCAT(STR(" + varName + "), CONCAT('@', LANG(" + varName + ")));separator='\",\"'),'\"]') as " + varName + "_lang_group) ";
+            result = "(GROUP_CONCAT(DISTINCT CONCAT(STR(" + varName + "),'@',LANG(" + varName + "));separator='" + ConcatsParser.defaultDelimiter + "') as " + varName + "_lang_group) ";
         }
         return result;
     }

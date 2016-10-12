@@ -1,14 +1,12 @@
 
 <br>
 
-<div *ngIf="data">
-  <!--{{data.name}}-->
+<div *ngIf="data && data.elements">
 
-  <div *ngIf="data.elements">
-    <ul>
+  <ul>
       <span *ngFor = "let element of data.elements" >
 
-        <li *ngIf="element.values && element.values[1]">
+        <li *ngIf="element.values && element.values[1] && element.values[1].length > 0">
           <span [innerHTML]="element.values[0]" class="propertyName"></span>
           <span  *ngIf="element.values[1].length == 1" [innerHTML]="element.values[1]"></span>
           <ul *ngIf="element.values[1].length > 1">
@@ -18,7 +16,7 @@
           </ul>
         </li>
 
-        <li *ngIf="element.linkValues && element.linkValues[1]">
+        <li *ngIf="element.linkValues && element.linkValues[1] && element.linkValues[1].length > 0">
           <span [innerHTML]="element.linkValues[0]" class="propertyName"></span>
 
           <span *ngIf="element.linkValues[1].length == 1">
@@ -34,9 +32,41 @@
           </ul>
         </li>
 
+        <li *ngIf="element.elementsGroup" class="elementsGroup">
+
+          <span *ngFor = "let element of element.elementsGroup" >
+
+            <li *ngIf="element.values && element.values[1] && element.values[1].length > 0">
+              <span [innerHTML]="element.values[0]" class="propertyName"></span>
+              <span  *ngIf="element.values[1].length == 1" [innerHTML]="element.values[1]"></span>
+                <ul *ngIf="element.values[1].length > 1">
+                 <li *ngFor = "let value of element.values[1]">
+                   <span [innerHTML]="value" ></span>
+                 </li>
+                </ul>
+              </li>
+
+            <li *ngIf="element.linkValues && element.linkValues[1] && element.linkValues[1].length > 0">
+              <span [innerHTML]="element.linkValues[0]" class="propertyName"></span>
+
+              <span *ngIf="element.linkValues[1].length == 1">
+                <span  *ngFor = "let linkValue of element.linkValues[1]">
+                  <a href='{{linkValue[1]}}' [innerHTML]="linkValue[0]" ></a>
+                </span>
+              </span>
+
+              <ul *ngIf="element.linkValues[1].length > 1">
+                <li *ngFor = "let linkValue of element.linkValues[1]">
+                  <a href='{{linkValue[1]}}' [innerHTML]="linkValue[0]" ></a>
+                </li>
+              </ul>
+            </li>
+
+          </span>
+        </li>
+
       </span>
-    </ul>
-  </div>
+  </ul>
 </div>
 
 <br>

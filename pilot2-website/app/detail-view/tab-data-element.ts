@@ -11,9 +11,13 @@ export class TabDataElement {
         return this;
     }
 
+    setElementsGroup (elements: TabDataElement[]) {
+        this.elementsGroup = elements;
+        return this;
+    }
+
     values:[String, String[]];
     linkValues:[String, [String,String][]];
-    color:[String, String];
-    idHtml: String;
-    classHtml: String;
+    elementsGroup: TabDataElement[]
+
 }
