@@ -34,14 +34,6 @@ export class Qualification {
     additionalNotes: Map<String, String[]>;
     status: String;
 
-    getAllSkillLinks(lang: String):[String,String][] {
-        if (!this.learningOutcomes) return null;
-        var links:[String,String][] = [];
-        for (let skill of this.learningOutcomes) {
-            if (skill.prefLabels) links.push([skill.getPrefLabels(lang, this.referenceLanguage)[0], skill.uri]);
-        }
-        return links;
-    }
     getPrefLabels(prefLang: String): String[] {
         if (!this.prefLabels) return null;
         if (this.prefLabels.has(prefLang)) return this.prefLabels.get(prefLang);

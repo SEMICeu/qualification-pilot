@@ -1,10 +1,14 @@
+li {
+    list-style: none;
+}
+
 a {
-    color: #000000;
+    color: blue;
     font-weight: normal;
     text-shadow: none;
 }
 a:hover, a:focus, a:active {
-    color: #000000;
+    color: blue;
     text-decoration: underline;
 }
 /*ul {*/

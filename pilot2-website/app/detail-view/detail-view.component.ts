@@ -19,21 +19,22 @@ import {QfService} from "../service/qf.service";
 export class DetailView implements OnInit {
 
     header;
-
     lang = "en";
+    fragment: String;
 
-    n:number = 0;
-
+    waitingForData = true;
     selectedTabData: TabData;
     selectedTabIndex = -1;
-
     qualification: Qualification;
 
     tabDatas: TabData[] = [];
 
-    fragment: String;
-
-
+    constructor(
+        private qualificationService: QualificationService,
+        private skillService: SkillService,
+        private qfService: QfService,
+        private router: Router,
+        private route: ActivatedRoute,) {}
 
     ngOnInit(): void {
 
@@ -53,13 +54,6 @@ export class DetailView implements OnInit {
             }
         });
     }
-
-    constructor(
-        private qualificationService: QualificationService,
-        private skillService: SkillService,
-        private qfService: QfService,
-        private router: Router,
-        private route: ActivatedRoute,) {}
 
     getUriFromFragmentAndSetLang(): String {
         let uri;
@@ -86,7 +80,6 @@ export class DetailView implements OnInit {
                     if (qualification) {
                         this.qualification = qualification;
                         console.log(qualification);
-                        this.generateTabData();
 
                         if (this.qualification.loSkillUris) {
                             this.setSkillData();
@@ -94,6 +87,8 @@ export class DetailView implements OnInit {
                         if (this.qualification.qfAssociationUris) {
                             this.setQfData();
                         }
+                        this.generateTabData();
+
                     }
                 });
         }
@@ -152,9 +147,34 @@ export class DetailView implements OnInit {
         this.tabDatas[1].addElement(new TabDataElement().setValues(["Status:", [qualification.status]]));
 
         this.tabDatas.push(new TabData("Accreditation/Recognition", 2));
-        //this.tabDatas[2].addElement(new TabDataElement().setValues(["EQF-level:", [qualification.eqfTarget]]));
+        if (qualification.qualificationFrameworks) for (let qf of qualification.qualificationFrameworks) {
+            var qfValues:TabDataElement[] = [];
+            qfValues.push(new TabDataElement().setValues(["Description: ",qf.getDescriptions(lang, this.qualification.referenceLanguage)]));
+            qfValues.push(new TabDataElement().setValues(["Issued:",[qf.issued]]));
+            qfValues.push(new TabDataElement().setValues(["Target Framework:",[qf.targetFrameWork]]));
+            qfValues.push(new TabDataElement().setValues(["Target Framework Version:",[qf.targetFrameworkVersion]]));
+            qfValues.push(new TabDataElement().setValues(["Target:",[qf.target]]));
+            qfValues.push(new TabDataElement().setValues(["Target Description: ",qf.getTargetDescriptions(lang, this.qualification.referenceLanguage)]));
+            qfValues.push(new TabDataElement().setValues(["Target Notation:",qf.targetNotations]));
+            qfValues.push(new TabDataElement().setValues(["Target Name: ",qf.getTargetNames(lang, this.qualification.referenceLanguage)]));
+            qfValues.push(new TabDataElement().setValues(["Target URL:",[qf.targetUrl]]));
+            qfValues.push(new TabDataElement().setLinkValues(["Homepage:",qf.getHomepageLinks()]));
+            qfValues.push(new TabDataElement().setValues(["Trusted:",[qf.trusted]]));
+            qfValues.push(new TabDataElement().setValues(["Publisher Name:",qf.getPublisherNames(lang, this.qualification.referenceLanguage)]));
+            qfValues.push(new TabDataElement().setLinkValues(["Publisher Mail :",qf.getPublisherMails()]));
+            qfValues.push(new TabDataElement().setLinkValues(["Publisher Homepage :",qf.getPublisherPages()]));
 
+            this.tabDatas[2].addElement(new TabDataElement().setElementsGroup(qfValues));
+        }
         this.tabDatas.push(new TabData("Learning outcomes", 3));
+        //this.tabDatas[3].addElement( new TabDataElement().setLinkValues(["Learning Outcomes:", this.qualification.getAllSkillLinks(this.lang)]));
+        if (qualification.learningOutcomes) for (let skill of qualification.learningOutcomes) {
+            var skillValues:TabDataElement[] = [];
+            skillValues.push(new TabDataElement().setLinkValues(["", [skill.getSkillLink(lang, this.qualification.referenceLanguage)]]));
+            skillValues.push(new TabDataElement().setValues(["Description:", skill.getDescriptions(lang, this.qualification.referenceLanguage)]));
+
+            this.tabDatas[3].addElement(new TabDataElement().setElementsGroup(skillValues));
+        }
 
         this.tabDatas.push(new TabData("Description",4));
         this.tabDatas[4].addElement( new TabDataElement().setValues(["Description:",qualification.getDescriptions(lang)]));
@@ -171,30 +191,14 @@ export class DetailView implements OnInit {
     }
 
     generateSkillTabData () {
-        this.tabDatas[3].addElement( new TabDataElement().setLinkValues(["Learning Outcomes:", this.qualification.getAllSkillLinks(this.lang)]));
+
+        this.generateTabData();//TODO better
 
     }
 
     generateQfTabData () {
-        let qualification = this.qualification;
-        let lang = this.lang;
 
-        if (qualification.qualificationFrameworks) for (let qf of qualification.qualificationFrameworks) {
-            var qfValues:TabDataElement[] = [];
-            qfValues.push(new TabDataElement().setValues(["Description: ",qf.getDescriptions(lang, this.qualification.referenceLanguage)]));
-            qfValues.push(new TabDataElement().setValues(["Issued:",[qf.issued]]));
-            qfValues.push(new TabDataElement().setValues(["Target Framework:",[qf.targetFrameWork]]));
-            qfValues.push(new TabDataElement().setValues(["Target Framework Version:",[qf.targetFrameworkVersion]]));
-            qfValues.push(new TabDataElement().setValues(["Target:",[qf.target]]));
-            qfValues.push(new TabDataElement().setValues(["Target Description: ",qf.getTargetDescriptions(lang, this.qualification.referenceLanguage)]));
-            qfValues.push(new TabDataElement().setValues(["Target Notation:",qf.targetNotations]));
-            qfValues.push(new TabDataElement().setValues(["Target Name: ",qf.getTargetNames(lang, this.qualification.referenceLanguage)]));
-            qfValues.push(new TabDataElement().setValues(["Target URL:",[qf.targetUrl]]));
-            qfValues.push(new TabDataElement().setValues(["Homepage:",qf.homepages]));
-            qfValues.push(new TabDataElement().setValues(["Trusted:",[qf.trusted]]));
-
-            this.tabDatas[2].addElement(new TabDataElement().setElementsGroup(qfValues));
-        }
+        this.generateTabData();//TODO better
     }
 
     // gotoDetail(): void {

@@ -19,5 +19,17 @@ export class Skill {
         }
         return null;
     }
+    getSkillLink (prefLang: String, refLang:String[]): [String,String] {
+        if (this.prefLabels) return [this.getPrefLabels(prefLang, refLang)[0], this.uri];
+    }
+    getDescriptions(prefLang: String, refLang:String[]): String[] {
+        if (!this.descriptions) return null;
+        if (this.descriptions.has(prefLang)) return this.descriptions.get(prefLang);
+        if (this.descriptions.has("en")) return this.descriptions.get("en");
+        for (let lang of refLang) {
+            if (this.descriptions.has(lang)) return this.descriptions.get(lang);
+        }
+        return null;
+    }
 
 }

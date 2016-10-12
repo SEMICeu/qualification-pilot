@@ -3,7 +3,9 @@ export class TabDataElement {
 
 
     setValues(values:[String, String[]]) {
-        this.values = values;
+        if (values && values[1] && values[1].length > 0 && values[1][0]) {
+            this.values = values;
+        }
         return this;
     }
     setLinkValues(linkValues:[String, [String,String][]]) {

@@ -41,6 +41,9 @@ export class QfService {
                         if (values.targetUrl) qf.targetUrl = values.targetUrl.value;
                         if (values.homepage_group) qf.homepages =  ConcatsParser.makeStringArray(values.homepage_group.value);
                         if (values.trusted) qf.trusted = values.trusted.value;
+                        if (values.publisherName_lang_group) qf.publisherNames = ConcatsParser.makeMapOfStringArrays(values.publisherName_lang_group.value);
+                        if (values.publisherMail_group) qf.publisherMails = ConcatsParser.makeStringArray(values.publisherMail_group.value);
+                        if (values.publisherPage_group) qf.publisherPages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
                         qfs.push(qf);
                     }
                 }
@@ -83,9 +86,9 @@ export class QfService {
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("<http://data.europa.eu/esco/qdr#generatedByTrustedSource>").selectObject("?trusted").after("}"));
 
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:publisher").object("?publisherUri"));
-        queryBuild.addTriple( new Triple().subject("?publisherUri").predicate("foaf:name").object("?publisherName"));
-        queryBuild.addTriple( new Triple().subject("?publisherUri").predicate("foaf:mbox").object("?publisherMail"));
-        queryBuild.addTriple( new Triple().subject("?publisherUri").predicate("foaf:homepage").object("?publisherPage").after("}"));
+        queryBuild.addTriple( new Triple().subject("?publisherUri").predicate("foaf:name").selectObject("?publisherName").langGroupConcat());
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:mbox").selectObject("?publisherMail").after("}").groupConcat());
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:homepage").selectObject("?publisherPage").after("}}").groupConcat());
 
         return queryBuild.buildSelect();
     }

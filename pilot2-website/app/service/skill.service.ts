@@ -29,8 +29,8 @@ export class SkillService {
                     if (values.uri && values.prefLabel_lang_group) {
                         skills.push(new Skill(values.uri));
                         skills[skills.length-1].prefLabels = ConcatsParser.makeMapOfStringArrays(values.prefLabel_lang_group.value);
-                        if (values.descriptions_lang_group) {
-                            skills[skills.length-1].prefLabels = ConcatsParser.makeMapOfStringArrays(values.descriptions_lang_group.value);
+                        if (values.description_lang_group) {
+                            skills[skills.length-1].descriptions = ConcatsParser.makeMapOfStringArrays(values.description_lang_group.value);
                         }
                     }
                 }
