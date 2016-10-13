@@ -47,7 +47,7 @@ export class QualificationService {
     queryQualificationRelatedObjects(qualification: Qualification): Promise<Qualification> {
 
         let uri = qualification.uri;
-        let langCodes = qualification.referenceLanguage ? qualification.referenceLanguage.concat(this.prefLang, "en") : [this.prefLang, "en"];
+        let langCodes = qualification.referenceLang ? qualification.referenceLang.concat(this.prefLang, "en") : [this.prefLang, "en"];
 
         return Promise.all([
             this.qfService.getQualificationFrameworks(uri, langCodes),
@@ -68,14 +68,15 @@ export class QualificationService {
         console.log(QueryTemplates.makeForQualificationDetail("<" + uri + ">", prefLang));
 
         return this.http
-            .post(this.url, QueryTemplates.makeForQualificationDetail("<" + uri + ">", "en") ,  {headers: this.headers})
+            .post(this.url, QueryTemplates.makeForQualificationDetail("<" + uri + ">", prefLang) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                     let values = res.json().results.bindings[0];
                     console.log(res.json().results);
                     let qualification = new Qualification(uri);
 
-                    if (values.referenceLanguage_group) qualification.referenceLanguage = ConcatsParser.makeStringArray(values.referenceLanguage_group.value);
+                    if (values.referenceLang_group) qualification.referenceLang = ConcatsParser.makeStringArray(values.referenceLang_group.value);
+                    if (values.referenceLangLabel_lang_group) qualification.referenceLangLabels = ConcatsParser.makeMapOfStringArrays(values.referenceLangLabel_lang_group.value);
                     if (values.prefLabel_lang_group) qualification.prefLabels = ConcatsParser.makeMapOfStringArrays(values.prefLabel_lang_group.value);
                     if (values.altLabel_lang_group) qualification.altLabels = ConcatsParser.makeMapOfStringArrays(values.altLabel_lang_group.value);
                     if (values.definition_lang_group) qualification.definitions = ConcatsParser.makeMapOfStringArrays(values.definition_lang_group.value);
@@ -93,7 +94,7 @@ export class QualificationService {
                     if (values.recognitionUri_group) qualification.recognitionUris = ConcatsParser.makeStringArray(values.recognitionUri_group.value);
                     if (values.awardingStarted) qualification.awardingStarted = values.awardingStarted.value;
                     if (values.awardingEnded) qualification.awardingEnded = values.awardingEnded.value;
-                    if (values.awardingLocation_group) qualification.awardingLocations = ConcatsParser.makeStringArray(values.awardingLocation_group.value);
+                    if (values.awardingLocation_lang_group) qualification.awardingLocations = ConcatsParser.makeMapOfStringArrays(values.awardingLocation_lang_group.value);
                     if (values.awardingBodyName_lang_group) {
                         qualification.awardingBody = new Agent();
                         qualification.awardingBody.names = ConcatsParser.makeMapOfStringArrays(values.awardingBodyName_lang_group.value);

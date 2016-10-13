@@ -7,7 +7,7 @@ export class QueryTemplates {
 
         let queryBuild = new QueryBuilder();
 
-        let languageCodes = prefLang == "en" ? ["'" + prefLang + "'", "?referenceLanguage"] : ["'" + prefLang + "'", "'en'", "?referenceLanguage"] ;
+        let languageCodes = prefLang == "en" ? ["'" + prefLang + "'", "?referenceLang"] : ["'" + prefLang + "'", "'en'", "?referenceLang"] ;
 
         queryBuild.languageCodes = languageCodes;
 
@@ -25,7 +25,9 @@ export class QueryTemplates {
 
         queryBuild.addTriple( new Triple().subject("?uri").predicate("rdf:type").object("esco:Qualification") );
 
-        queryBuild.addTriple( new Triple().subject("?uri").predicate("esco:referenceLanguage").selectObject("?referenceLanguage").groupConcat() );
+        queryBuild.addTriple( new Triple().subject("?uri").predicate("esco:referenceLanguage").selectObject("?referenceLang").groupConcat() );
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?referenceLangNode").predicate("esco:language").object("?referenceLang"));
+        queryBuild.addTriple( new Triple().subject("?referenceLangNode").predicate("skos:prefLabel").selectObject("?referenceLangLabel").after("}").langGroupConcat().filterByLang() );
 
         queryBuild.addTriple( new Triple().subject("?uri").predicate("skos:prefLabel").selectObject("?prefLabel").langGroupConcat().filterByLang() );
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("skos:altLabel").selectObject("?altLabel").after("}").langGroupConcat().filterByLang() );
@@ -76,7 +78,9 @@ export class QueryTemplates {
         //TODO multiple awardingPeriods?
 
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasAwardingActivity").object("?locationActivity"));
-        queryBuild.addTriple( new Triple().subject("?locationActivity").predicate("prov:atLocation").selectObject("?awardingLocation").after("}").groupConcat() );
+        queryBuild.addTriple( new Triple().subject("?locationActivity").predicate("prov:atLocation").object("?awardingLocationUri") );
+        queryBuild.addTriple( new Triple().subject("?awardingLocationUri").predicate("skos:prefLabel").selectObject("?awardingLocation").after("}").langGroupConcat() );
+
 
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasAwardingActivity").object("?bodyActivity"));
         queryBuild.addTriple( new Triple().subject("?bodyActivity").predicate("prov:wasAssociatedWith").object("?awardingBodyUri"));

@@ -11,7 +11,8 @@ export class Qualification {
     }
 
     uri: String;
-    referenceLanguage: String[];
+    referenceLang: String[];
+    referenceLangLabels: Map<String, String[]>;
     prefLabels: Map<String, String[]>;
     altLabels: Map<String, String[]>;
     definitions: Map<String, String[]>;
@@ -32,7 +33,7 @@ export class Qualification {
     recognitions: Recognition[];
     awardingStarted: String;
     awardingEnded: String;
-    awardingLocations: String[];
+    awardingLocations: Map<String, String[]>;
     awardingBody: Agent;
     accreditationUris: String[];
     accreditations: Accreditation[];
@@ -49,11 +50,21 @@ export class Qualification {
     provenanceAgent: Agent;
     publisher: Agent;
 
+
+    getReferenceLangLabels(prefLang: String): String[] {
+        if (!this.referenceLangLabels) return null;
+        if (this.referenceLangLabels.has(prefLang)) return this.referenceLangLabels.get(prefLang);
+        if (this.referenceLangLabels.has("en")) return this.referenceLangLabels.get("en");
+        for (let lang of this.referenceLang) {
+            if (this.referenceLangLabels.has(lang)) return this.referenceLangLabels.get(lang);
+        }
+        return null;
+    }
     getPrefLabels(prefLang: String): String[] {
         if (!this.prefLabels) return null;
         if (this.prefLabels.has(prefLang)) return this.prefLabels.get(prefLang);
         if (this.prefLabels.has("en")) return this.prefLabels.get("en");
-        for (let lang of this.referenceLanguage) {
+        for (let lang of this.referenceLang) {
             if (this.prefLabels.has(lang)) return this.prefLabels.get(lang);
         }
         return null;
@@ -62,7 +73,7 @@ export class Qualification {
         if (!this.altLabels) return null;
         if (this.altLabels.has(prefLang)) return this.altLabels.get(prefLang);
         if (this.altLabels.has("en")) return this.altLabels.get("en");
-        for (let lang of this.referenceLanguage) {
+        for (let lang of this.referenceLang) {
             if (this.altLabels.has(lang)) return this.altLabels.get(lang);
         }
         return null;
@@ -71,7 +82,7 @@ export class Qualification {
         if (!this.definitions) return null;
         if (this.definitions.has(prefLang)) return this.definitions.get(prefLang);
         if (this.definitions.has("en")) return this.definitions.get("en");
-        for (let lang of this.referenceLanguage) {
+        for (let lang of this.referenceLang) {
             if (this.definitions.has(lang)) return this.definitions.get(lang);
         }
         return null;
@@ -80,7 +91,7 @@ export class Qualification {
         if (!this.descriptions) return null;
         if (this.descriptions.has(prefLang)) return this.descriptions.get(prefLang);
         if (this.descriptions.has("en")) return this.descriptions.get("en");
-        for (let lang of this.referenceLanguage) {
+        for (let lang of this.referenceLang) {
             if (this.descriptions.has(lang)) return this.descriptions.get(lang);
         }
         return null;
@@ -89,12 +100,13 @@ export class Qualification {
         if (!this.iSCEDFcodeLabel) return null;
         if (this.iSCEDFcodeLabel.has(prefLang)) return this.iSCEDFcodeLabel.get(prefLang);
         if (this.iSCEDFcodeLabel.has("en")) return this.iSCEDFcodeLabel.get("en");
-        for (let lang of this.referenceLanguage) {
+        for (let lang of this.referenceLang) {
             if (this.iSCEDFcodeLabel.has(lang)) return this.iSCEDFcodeLabel.get(lang);
         }
         return null;
     }
     getISCEDFcode (prefLang: String): String[] {
+        if (!this.iSCEDFcode) return null;
         let labels = this.getISCEDFcodeLabels(prefLang);
         if (labels.length == this.iSCEDFcode.length) {
             let labeledIscedfcodes: String[] = [];
@@ -105,7 +117,15 @@ export class Qualification {
         }
         return this.iSCEDFcode;
     }
-
+    getAwardingLocations(prefLang: String): String[] {
+        if (!this.awardingLocations) return null;
+        if (this.awardingLocations.has(prefLang)) return this.awardingLocations.get(prefLang);
+        if (this.awardingLocations.has("en")) return this.awardingLocations.get("en");
+        for (let lang of this.referenceLang) {
+            if (this.awardingLocations.has(lang)) return this.awardingLocations.get(lang);
+        }
+        return null;
+    }
     getHomepageLinks():[String,String][] {
         if (!this.homepages) return null;
         var links:[String,String][] = [];
@@ -134,7 +154,7 @@ export class Qualification {
         if (!this.changeNotes) return null;
         if (this.changeNotes.has(prefLang)) return this.changeNotes.get(prefLang);
         if (this.changeNotes.has("en")) return this.changeNotes.get("en");
-        for (let lang of this.referenceLanguage) {
+        for (let lang of this.referenceLang) {
             if (this.changeNotes.has(lang)) return this.changeNotes.get(lang);
         }
         return null;
@@ -143,7 +163,7 @@ export class Qualification {
         if (!this.historyNotes) return null;
         if (this.historyNotes.has(prefLang)) return this.historyNotes.get(prefLang);
         if (this.historyNotes.has("en")) return this.historyNotes.get("en");
-        for (let lang of this.referenceLanguage) {
+        for (let lang of this.referenceLang) {
             if (this.historyNotes.has(lang)) return this.historyNotes.get(lang);
         }
         return null;
@@ -152,7 +172,7 @@ export class Qualification {
         if (!this.additionalNotes) return null;
         if (this.additionalNotes.has(prefLang)) return this.additionalNotes.get(prefLang);
         if (this.additionalNotes.has("en")) return this.additionalNotes.get("en");
-        for (let lang of this.referenceLanguage) {
+        for (let lang of this.referenceLang) {
             if (this.additionalNotes.has(lang)) return this.additionalNotes.get(lang);
         }
         return null;
