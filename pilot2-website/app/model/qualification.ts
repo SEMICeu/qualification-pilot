@@ -3,6 +3,7 @@ import {Skill} from "./skill";
 import {QualificationFramework} from "./qualification-framework";
 import {Accreditation} from "./accreditation";
 import {Agent} from "./agent";
+import {Recognition} from "./recognition";
 export class Qualification {
 
     constructor(uri: String) {
@@ -16,7 +17,8 @@ export class Qualification {
     definitions: Map<String, String[]>;
     loSkillUris: String[];
     descriptions: Map<String, String[]>;
-    iSCED_Fcode: String[];
+    iSCEDFcode: String[];
+    iSCEDFcodeLabel: Map<String, String[]>;
     qfAssociationUris: String[];
     qualificationFrameworks: QualificationFramework[];
     eCTSCredits: String;
@@ -26,7 +28,8 @@ export class Qualification {
     entryRequirements: [String, String][];
     expiryPeriod: String;
     learningOutcomes: Skill[];
-    //TODO rec here
+    recognitionUris: String[];
+    recognitions: Recognition[];
     awardingStarted: String;
     awardingEnded: String;
     awardingLocations: String[];
@@ -82,6 +85,27 @@ export class Qualification {
         }
         return null;
     }
+    private getISCEDFcodeLabels(prefLang: String): String[] {
+        if (!this.iSCEDFcodeLabel) return null;
+        if (this.iSCEDFcodeLabel.has(prefLang)) return this.iSCEDFcodeLabel.get(prefLang);
+        if (this.iSCEDFcodeLabel.has("en")) return this.iSCEDFcodeLabel.get("en");
+        for (let lang of this.referenceLanguage) {
+            if (this.iSCEDFcodeLabel.has(lang)) return this.iSCEDFcodeLabel.get(lang);
+        }
+        return null;
+    }
+    getISCEDFcode (prefLang: String): String[] {
+        let labels = this.getISCEDFcodeLabels(prefLang);
+        if (labels.length == this.iSCEDFcode.length) {
+            let labeledIscedfcodes: String[] = [];
+            for (let i = 0; i < labels.length; ++i) {
+                labeledIscedfcodes.push(this.iSCEDFcode[i] + " " + labels[i])
+            }
+            return labeledIscedfcodes;
+        }
+        return this.iSCEDFcode;
+    }
+
     getHomepageLinks():[String,String][] {
         if (!this.homepages) return null;
         var links:[String,String][] = [];

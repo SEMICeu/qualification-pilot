@@ -16,29 +16,10 @@ a {
   font-weight: bold;
   text-shadow: none;
 }
-input {
-  height: 2em;
-  font-size: 1em;
-  padding-left: .4em;
+nav {
+  text-align: center;
+  width: 100%;
 }
-button {
-  margin-top: 20px;
-  font-family: Arial;
-  background-color: #eee;
-  border: none;
-  padding: 5px 10px;
-  border-radius: 4px;
-  cursor: pointer; cursor: hand;
-}
-button:hover {
-  background-color: #cfd8dc;
-}
-button:disabled {
-  background-color: #eee;
-  color: #ccc;
-  cursor: auto;
-}
-
 nav a {
   padding: 5px 10px;
   text-decoration: none;

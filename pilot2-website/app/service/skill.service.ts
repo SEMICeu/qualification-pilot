@@ -15,11 +15,11 @@ export class SkillService {
     url = endPointUrl;
     headers =  endPointHeaders;
 
-    getSkills (uris: String[], langs:String[]):Promise<Skill[]> {
+    getSkills (qualUri: String, langs:String[]):Promise<Skill[]> {
 
-        console.log(QueryTemplates.makeForSkills(uris, langs));
+        console.log(QueryTemplates.makeForSkills(qualUri, langs));
         return this.http
-            .post(this.url, QueryTemplates.makeForSkills(uris, langs) ,  {headers: this.headers})
+            .post(this.url, QueryTemplates.makeForSkills(qualUri, langs) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;

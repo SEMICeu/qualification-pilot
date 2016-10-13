@@ -12,7 +12,7 @@ export class TabDataTemplates {
         data.addElement(new TabDataElement().setValues(["Reference Language:", qualification.referenceLanguage]));
         data.addElement(new TabDataElement().setValues(["Definition:", qualification.getDefinitions(lang)]));
         data.addElement(new TabDataElement().setValues(["Test",null]));
-        data.addElement(new TabDataElement().setValues(["iSCED-Fcode:",qualification.iSCED_Fcode]));
+        data.addElement(new TabDataElement().setValues(["iSCED-Fcode:",qualification.getISCEDFcode(lang)]));
         data.addElement(new TabDataElement().setValues(["ECTS credits:", [qualification.eCTSCredits]]));
         data.addElement(new TabDataElement().setValues(["Volume of learning:", [qualification.volumeOfLearning]]));
         data.addElement(new TabDataElement().setValues(["Is Partial Qualification:", [qualification.isPartialQualification]]));

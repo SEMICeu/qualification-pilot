@@ -10,6 +10,7 @@ import {SkillService} from "../service/skill.service";
 import {QfService} from "../service/qf.service";
 import {TabDataTemplates} from "./tab-data-templates";
 import {AccreditationService} from "../service/accreditation.service";
+import {RecognitionService} from "../service/recognition.service";
 
 @Component({
     moduleId: module.id,
@@ -29,14 +30,12 @@ export class DetailView implements OnInit {
     selectedTabIndex = -1;
     qualification: Qualification;
 
+    promisesToFinish = 0;
+
     tabDatas: TabData[] = [];
 
     constructor(
         private qualificationService: QualificationService,
-        private skillService: SkillService,
-        private qfService: QfService,
-        private accreditationService: AccreditationService,
-        private router: Router,
         private route: ActivatedRoute,) {}
 
     ngOnInit(): void {
@@ -58,70 +57,22 @@ export class DetailView implements OnInit {
         });
     }
 
-    getUriFromFragmentAndSetLang(): String {
-        let uri;
-        var split1 = this.fragment.split("&");
-        for (let str of split1) {
-            let split2 = str.split("=");
-            if (split2.length == 2) {
-                if (split2[0] == "detailUri") {
-                    uri = split2[1];
-                }
-                if (split2[0] == "lang") {
-                    this.lang = split2[1];
-                }
-            }
-        }
-        return uri;
-    }
-
     setupDataFromUri(uri:String): void {
         if (this.qualificationService.hasNewState(uri, this.lang)) {
+
 
             this.qualificationService.getQualificationDetailed(uri, this.lang)
                 .then(qualification => {
                     if (qualification) {
-                        this.qualification = qualification;
                         console.log(qualification);
 
-                        let langCodes = this.qualification.referenceLanguage ? this.qualification.referenceLanguage.concat(this.lang, "en") : [this.lang, "en"];
-
-                        if (this.qualification.loSkillUris) {
-                            this.setSkillData(langCodes);
-                        }
-                        if (this.qualification.qfAssociationUris) {
-                            this.setQfData(langCodes);
-                        }
-                        if (this.qualification.accreditationUris) {
-                            this.setAccreditationData(langCodes);
-                        }
-                        this.generateTabData();
-
+                        this.qualificationService.queryQualificationRelatedObjects(qualification).then( qualification => {
+                            this.qualification = qualification;
+                            this.generateTabData();
+                        });
                     }
                 });
         }
-    }
-
-    setSkillData(langCodes) {
-        this.skillService.getSkills(this.qualification.loSkillUris, langCodes)
-            .then(skills => {
-                this.qualification.learningOutcomes = skills;
-                this.generateSkillTabData();
-            });
-    }
-    setQfData(langCodes) {
-        this.qfService.getQualificationFrameworks(this.qualification.uri, langCodes)
-            .then(qfs => {
-                this.qualification.qualificationFrameworks = qfs;
-                this.generateQfTabData();
-            });
-    }
-    setAccreditationData(langCodes) {
-        this.accreditationService.getAccreditations(this.qualification.uri, langCodes)
-            .then(accreds => {
-                this.qualification.accreditations = accreds;
-                this.generateAccreditationsData();
-            });
     }
 
     generateTabData() {
@@ -149,17 +100,20 @@ export class DetailView implements OnInit {
         else this.selectedTabData = this.tabDatas[this.selectedTabIndex];
     }
 
-    generateSkillTabData () {
-        this.generateTabData();//TODO better
+    private getUriFromFragmentAndSetLang(): String {
+        let uri;
+        var split1 = this.fragment.split("&");
+        for (let str of split1) {
+            let split2 = str.split("=");
+            if (split2.length == 2) {
+                if (split2[0] == "detailUri") {
+                    uri = split2[1];
+                }
+                if (split2[0] == "lang") {
+                    this.lang = split2[1];
+                }
+            }
+        }
+        return uri;
     }
-    generateQfTabData () {
-        this.generateTabData();//TODO better
-    }
-    generateAccreditationsData () {
-        this.generateTabData();//TODO better
-    }
-
-    // gotoDetail(): void {
-    //     this.router.navigate(['/detail-view', "http://data.europa.eu/esco/resource/d3fefee9-4eda-4926-9ada-ea196f7a2263"]);
-    // }
 }

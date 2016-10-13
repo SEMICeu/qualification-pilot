@@ -9,11 +9,22 @@ import {ConcatsParser} from "./support/concats-parser";
 import {QfService} from "./qf.service";
 import {QueryTemplates} from "./support/query-templates";
 import {Agent} from "../model/agent";
+import {QualificationFramework} from "../model/qualification-framework";
+import {SkillService} from "./skill.service";
+import {AccreditationService} from "./accreditation.service";
+import {RecognitionService} from "./recognition.service";
+import {Accreditation} from "../model/accreditation";
+import {Recognition} from "../model/recognition";
+import {Skill} from "../model/skill";
 
 @Injectable()
 export class QualificationService {
 
-    constructor(private http: Http, private qfService: QfService) { };
+    constructor(private http: Http,
+                private qfService: QfService,
+                private skillService: SkillService,
+                private accreditationService: AccreditationService,
+                private recognitionService: RecognitionService) { };
 
     url = endPointUrl;
     headers =  endPointHeaders;
@@ -23,16 +34,36 @@ export class QualificationService {
 
     getQualificationDetailed(uri: String, prefLang:String): Promise<Qualification> {
         this.prefLang = prefLang;
-        let promisedQualification = this.queryQualificationDetailed(uri, prefLang);
+        let promisedQualification = this.queryQualificationDetailedMain(uri, prefLang);
         promisedQualification.then(qualification => this.detailedQualification = qualification);
 
         return promisedQualification;
     }
-    hasNewState(uri: String, lang:String): boolean {
-        return (!this.detailedQualification || this.detailedQualification.uri != uri || this.prefLang != lang);
+    hasNewState(uri: String, prefLang:String): boolean {
+        return (!this.detailedQualification || this.detailedQualification.uri != uri || this.prefLang != prefLang);
     }
 
-    queryQualificationDetailed(uri: String, prefLang:String): Promise<Qualification> {
+
+    queryQualificationRelatedObjects(qualification: Qualification): Promise<Qualification> {
+
+        let uri = qualification.uri;
+        let langCodes = qualification.referenceLanguage ? qualification.referenceLanguage.concat(this.prefLang, "en") : [this.prefLang, "en"];
+
+        return Promise.all([
+            this.qfService.getQualificationFrameworks(uri, langCodes),
+            this.accreditationService.getAccreditations(uri, langCodes),
+            this.recognitionService.getRecognitions(uri, langCodes),
+            this.skillService.getSkills(uri, langCodes)
+        ]).then(results => {
+            qualification.qualificationFrameworks = results[0] as QualificationFramework[];
+            qualification.accreditations = results[1] as Accreditation[];
+            qualification.recognitions = results[2] as Recognition[];
+            qualification.learningOutcomes = results[3] as Skill[];
+            return qualification;
+        });
+    }
+
+    queryQualificationDetailedMain(uri: String, prefLang:String): Promise<Qualification> {
 
         console.log(QueryTemplates.makeForQualificationDetail("<" + uri + ">", prefLang));
 
@@ -49,7 +80,8 @@ export class QualificationService {
                     if (values.altLabel_lang_group) qualification.altLabels = ConcatsParser.makeMapOfStringArrays(values.altLabel_lang_group.value);
                     if (values.definition_lang_group) qualification.definitions = ConcatsParser.makeMapOfStringArrays(values.definition_lang_group.value);
                     if (values.description_lang_group) qualification.descriptions = ConcatsParser.makeMapOfStringArrays(values.description_lang_group.value);
-                    if (values.iSCED_Fcode_group) qualification.iSCED_Fcode = ConcatsParser.makeStringArray(values.iSCED_Fcode_group.value);
+                    if (values.iSCEDFcode_group) qualification.iSCEDFcode = ConcatsParser.makeStringArray(values.iSCEDFcode_group.value);
+                    if (values.iSCEDFcodeLabel_lang_group) qualification.iSCEDFcodeLabel = ConcatsParser.makeMapOfStringArrays(values.iSCEDFcodeLabel_lang_group.value);
                     if (values.qfAssociationUri_group) qualification.qfAssociationUris = ConcatsParser.makeStringArray(values.qfAssociationUri_group.value);
                     if (values.eCTSCredits) qualification.eCTSCredits = values.eCTSCredits.value;
                     if (values.volumeOfLearning) qualification.volumeOfLearning = values.volumeOfLearning.value;
@@ -58,6 +90,7 @@ export class QualificationService {
                     if (values.entryRequirement_group) qualification.entryRequirements = ConcatsParser.makeStringTupleArray(values.entryRequirement_group.value);
                     if (values.expiryPeriod) qualification.expiryPeriod = values.expiryPeriod.value;
                     if (values.skillUri_group) qualification.loSkillUris = ConcatsParser.makeStringArray(values.skillUri_group.value);
+                    if (values.recognitionUri_group) qualification.recognitionUris = ConcatsParser.makeStringArray(values.recognitionUri_group.value);
                     if (values.awardingStarted) qualification.awardingStarted = values.awardingStarted.value;
                     if (values.awardingEnded) qualification.awardingEnded = values.awardingEnded.value;
                     if (values.awardingLocation_group) qualification.awardingLocations = ConcatsParser.makeStringArray(values.awardingLocation_group.value);

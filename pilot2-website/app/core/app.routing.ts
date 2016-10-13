@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import {DetailView} from "../detail-view/detail-view.component";
 import {AppComponent} from "./app.component";
+import {SearchView} from "../search-view/search-view.component";
 
 const appRoutes: Routes = [
   {
@@ -11,12 +12,12 @@ const appRoutes: Routes = [
   },
   {
     path: 'index.html',
-    redirectTo: '/detail/0',
+    redirectTo: '/search',
     pathMatch: 'full'
   },
   {
     path: '',
-    redirectTo: '/detail/0',
+    redirectTo: '/search',
     pathMatch: 'full'
   },
   // {
@@ -26,6 +27,10 @@ const appRoutes: Routes = [
   {
     path: 'detail/:tab',
     component: DetailView
+  },
+  {
+    path: 'search',
+    component: SearchView
   },
 ];
 

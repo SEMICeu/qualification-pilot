@@ -7,6 +7,7 @@ import { AppComponent }  from './app.component';
 import {routing} from "./app.routing";
 import { DetailView } from '../detail-view/detail-view.component';
 import {DetailViewTab} from "../detail-view/detail-view-tab.component";
+import {SearchView} from "../search-view/search-view.component";
 
 @NgModule({
   imports: [ BrowserModule, FormsModule, HttpModule,
@@ -14,7 +15,8 @@ import {DetailViewTab} from "../detail-view/detail-view-tab.component";
       ],
   declarations: [ AppComponent,
       DetailView,
-      DetailViewTab
+      DetailViewTab,
+      SearchView
   ],
   bootstrap: [ AppComponent ]
 

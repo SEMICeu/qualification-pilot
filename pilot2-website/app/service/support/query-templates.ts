@@ -40,7 +40,9 @@ export class QueryTemplates {
         queryBuild.addTriple( new Triple().subject("?descriptionNode").predicate("esco:nodeLiteral").object("?description_value").after("}") );
         queryBuild.addFreeFormVariable( " (GROUP_CONCAT (DISTINCT CONCAT(str(?description_value),'@',?description_lang);separator='" + ConcatsParser.defaultDelimiter + "') as ?description_lang_group)");
 
-        queryBuild.addTriple( new Triple().subject("?uri").predicate("esco:hasISCED-FCode").selectObject("?iSCED_Fcode").groupConcat());
+        queryBuild.addTriple( new Triple().subject("?uri").predicate("esco:hasISCED-FCode").object("?iSCED_FcodeUri"));
+        queryBuild.addTriple( new Triple().subject("?iSCED_FcodeUri").predicate("skos:notation").selectObject("?iSCEDFcode").groupConcat());
+        queryBuild.addTriple( new Triple().subject("?iSCED_FcodeUri").predicate("skos:prefLabel").selectObject("?iSCEDFcodeLabel").langGroupConcat());
 
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasAssociation").selectObject("?qfAssociationUri").groupConcat());
         queryBuild.addTriple( new Triple().subject("?qfAssociationUri").predicate("dcterms:type").object("<http://data.europa.eu/esco/association-type#qf-level>").after("}"));
@@ -66,7 +68,7 @@ export class QueryTemplates {
 
         //Missing related occupation
 
-        //TODO recognition
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasRecognition").selectObject("?recognitionUri").groupConcat().after("}") );
 
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasAwardingActivity").object("?periodActivity"));
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?periodActivity").predicate("prov:startedAtTime").selectObject("?awardingStarted").after("}") );
@@ -126,12 +128,10 @@ export class QueryTemplates {
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:mbox").selectObject("?publisherMail").after("}").groupConcat());
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:homepage").selectObject("?publisherPage").after("}}").groupConcat());
 
-
-
         return queryBuild.buildSelect();
     }
 
-    static makeForSkills (uris: String[], langs:String[]):String {
+    static makeForSkills (qualUri: String, langs:String[]):String {
         let queryBuild = new QueryBuilder();
 
         var langCodes:String[] = [];
@@ -146,13 +146,10 @@ export class QueryTemplates {
         queryBuild.addPrefix("dcterms", "<http://purl.org/dc/terms/>");
         queryBuild.addPrefix("skosXl", "<http://www.w3.org/2008/05/skos-xl#>");
 
-        var values = "VALUES ?uri {";
-        for (let uri of uris) {
-            values += "<" + uri + ">";
-        }
-        values += "}";
-        queryBuild.addFreeFormTriple(values);
 
+        queryBuild.addTriple( new Triple().subject("<" + qualUri + ">").predicate("esco:hasAssociation").object("?LOAssocUri"));
+        queryBuild.addTriple( new Triple().subject("?LOAssocUri").predicate("esco:targetFramework").object("<http://data.europa.eu/esco/concept-scheme/skills>") );
+        queryBuild.addTriple( new Triple().subject("?LOAssocUri").predicate("esco:target").selectObject("?uri"));
         queryBuild.addTriple( new Triple().selectSubject("?uri").predicate("skosXl:prefLabel").object("?prefLabelNode") );
         queryBuild.addTriple( new Triple().subject("?prefLabelNode").predicate("skosXl:literalForm").selectObject("?prefLabel").langGroupConcat().filterByLang());
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:description").selectObject("?description").after("}").langGroupConcat().filterByLang() );
@@ -174,12 +171,8 @@ export class QueryTemplates {
 
         queryBuild.addPrefix("esco", "<http://data.europa.eu/esco/model#>");
         queryBuild.addPrefix("rdf", "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>");
-        queryBuild.addPrefix("skos", "<http://www.w3.org/2004/02/skos/core#>");
         queryBuild.addPrefix("dcterms", "<http://purl.org/dc/terms/>");
         queryBuild.addPrefix("foaf", "<http://xmlns.com/foaf/0.1/>");
-        queryBuild.addPrefix("prov", "<http://www.w3.org/ns/prov#>");
-        queryBuild.addPrefix("dcat", "<http://www.w3.org/ns/dcat#>");
-        queryBuild.addPrefix("skosXl", "<http://www.w3.org/2008/05/skos-xl#>");
 
         queryBuild.addTriple( new Triple().subject("<" + qualUri + ">").predicate("esco:hasAssociation").object("?uri"));
         queryBuild.addTriple( new Triple().selectSubject("?uri").predicate("dcterms:type").object("<http://data.europa.eu/esco/association-type#qf-level>"));
@@ -217,13 +210,9 @@ export class QueryTemplates {
 
         queryBuild.addPrefix("esco", "<http://data.europa.eu/esco/model#>");
         queryBuild.addPrefix("rdf", "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>");
-        queryBuild.addPrefix("skos", "<http://www.w3.org/2004/02/skos/core#>");
         queryBuild.addPrefix("dcterms", "<http://purl.org/dc/terms/>");
         queryBuild.addPrefix("foaf", "<http://xmlns.com/foaf/0.1/>");
         queryBuild.addPrefix("prov", "<http://www.w3.org/ns/prov#>");
-        queryBuild.addPrefix("dcat", "<http://www.w3.org/ns/dcat#>");
-        queryBuild.addPrefix("skosXl", "<http://www.w3.org/2008/05/skos-xl#>");
-        queryBuild.addPrefix("iso-thes","<http://purl.org/iso25964/skos-thes#>");
 
         queryBuild.addTriple( new Triple().subject("<" + qualUri + ">").predicate("esco:hasAccreditation").selectObject("?uri"));
 
@@ -245,6 +234,46 @@ export class QueryTemplates {
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("foaf:landingpage").selectObject("?landingPage").after("}").groupConcat());
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:supplementaryDoc").selectObject("?supplementaryDoc").after("}").groupConcat());
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:subject").selectObject("?subject").after("}").groupConcat());
+
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("<http://data.europa.eu/esco/qdr#generatedByTrustedSource>").selectObject("?trusted").after("}"))
+
+
+        return queryBuild.buildSelect();
+    }
+
+    static makeForRecognitions (qualUri: String, langs:String[]):String {
+        let queryBuild = new QueryBuilder();
+
+        var langCodes:String[] = [];
+        for (let lang of langs) {
+            langCodes.push("'" + lang + "'");
+        }
+
+        queryBuild.languageCodes = langCodes;
+
+        queryBuild.addPrefix("esco", "<http://data.europa.eu/esco/model#>");
+        queryBuild.addPrefix("rdf", "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>");
+        queryBuild.addPrefix("dcterms", "<http://purl.org/dc/terms/>");
+        queryBuild.addPrefix("foaf", "<http://xmlns.com/foaf/0.1/>");
+        queryBuild.addPrefix("prov", "<http://www.w3.org/ns/prov#>");
+
+        queryBuild.addTriple( new Triple().subject("<" + qualUri + ">").predicate("esco:hasRecognition").selectObject("?uri"));
+
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("prov:hadPrimarySource").object("?recognizedBodyUri"));
+        queryBuild.addTriple( new Triple().subject("?recognizedBodyUri").predicate("rdf:type").object("esco:awardingBody"));
+        queryBuild.addTriple( new Triple().subject("?recognizedBodyUri").predicate("foaf:name").selectObject("?recognizedBodyName").langGroupConcat());
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?recognizedBodyUri").predicate("foaf:mbox").selectObject("?recognizedBodyMail").after("}").groupConcat());
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?recognizedBodyUri").predicate("foaf:homepage").selectObject("?recognizedBodyPage").after("}}").groupConcat());
+
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("prov:atLocation").selectObject("?recognizingLocation").after("}") );
+
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("prov:wasAttributedTo").object("?recognizingAgentUri"));
+        queryBuild.addTriple( new Triple().subject("?recognizingAgentUri").predicate("foaf:name").selectObject("?recognizingAgentName").langGroupConcat());
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?recognizingAgentUri").predicate("foaf:mbox").selectObject("?recognizingAgentMail").after("}").groupConcat());
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?recognizingAgentUri").predicate("foaf:homepage").selectObject("?recognizingAgentPage").after("}}").groupConcat());
+
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:issued").selectObject("?issued").after("}"));
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("prov:invalidatedAtTime").selectObject("?endDate").after("}"));
 
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("<http://data.europa.eu/esco/qdr#generatedByTrustedSource>").selectObject("?trusted").after("}"))
 
