@@ -8,6 +8,8 @@ import {TabData} from "./tab-data";
 import {TabDataElement} from "./tab-data-element";
 import {SkillService} from "../service/skill.service";
 import {QfService} from "../service/qf.service";
+import {TabDataTemplates} from "./tab-data-templates";
+import {AccreditationService} from "../service/accreditation.service";
 
 @Component({
     moduleId: module.id,
@@ -33,6 +35,7 @@ export class DetailView implements OnInit {
         private qualificationService: QualificationService,
         private skillService: SkillService,
         private qfService: QfService,
+        private accreditationService: AccreditationService,
         private router: Router,
         private route: ActivatedRoute,) {}
 
@@ -81,11 +84,16 @@ export class DetailView implements OnInit {
                         this.qualification = qualification;
                         console.log(qualification);
 
+                        let langCodes = this.qualification.referenceLanguage ? this.qualification.referenceLanguage.concat(this.lang, "en") : [this.lang, "en"];
+
                         if (this.qualification.loSkillUris) {
-                            this.setSkillData();
+                            this.setSkillData(langCodes);
                         }
                         if (this.qualification.qfAssociationUris) {
-                            this.setQfData();
+                            this.setQfData(langCodes);
+                        }
+                        if (this.qualification.accreditationUris) {
+                            this.setAccreditationData(langCodes);
                         }
                         this.generateTabData();
 
@@ -94,20 +102,25 @@ export class DetailView implements OnInit {
         }
     }
 
-    setSkillData() {
-        let langCodes = this.qualification.referenceLanguage ? this.qualification.referenceLanguage.concat(this.lang, "en") : [this.lang, "en"];
+    setSkillData(langCodes) {
         this.skillService.getSkills(this.qualification.loSkillUris, langCodes)
             .then(skills => {
                 this.qualification.learningOutcomes = skills;
                 this.generateSkillTabData();
             });
     }
-    setQfData() {
-        let langCodes = this.qualification.referenceLanguage ? this.qualification.referenceLanguage.concat(this.lang, "en") : [this.lang, "en"];
+    setQfData(langCodes) {
         this.qfService.getQualificationFrameworks(this.qualification.uri, langCodes)
             .then(qfs => {
                 this.qualification.qualificationFrameworks = qfs;
                 this.generateQfTabData();
+            });
+    }
+    setAccreditationData(langCodes) {
+        this.accreditationService.getAccreditations(this.qualification.uri, langCodes)
+            .then(accreds => {
+                this.qualification.accreditations = accreds;
+                this.generateAccreditationsData();
             });
     }
 
@@ -121,64 +134,10 @@ export class DetailView implements OnInit {
 
         this.tabDatas.push(new TabData("All",0));
 
-        this.tabDatas.push(new TabData("Core", 1));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Title:", qualification.getPrefLabels(lang)]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Alternative title:", qualification.getAltLabels(lang)]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Reference Language:", qualification.referenceLanguage]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Definition:", qualification.getDefinitions(lang)]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Test",null]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["iSCED-Fcode:",qualification.iSCED_Fcode]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["ECTS credits:", [qualification.eCTSCredits]]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Volume of learning:", [qualification.volumeOfLearning]]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Is Partial Qualification:", [qualification.isPartialQualification]]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Ways to Acquire:", qualification.waysToAcquire]));
-        let entryReqs:String[] = [];
-        if (qualification.entryRequirements) for (let entryReq of qualification.entryRequirements) {
-            entryReqs.push("Type: " + entryReq[0]);
-            entryReqs.push("Level: " + entryReq[1]);
-        }
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Entry Requirement:", entryReqs]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Expiry Period:",[qualification.expiryPeriod]]));
-        this.tabDatas[1].addElement(new TabDataElement().setLinkValues(["Homepage:",qualification.getHomepageLinks()]));
-        this.tabDatas[1].addElement(new TabDataElement().setLinkValues(["Landing Page:",qualification.getLandingPageLinks()]));
-        this.tabDatas[1].addElement(new TabDataElement().setLinkValues(["Supplementary Docs:",qualification.getSupplementaryDocLinks()]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Release/Publication Date:", [qualification.issued]]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Modification Date:", [qualification.modified]]));
-        this.tabDatas[1].addElement(new TabDataElement().setValues(["Status:", [qualification.status]]));
-
-        this.tabDatas.push(new TabData("Accreditation/Recognition", 2));
-        if (qualification.qualificationFrameworks) for (let qf of qualification.qualificationFrameworks) {
-            var qfValues:TabDataElement[] = [];
-            qfValues.push(new TabDataElement().setValues(["Description: ",qf.getDescriptions(lang, this.qualification.referenceLanguage)]));
-            qfValues.push(new TabDataElement().setValues(["Issued:",[qf.issued]]));
-            qfValues.push(new TabDataElement().setValues(["Target Framework:",[qf.targetFrameWork]]));
-            qfValues.push(new TabDataElement().setValues(["Target Framework Version:",[qf.targetFrameworkVersion]]));
-            qfValues.push(new TabDataElement().setValues(["Target:",[qf.target]]));
-            qfValues.push(new TabDataElement().setValues(["Target Description: ",qf.getTargetDescriptions(lang, this.qualification.referenceLanguage)]));
-            qfValues.push(new TabDataElement().setValues(["Target Notation:",qf.targetNotations]));
-            qfValues.push(new TabDataElement().setValues(["Target Name: ",qf.getTargetNames(lang, this.qualification.referenceLanguage)]));
-            qfValues.push(new TabDataElement().setValues(["Target URL:",[qf.targetUrl]]));
-            qfValues.push(new TabDataElement().setLinkValues(["Homepage:",qf.getHomepageLinks()]));
-            qfValues.push(new TabDataElement().setValues(["Trusted:",[qf.trusted]]));
-            qfValues.push(new TabDataElement().setValues(["Publisher Name:",qf.getPublisherNames(lang, this.qualification.referenceLanguage)]));
-            qfValues.push(new TabDataElement().setLinkValues(["Publisher Mail :",qf.getPublisherMails()]));
-            qfValues.push(new TabDataElement().setLinkValues(["Publisher Homepage :",qf.getPublisherPages()]));
-
-            this.tabDatas[2].addElement(new TabDataElement().setElementsGroup(qfValues));
-        }
-        this.tabDatas.push(new TabData("Learning outcomes", 3));
-        //this.tabDatas[3].addElement( new TabDataElement().setLinkValues(["Learning Outcomes:", this.qualification.getAllSkillLinks(this.lang)]));
-        if (qualification.learningOutcomes) for (let skill of qualification.learningOutcomes) {
-            var skillValues:TabDataElement[] = [];
-            skillValues.push(new TabDataElement().setLinkValues(["", [skill.getSkillLink(lang, this.qualification.referenceLanguage)]]));
-            skillValues.push(new TabDataElement().setValues(["Description:", skill.getDescriptions(lang, this.qualification.referenceLanguage)]));
-
-            this.tabDatas[3].addElement(new TabDataElement().setElementsGroup(skillValues));
-        }
-
-        this.tabDatas.push(new TabData("Description",4));
-        this.tabDatas[4].addElement( new TabDataElement().setValues(["Description:",qualification.getDescriptions(lang)]));
-        this.tabDatas[4].addElement( new TabDataElement().setValues(["Additional Notes:", qualification.getAdditionalNotes(lang)]));
+        this.tabDatas.push(TabDataTemplates.core(1, this.qualification, this.lang));
+        this.tabDatas.push(TabDataTemplates.accreditationRecognition(2, this.qualification, this.lang));
+        this.tabDatas.push(TabDataTemplates.description(3, this.qualification, this.lang));
+        this.tabDatas.push(TabDataTemplates.learningOutcomes(4, this.qualification, this.lang));
 
         for (let i = 1; i < this.tabDatas.length; ++i) {
             for (let element of this.tabDatas[i].elements) {
@@ -191,13 +150,12 @@ export class DetailView implements OnInit {
     }
 
     generateSkillTabData () {
-
         this.generateTabData();//TODO better
-
     }
-
     generateQfTabData () {
-
+        this.generateTabData();//TODO better
+    }
+    generateAccreditationsData () {
         this.generateTabData();//TODO better
     }
 

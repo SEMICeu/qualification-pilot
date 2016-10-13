@@ -23,6 +23,7 @@ a:hover, a:focus, a:active {
 .elementsGroup {
 
     border: solid;
+    border-color: #cccccc;
     border-width: 1px;
     list-style: none;
 }

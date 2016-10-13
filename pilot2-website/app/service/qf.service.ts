@@ -2,10 +2,11 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 
-import {QueryBuilder, Triple} from "./support/query-builder";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {QualificationFramework} from "../model/qualification-framework";
+import {QueryTemplates} from "./support/query-templates";
+import {Agent} from "../model/agent";
 
 @Injectable()
 export class QfService {
@@ -18,9 +19,9 @@ export class QfService {
 
     getQualificationFrameworks (qualUri: String, langs:String[]):Promise<QualificationFramework[]> {
 
-        console.log(this.makeqfQuery(qualUri, langs));
+        console.log(QueryTemplates.makeForQualificationFrameworks(qualUri, langs));
         return this.http
-            .post(this.url, this.makeqfQuery(qualUri, langs), {headers: this.headers})
+            .post(this.url, QueryTemplates.makeForQualificationFrameworks(qualUri, langs), {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;
@@ -41,55 +42,16 @@ export class QfService {
                         if (values.targetUrl) qf.targetUrl = values.targetUrl.value;
                         if (values.homepage_group) qf.homepages =  ConcatsParser.makeStringArray(values.homepage_group.value);
                         if (values.trusted) qf.trusted = values.trusted.value;
-                        if (values.publisherName_lang_group) qf.publisherNames = ConcatsParser.makeMapOfStringArrays(values.publisherName_lang_group.value);
-                        if (values.publisherMail_group) qf.publisherMails = ConcatsParser.makeStringArray(values.publisherMail_group.value);
-                        if (values.publisherPage_group) qf.publisherPages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
+                        if (values.publisherName_lang_group) {
+                            qf.publisher = new Agent();
+                            qf.publisher.names = ConcatsParser.makeMapOfStringArrays(values.publisherName_lang_group.value);
+                            if (values.publisherMail_group) qf.publisher.mails = ConcatsParser.makeStringArray(values.publisherMail_group.value);
+                            if (values.publisherPage_group) qf.publisher.pages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
+                        }
                         qfs.push(qf);
                     }
                 }
                 return qfs;
             });
-    }
-
-    makeqfQuery (qualUri: String, langs:String[]):String {
-        let queryBuild = new QueryBuilder();
-
-        var langCodes:String[] = [];
-        for (let lang of langs) {
-            langCodes.push("'" + lang + "'");
-        }
-
-        queryBuild.languageCodes = langCodes;
-
-        queryBuild.addPrefix("esco", "<http://data.europa.eu/esco/model#>");
-        queryBuild.addPrefix("rdf", "<http://www.w3.org/1999/02/22-rdf-syntax-ns#>");
-        queryBuild.addPrefix("skos", "<http://www.w3.org/2004/02/skos/core#>");
-        queryBuild.addPrefix("dcterms", "<http://purl.org/dc/terms/>");
-        queryBuild.addPrefix("foaf", "<http://xmlns.com/foaf/0.1/>");
-        queryBuild.addPrefix("prov", "<http://www.w3.org/ns/prov#>");
-        queryBuild.addPrefix("dcat", "<http://www.w3.org/ns/dcat#>");
-        queryBuild.addPrefix("skosXl", "<http://www.w3.org/2008/05/skos-xl#>");
-
-        queryBuild.addTriple( new Triple().subject("<" + qualUri + ">").predicate("esco:hasAssociation").object("?uri"));
-        queryBuild.addTriple( new Triple().selectSubject("?uri").predicate("dcterms:type").object("<http://data.europa.eu/esco/association-type#qf-level>"));
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:description").selectObject("?description").after("}").langGroupConcat() );
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:issued").selectObject("?issued").after("}"));
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:targetFramework").selectObject("?targetFramework").after("}"));
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:targetFrameworkVersion").selectObject("?targetFrameworkVersion").after("}"));
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:target").selectObject("?target").after("}") );
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:targetDescription").selectObject("?targetDescription").after("}").langGroupConcat() );
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:targetNotation").selectObject("?targetNotation").after("}").groupConcat() );
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:targetName").selectObject("?targetName").after("}").langGroupConcat());
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:targetUrl").selectObject("?targetUrl").after("}"));
-
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("foaf:homepage").selectObject("?homepage").after("}").groupConcat());
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("<http://data.europa.eu/esco/qdr#generatedByTrustedSource>").selectObject("?trusted").after("}"));
-
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:publisher").object("?publisherUri"));
-        queryBuild.addTriple( new Triple().subject("?publisherUri").predicate("foaf:name").selectObject("?publisherName").langGroupConcat());
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:mbox").selectObject("?publisherMail").after("}").groupConcat());
-        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:homepage").selectObject("?publisherPage").after("}}").groupConcat());
-
-        return queryBuild.buildSelect();
     }
 }

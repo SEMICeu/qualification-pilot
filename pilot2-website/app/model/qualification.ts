@@ -1,6 +1,8 @@
 
 import {Skill} from "./skill";
 import {QualificationFramework} from "./qualification-framework";
+import {Accreditation} from "./accreditation";
+import {Agent} from "./agent";
 export class Qualification {
 
     constructor(uri: String) {
@@ -24,15 +26,25 @@ export class Qualification {
     entryRequirements: [String, String][];
     expiryPeriod: String;
     learningOutcomes: Skill[];
-    //TODO rec,award,accred here
+    //TODO rec here
+    awardingStarted: String;
+    awardingEnded: String;
+    awardingLocations: String[];
+    awardingBody: Agent;
+    accreditationUris: String[];
+    accreditations: Accreditation[];
     homepages:String[];
     landingPages:String[];
     supplementaryDocs: String[];
     issued:String;
     modified:String;
-    //TODO changeNote, historyNote here
+    changeNotes: Map<String, String[]>;
+    historyNotes: Map<String, String[]>;
     additionalNotes: Map<String, String[]>;
     status: String;
+    owner: Agent;
+    provenanceAgent: Agent;
+    publisher: Agent;
 
     getPrefLabels(prefLang: String): String[] {
         if (!this.prefLabels) return null;
@@ -93,6 +105,24 @@ export class Qualification {
             links.push([url, url]);
         }
         return links;
+    }
+    getChangeNotes(prefLang: String): String[] {
+        if (!this.changeNotes) return null;
+        if (this.changeNotes.has(prefLang)) return this.changeNotes.get(prefLang);
+        if (this.changeNotes.has("en")) return this.changeNotes.get("en");
+        for (let lang of this.referenceLanguage) {
+            if (this.changeNotes.has(lang)) return this.changeNotes.get(lang);
+        }
+        return null;
+    }
+    getHistoryNotes(prefLang: String): String[] {
+        if (!this.historyNotes) return null;
+        if (this.historyNotes.has(prefLang)) return this.historyNotes.get(prefLang);
+        if (this.historyNotes.has("en")) return this.historyNotes.get("en");
+        for (let lang of this.referenceLanguage) {
+            if (this.historyNotes.has(lang)) return this.historyNotes.get(lang);
+        }
+        return null;
     }
     getAdditionalNotes(prefLang: String): String[] {
         if (!this.additionalNotes) return null;

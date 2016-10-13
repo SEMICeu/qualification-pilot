@@ -19,6 +19,15 @@ export class ConcatsParser {
 
         for (let item of array) {
             let split = item.split("@");
+
+            if (split.length > 2) {
+                let last = split.pop();
+                while (split.length > 1) {
+                    split[0] += "@" + split.pop();
+                }
+                split.push(last);
+            }
+
             if (split.length == 2) {
 
                 if (map.has(split[1])) {

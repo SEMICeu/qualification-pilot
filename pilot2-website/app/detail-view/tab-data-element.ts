@@ -17,9 +17,19 @@ export class TabDataElement {
         this.elementsGroup = elements;
         return this;
     }
+    setElementsGroupTitle (title: String) {
+        this.elementsGroupTitle = title;
+        return this;
+    }
+    setSectionHeader(value: String) {
+        this.sectionHeader = value;
+        return this;
+    }
 
     values:[String, String[]];
     linkValues:[String, [String,String][]];
-    elementsGroup: TabDataElement[]
+    elementsGroup: TabDataElement[];
+    elementsGroupTitle: String;
+    sectionHeader:String;
 
 }

@@ -1,4 +1,5 @@
 
+import {Agent} from "./agent";
 export class QualificationFramework {
 
     constructor(uri: String) {
@@ -18,9 +19,7 @@ export class QualificationFramework {
     homepages:String[];
     trusted:String;
 
-    publisherNames: Map<String, String[]>;
-    publisherMails: String[];
-    publisherPages: String[];
+    publisher: Agent;
 
     getDescriptions(prefLang: String, refLang: String[]): String[] {
         if (!this.descriptions) return null;
@@ -53,31 +52,6 @@ export class QualificationFramework {
         if (!this.homepages) return null;
         var links:[String,String][] = [];
         for (let url of this.homepages) {
-            links.push([url, url]);
-        }
-        return links;
-    }
-    getPublisherNames(prefLang: String, refLang: String[]): String[] {
-        if (!this.publisherNames) return null;
-        if (this.publisherNames.has(prefLang)) return this.publisherNames.get(prefLang);
-        if (this.publisherNames.has("en")) return this.publisherNames.get("en");
-        for (let lang of refLang) {
-            if (this.publisherNames.has(lang)) return this.publisherNames.get(lang);
-        }
-        return null;
-    }
-    getPublisherMails():[String,String][] {
-        if (!this.publisherMails) return null;
-        var links:[String,String][] = [];
-        for (let url of this.publisherMails) {
-            links.push([url, url]);
-        }
-        return links;
-    }
-    getPublisherPages():[String,String][] {
-        if (!this.publisherPages) return null;
-        var links:[String,String][] = [];
-        for (let url of this.publisherPages) {
             links.push([url, url]);
         }
         return links;

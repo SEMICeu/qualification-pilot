@@ -6,6 +6,8 @@
   <ul>
       <span *ngFor = "let element of data.elements" >
 
+        <h2 *ngIf="element.sectionHeader">{{element.sectionHeader}}<hr></h2>
+
         <li *ngIf="element.values && element.values[1] && element.values[1].length > 0">
           <span [innerHTML]="element.values[0]" class="propertyName"></span>
           <span  *ngIf="element.values[1].length == 1" [innerHTML]="element.values[1]"></span>
@@ -33,6 +35,8 @@
         </li>
 
         <li *ngIf="element.elementsGroup" class="elementsGroup">
+
+          <h5 *ngIf="element.elementsGroupTitle">{{element.elementsGroupTitle}}</h5>
 
           <span *ngFor = "let element of element.elementsGroup" >
 
