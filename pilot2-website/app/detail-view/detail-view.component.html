@@ -3,7 +3,7 @@
 
 <h1 *ngIf="header">{{header}}</h1>
 
-<div *ngIf="qualification">
+<div *ngIf="qualification" class="main-details">
   <nav>
     <a *ngFor = "let data of tabDatas" [routerLink]="['/detail',data.index]" routerLinkActive="active" fragment="{{fragment}}">{{data.name}}
     </a>

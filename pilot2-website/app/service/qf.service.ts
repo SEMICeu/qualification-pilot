@@ -19,13 +19,13 @@ export class QfService {
 
     getQualificationFrameworks (qualUri: String, langs:String[]):Promise<QualificationFramework[]> {
 
-        console.log(QueryTemplates.makeForQualificationFrameworks(qualUri, langs));
+        //console.log(QueryTemplates.makeForQualificationFrameworks(qualUri, langs));
         return this.http
             .post(this.url, QueryTemplates.makeForQualificationFrameworks(qualUri, langs), {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;
-                console.log(res.json().results);
+                //console.log(res.json().results);
                 var qfs: QualificationFramework[] = [];
                 for (let values of objects) {
                     if (values.uri) {
@@ -36,6 +36,7 @@ export class QfService {
                         if (values.targetFramework) qf.targetFrameWork = values.targetFramework.value;
                         if (values.targetFrameworkVersion) qf.targetFrameworkVersion = values.targetFrameworkVersion.value;
                         if (values.target) qf.target = values.target.value;
+                        if (values.targetLabel_lang_group) qf.targetLabels = ConcatsParser.makeMapOfStringArrays(values.targetLabel_lang_group.value);
                         if (values.targetDescription_lang_group) qf.targetDescriptions = ConcatsParser.makeMapOfStringArrays(values.targetDescription_lang_group.value);
                         if (values.targetNotation_group) qf.targetNotations = ConcatsParser.makeStringArray(values.targetNotation_group.value);
                         if (values.targetName_lang_group) qf.targetNames = ConcatsParser.makeMapOfStringArrays(values.targetName_lang_group.value);

@@ -18,13 +18,13 @@ export class AccreditationService {
 
     getAccreditations (qualUri: String, langs:String[]):Promise<Accreditation[]> {
 
-        console.log(QueryTemplates.makeForAccreditations(qualUri, langs));
+        //console.log(QueryTemplates.makeForAccreditations(qualUri, langs));
         return this.http
             .post(this.url, QueryTemplates.makeForAccreditations(qualUri, langs) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;
-                console.log(res.json().results);
+                //console.log(res.json().results);
                 var accreds: Accreditation[] = [];
                 for (let values of objects) {
                     if (values.uri) {

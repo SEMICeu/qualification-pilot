@@ -17,13 +17,13 @@ export class SkillService {
 
     getSkills (qualUri: String, langs:String[]):Promise<Skill[]> {
 
-        console.log(QueryTemplates.makeForSkills(qualUri, langs));
+        //console.log(QueryTemplates.makeForSkills(qualUri, langs));
         return this.http
             .post(this.url, QueryTemplates.makeForSkills(qualUri, langs) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;
-                console.log(res.json().results);
+                //console.log(res.json().results);
                 var skills: Skill[] = [];
                 for (let values of objects) {
                     if (values.uri && values.prefLabel_lang_group) {

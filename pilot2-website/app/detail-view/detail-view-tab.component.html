@@ -6,7 +6,7 @@
   <ul>
       <span *ngFor = "let element of data.elements" >
 
-        <h1 *ngIf="element.sectionHeader"><b>{{element.sectionHeader}}</b></h1>
+        <h2 *ngIf="element.sectionHeader"><b>{{element.sectionHeader}}</b></h2>
 
         <li *ngIf="element.values && element.values[1] && element.values[1].length > 0">
           <span [innerHTML]="element.values[0]" class="propertyName"></span>
@@ -40,7 +40,7 @@
 
           <span *ngFor = "let element of element.elementsGroup" >
 
-            <h1 *ngIf="element.sectionHeader"><b>{{element.sectionHeader}}</b></h1>
+            <h2 *ngIf="element.sectionHeader"><b>{{element.sectionHeader}}</b></h2>
 
             <li *ngIf="element.values && element.values[1] && element.values[1].length > 0">
               <span [innerHTML]="element.values[0]" class="propertyName"></span>

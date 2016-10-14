@@ -1,6 +1,13 @@
 li {
     list-style: none;
 }
+h2 {
+    padding-bottom: 20px;
+}
+h5 {
+    padding-bottom: 12px;
+    font-weight: bold;
+}
 
 a {
     color: blue;
@@ -22,6 +29,9 @@ a:hover, a:focus, a:active {
 
 .elementsGroup {
 
+    margin-left: -10px;
+    margin-right: -10px;
+    padding-left: 10px;
     border: solid;
     border-color: #cccccc;
     border-width: 1px;

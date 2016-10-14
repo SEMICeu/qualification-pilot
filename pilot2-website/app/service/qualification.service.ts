@@ -50,10 +50,10 @@ export class QualificationService {
         let langCodes = qualification.referenceLang ? qualification.referenceLang.concat(this.prefLang, "en") : [this.prefLang, "en"];
 
         return Promise.all([
-            this.qfService.getQualificationFrameworks(uri, langCodes),
-            this.accreditationService.getAccreditations(uri, langCodes),
-            this.recognitionService.getRecognitions(uri, langCodes),
-            this.skillService.getSkills(uri, langCodes)
+            qualification.qfAssociationUris ? this.qfService.getQualificationFrameworks(uri, langCodes) : Promise.resolve(null),
+            qualification.accreditationUris ? this.accreditationService.getAccreditations(uri, langCodes) : Promise.resolve(null),
+            qualification.recognitionUris ?  this.recognitionService.getRecognitions(uri, langCodes) : Promise.resolve(null),
+            qualification.loSkillUris ? this.skillService.getSkills(uri, langCodes) : Promise.resolve(null),
         ]).then(results => {
             qualification.qualificationFrameworks = results[0] as QualificationFramework[];
             qualification.accreditations = results[1] as Accreditation[];
@@ -65,14 +65,14 @@ export class QualificationService {
 
     queryQualificationDetailedMain(uri: String, prefLang:String): Promise<Qualification> {
 
-        console.log(QueryTemplates.makeForQualificationDetail("<" + uri + ">", prefLang));
+        //console.log(QueryTemplates.makeForQualificationDetail("<" + uri + ">", prefLang));
 
         return this.http
             .post(this.url, QueryTemplates.makeForQualificationDetail("<" + uri + ">", prefLang) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                     let values = res.json().results.bindings[0];
-                    console.log(res.json().results);
+                    //console.log(res.json().results);
                     let qualification = new Qualification(uri);
 
                     if (values.referenceLang_group) qualification.referenceLang = ConcatsParser.makeStringArray(values.referenceLang_group.value);
@@ -129,6 +129,7 @@ export class QualificationService {
                         if (values.publisherMail_group) qualification.publisher.mails = ConcatsParser.makeStringArray(values.publisherMail_group.value);
                         if (values.publisherPage_group) qualification.publisher.pages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
                     }
+                    if (values.trusted) qualification.trusted = values.trusted.value;
 
 
                     return qualification;

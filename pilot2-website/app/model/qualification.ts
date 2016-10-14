@@ -49,6 +49,7 @@ export class Qualification {
     owner: Agent;
     provenanceAgent: Agent;
     publisher: Agent;
+    trusted: String;
 
 
     getReferenceLangLabels(prefLang: String): String[] {

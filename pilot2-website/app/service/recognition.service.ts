@@ -19,13 +19,13 @@ export class RecognitionService {
 
     getRecognitions (qualUri: String, langs:String[]):Promise<Recognition[]> {
 
-        console.log(QueryTemplates.makeForRecognitions(qualUri, langs));
+        //console.log(QueryTemplates.makeForRecognitions(qualUri, langs));
         return this.http
             .post(this.url, QueryTemplates.makeForRecognitions(qualUri, langs) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;
-                console.log(res.json().results);
+                //console.log(res.json().results);
                 var recs: Recognition[] = [];
                 for (let values of objects) {
                     if (values.uri) {

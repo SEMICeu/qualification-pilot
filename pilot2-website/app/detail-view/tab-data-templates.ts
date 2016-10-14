@@ -24,6 +24,12 @@ export class TabDataTemplates {
         data.addElement(new TabDataElement().setValues(["Entry Requirement:", entryReqs]));
         data.addElement(new TabDataElement().setValues(["Expiry Period:",[qualification.expiryPeriod]]));
 
+        data.addElement(new TabDataElement().setLinkValues(["Homepage:",qualification.getHomepageLinks()]));
+        data.addElement(new TabDataElement().setLinkValues(["Landing Page:",qualification.getLandingPageLinks()]));
+        data.addElement(new TabDataElement().setValues(["Release/Publication Date:", [qualification.issued]]));
+        data.addElement(new TabDataElement().setValues(["Modification Date:", [qualification.modified]]));
+        data.addElement(new TabDataElement().setValues(["Status:", [qualification.status]]));
+
         data.addElement(new TabDataElement().setValues(["Awarding Started", [qualification.awardingStarted]]));
         data.addElement(new TabDataElement().setValues(["Awarding Ended", [qualification.awardingEnded]]));
         data.addElement(new TabDataElement().setValues(["Awarding Location",qualification.getAwardingLocations(lang)]));
@@ -34,13 +40,6 @@ export class TabDataTemplates {
             awardingBody.push(new TabDataElement().setLinkValues(["Homepage:", qualification.awardingBody.getPageLinks()]));
             data.addElement(new TabDataElement().setElementsGroup(awardingBody).setElementsGroupTitle("Awarding Body"));
         }
-        data.addElement(new TabDataElement().setLinkValues(["Homepage:",qualification.getHomepageLinks()]));
-        data.addElement(new TabDataElement().setLinkValues(["Landing Page:",qualification.getLandingPageLinks()]));
-        data.addElement(new TabDataElement().setLinkValues(["Supplementary Documents:",qualification.getSupplementaryDocLinks()]));
-        data.addElement(new TabDataElement().setValues(["Release/Publication Date:", [qualification.issued]]));
-        data.addElement(new TabDataElement().setValues(["Modification Date:", [qualification.modified]]));
-        data.addElement(new TabDataElement().setValues(["Status:", [qualification.status]]));
-
         if (qualification.owner) {
             var owner: TabDataElement[] = [];
             owner.push(new TabDataElement().setValues(["Name:", qualification.owner.getNames(lang, qualification.referenceLang)]));
@@ -62,6 +61,7 @@ export class TabDataTemplates {
             publisher.push(new TabDataElement().setLinkValues(["Homepage:", qualification.publisher.getPageLinks()]));
             data.addElement(new TabDataElement().setElementsGroup(publisher).setElementsGroupTitle("Publisher"));
         }
+        data.addElement( new TabDataElement().setValues(["Trusted: ", [qualification.trusted]]));
         return data;
     }
 
@@ -99,7 +99,7 @@ export class TabDataTemplates {
             qfValues.push(new TabDataElement().setValues(["Issued:",[qf.issued]]));
             qfValues.push(new TabDataElement().setValues(["Target Framework:",[qf.targetFrameWork]]));
             qfValues.push(new TabDataElement().setValues(["Target Framework Version:",[qf.targetFrameworkVersion]]));
-            qfValues.push(new TabDataElement().setValues(["Target:",[qf.target]]));
+            qfValues.push(new TabDataElement().setValues(["Target:",qf.getTargetLabels(lang, qualification.referenceLang)]));
             qfValues.push(new TabDataElement().setValues(["Target Description: ",qf.getTargetDescriptions(lang, qualification.referenceLang)]));
             qfValues.push(new TabDataElement().setValues(["Target Notation:",qf.targetNotations]));
             qfValues.push(new TabDataElement().setValues(["Target Name: ",qf.getTargetNames(lang, qualification.referenceLang)]));
@@ -111,8 +111,8 @@ export class TabDataTemplates {
                 qfValues.push(new TabDataElement().setLinkValues(["Publisher Mail :", qf.publisher.getMailLinks()]));
                 qfValues.push(new TabDataElement().setLinkValues(["Publisher Homepage :", qf.publisher.getPageLinks()]));
             }
-
-            data.addElement(new TabDataElement().setElementsGroup(qfValues).setElementsGroupTitle("Qualification Frameworks"));
+            let title = qf.target ? "European Qualification Framework" : "National Qualification Framework";
+            data.addElement(new TabDataElement().setElementsGroup(qfValues).setElementsGroupTitle(title));
         }
 
         return data;
@@ -136,8 +136,15 @@ export class TabDataTemplates {
     static description(index:number, qualification: Qualification, lang:String) {
         let data = new TabData("Descriptions", index);
         data.addElement(new TabDataElement().setSectionHeader(data.name));
-        data.addElement( new TabDataElement().setValues(["Description:",qualification.getDescriptions(lang)]));
-        data.addElement( new TabDataElement().setValues(["Additional Notes:", qualification.getAdditionalNotes(lang)]));
+
+        let descArray = [];
+        descArray.push(new TabDataElement().setValues(["",qualification.getDescriptions(lang)]));
+        data.addElement( new TabDataElement().setElementsGroup(descArray).setElementsGroupTitle("Description:"));
+
+        let additArray = [];
+        additArray.push(new TabDataElement().setValues(["",qualification.getAdditionalNotes(lang)]));
+        data.addElement( new TabDataElement().setElementsGroup(additArray).setElementsGroupTitle("Additional notes:"));
+        data.addElement(new TabDataElement().setLinkValues(["Supplementary Documents:",qualification.getSupplementaryDocLinks()]));
         data.addElement( new TabDataElement().setValues(["Change Notes:", qualification.getChangeNotes(lang)]));
         data.addElement( new TabDataElement().setValues(["History Notes:", qualification.getHistoryNotes(lang)]));
 

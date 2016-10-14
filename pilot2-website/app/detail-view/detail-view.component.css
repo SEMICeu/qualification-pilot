@@ -38,3 +38,6 @@ nav a:hover {
 nav a.active {
   color: #039be5;
 }
+.main-details {
+  padding-right: 30px;
+}

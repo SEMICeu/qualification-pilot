@@ -12,13 +12,13 @@ export class QualificationFramework {
     targetFrameWork:String;
     targetFrameworkVersion:String;
     target:String;
+    targetLabels: Map<String, String[]>;
     targetDescriptions: Map<String, String[]>;
     targetNotations:String[];
     targetNames: Map<String, String[]>;
     targetUrl:String;
     homepages:String[];
     trusted:String;
-
     publisher: Agent;
 
     getDescriptions(prefLang: String, refLang: String[]): String[] {
@@ -45,6 +45,15 @@ export class QualificationFramework {
         if (this.targetNames.has("en")) return this.targetNames.get("en");
         for (let lang of refLang) {
             if (this.targetNames.has(lang)) return this.targetNames.get(lang);
+        }
+        return null;
+    }
+    getTargetLabels(prefLang: String, refLang: String[]): String[] {
+        if (!this.targetLabels) return null;
+        if (this.targetLabels.has(prefLang)) return this.targetLabels.get(prefLang);
+        if (this.targetLabels.has("en")) return this.targetLabels.get("en");
+        for (let lang of refLang) {
+            if (this.targetLabels.has(lang)) return this.targetLabels.get(lang);
         }
         return null;
     }
