@@ -25,7 +25,15 @@ export class TabDataElement {
         this.sectionHeader = value;
         return this;
     }
+    setTrusted(value: String) {
+        if (value && value == "true") {
+            this.trusted = "trusted";
+        }
+        else this.trusted = "notTrusted";
+        return this;
+    }
 
+    trusted = "";
     values:[String, String[]];
     linkValues:[String, [String,String][]];
     elementsGroup: TabDataElement[];

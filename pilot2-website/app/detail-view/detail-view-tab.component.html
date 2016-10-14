@@ -34,7 +34,7 @@
           </ul>
         </li>
 
-        <li *ngIf="element.elementsGroup" class="elementsGroup">
+        <li *ngIf="element.elementsGroup" class="elementsGroup {{element.trusted}}">
 
           <h5 *ngIf="element.elementsGroupTitle">{{element.elementsGroupTitle}}</h5>
 

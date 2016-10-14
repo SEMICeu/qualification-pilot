@@ -28,12 +28,26 @@ a:hover, a:focus, a:active {
 }
 
 .elementsGroup {
-
     margin-left: -10px;
     margin-right: -10px;
     padding-left: 10px;
+    padding-right: 10px;
     border: solid;
     border-color: #cccccc;
     border-width: 1px;
     list-style: none;
+}
+
+.trusted {
+    margin-left: -15px;
+    margin-right: -15px;
+    border-left-width: 5px;
+    border-left-color: #00c62f;
+}
+
+.notTrusted {
+    margin-left: -15px;
+    margin-right: -15px;
+    border-left-width: 5px;
+    border-left-color: #b08080;
 }

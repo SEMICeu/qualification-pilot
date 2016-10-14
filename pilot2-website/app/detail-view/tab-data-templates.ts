@@ -70,29 +70,29 @@ export class TabDataTemplates {
 
         data.addElement(new TabDataElement().setSectionHeader(data.name));
         if (qualification.accreditations) for (let acc of qualification.accreditations) {
-            var qfValues:TabDataElement[] = [];
+            var accValues:TabDataElement[] = [];
 
             if (acc.recognizedBody) {
-                qfValues.push(new TabDataElement().setValues(["Recognized Awarding Body: ", acc.recognizedBody.getNames(lang, qualification.referenceLang)]));
-                qfValues.push(new TabDataElement().setLinkValues(["Recognized Awarding Body Mail:", acc.recognizedBody.getMailLinks()]));
-                qfValues.push(new TabDataElement().setLinkValues(["Recognized Awarding Body Homepage :", acc.recognizedBody.getPageLinks()]));
+                accValues.push(new TabDataElement().setValues(["Recognized Awarding Body: ", acc.recognizedBody.getNames(lang, qualification.referenceLang)]));
+                accValues.push(new TabDataElement().setLinkValues(["Recognized Awarding Body Mail:", acc.recognizedBody.getMailLinks()]));
+                accValues.push(new TabDataElement().setLinkValues(["Recognized Awarding Body Homepage :", acc.recognizedBody.getPageLinks()]));
             }
             if (acc.recognizingAgent) {
-                qfValues.push(new TabDataElement().setValues(["Recognizer Name: ",acc.recognizingAgent.getNames(lang, qualification.referenceLang)]));
-                qfValues.push(new TabDataElement().setLinkValues(["Recognizer Mail:",acc.recognizingAgent.getMailLinks()]));
-                qfValues.push(new TabDataElement().setLinkValues(["Recognizer Homepage :",acc.recognizingAgent.getPageLinks()]));
+                accValues.push(new TabDataElement().setValues(["Recognizer Name: ",acc.recognizingAgent.getNames(lang, qualification.referenceLang)]));
+                accValues.push(new TabDataElement().setLinkValues(["Recognizer Mail:",acc.recognizingAgent.getMailLinks()]));
+                accValues.push(new TabDataElement().setLinkValues(["Recognizer Homepage :",acc.recognizingAgent.getPageLinks()]));
             }
-            qfValues.push(new TabDataElement().setValues(["Issued:",[acc.issued]]));
-            qfValues.push(new TabDataElement().setValues(["Review Date:",[acc.reviewDate]]));
-            qfValues.push(new TabDataElement().setValues(["End Date:",[acc.endDate]]));
+            accValues.push(new TabDataElement().setValues(["Issued:",[acc.issued]]));
+            accValues.push(new TabDataElement().setValues(["Review Date:",[acc.reviewDate]]));
+            accValues.push(new TabDataElement().setValues(["End Date:",[acc.endDate]]));
 
-            qfValues.push(new TabDataElement().setLinkValues(["Homepage:",acc.getHomepageLinks()]));
-            qfValues.push(new TabDataElement().setLinkValues(["Landing Page:",acc.getlandingPageLinks()]));
-            qfValues.push(new TabDataElement().setLinkValues(["Supplementary Documents:",acc.getsupplementaryDocLinks()]));
-            qfValues.push(new TabDataElement().setValues(["Trusted:",[acc.trusted]]));
+            accValues.push(new TabDataElement().setLinkValues(["Homepage:",acc.getHomepageLinks()]));
+            accValues.push(new TabDataElement().setLinkValues(["Landing Page:",acc.getlandingPageLinks()]));
+            accValues.push(new TabDataElement().setLinkValues(["Supplementary Documents:",acc.getsupplementaryDocLinks()]));
+            accValues.push(new TabDataElement().setValues(["Trusted:",[acc.trusted]]));
 
-            data.addElement(new TabDataElement().setElementsGroup(qfValues).setElementsGroupTitle("Accreditation"));
-        }
+            data.addElement(new TabDataElement().setElementsGroup(accValues).setElementsGroupTitle("Accreditation").setTrusted(acc.trusted));
+                }
         if (qualification.qualificationFrameworks) for (let qf of qualification.qualificationFrameworks) {
             var qfValues:TabDataElement[] = [];
             qfValues.push(new TabDataElement().setValues(["Description: ",qf.getDescriptions(lang, qualification.referenceLang)]));
@@ -105,14 +105,14 @@ export class TabDataTemplates {
             qfValues.push(new TabDataElement().setValues(["Target Name: ",qf.getTargetNames(lang, qualification.referenceLang)]));
             qfValues.push(new TabDataElement().setValues(["Target URL:",[qf.targetUrl]]));
             qfValues.push(new TabDataElement().setLinkValues(["Homepage:",qf.getHomepageLinks()]));
-            qfValues.push(new TabDataElement().setValues(["Trusted:",[qf.trusted]]));
             if (qf.publisher) {
                 qfValues.push(new TabDataElement().setValues(["Publisher Name:", qf.publisher.getNames(lang, qualification.referenceLang)]));
                 qfValues.push(new TabDataElement().setLinkValues(["Publisher Mail :", qf.publisher.getMailLinks()]));
                 qfValues.push(new TabDataElement().setLinkValues(["Publisher Homepage :", qf.publisher.getPageLinks()]));
             }
+            qfValues.push(new TabDataElement().setValues(["Trusted:",[qf.trusted]]));
             let title = qf.target ? "European Qualification Framework" : "National Qualification Framework";
-            data.addElement(new TabDataElement().setElementsGroup(qfValues).setElementsGroupTitle(title));
+            data.addElement(new TabDataElement().setElementsGroup(qfValues).setElementsGroupTitle(title).setTrusted(qf.trusted));
         }
 
         return data;
