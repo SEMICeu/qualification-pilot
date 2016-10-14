@@ -14,12 +14,14 @@ import {RecognitionService} from "../service/recognition.service";
 
 @Component({
     moduleId: module.id,
-    selector: 'detail',
+    selector: 'qual',
     templateUrl: 'detail-view.component.html',
     styleUrls: [ 'detail-view.component.css' ],
 })
 
 export class DetailView implements OnInit {
+
+    loading = false;
 
     header;
     lang = "en";
@@ -29,8 +31,6 @@ export class DetailView implements OnInit {
     selectedTabData: TabData;
     selectedTabIndex = -1;
     qualification: Qualification;
-
-    promisesToFinish = 0;
 
     tabDatas: TabData[] = [];
 
@@ -44,7 +44,10 @@ export class DetailView implements OnInit {
             if (fragment) {
                 this.fragment = fragment;
                 var uri = this.getUriFromFragmentAndSetLang();
-                if (uri) this.setupDataFromUri(uri);
+                if (uri) {
+                    this.loading = true;
+                    this.setupDataFromUri(uri);
+                }
             }
         });
 

@@ -9,10 +9,7 @@ import {RecognitionService} from "../service/recognition.service";
   moduleId: module.id,
   selector: 'my-app',
   providers: [QualificationService, SkillService, QfService, AccreditationService, RecognitionService],
-  template:`
-<!--{{title}}<br/>-->
-  <router-outlet></router-outlet>
- `,
+  template:`<router-outlet></router-outlet>`,
 })
 
 export class AppComponent {

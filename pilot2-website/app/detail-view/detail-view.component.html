@@ -1,12 +1,9 @@
-
-<!--<button (click)="gotoDetail()">View Details</button>-->
-
 <h1 *ngIf="header">{{header}}</h1>
-<h1 *ngIf="!header">Loading...</h1>
+<h1 *ngIf="loading && !header">Loading...</h1>
 
 <div *ngIf="qualification" class="main-details">
   <nav>
-    <a *ngFor = "let data of tabDatas" [routerLink]="['/detail',data.index]" routerLinkActive="active" fragment="{{fragment}}">{{data.name}}
+    <a *ngFor = "let data of tabDatas" [routerLink]="['/qual',data.index]" routerLinkActive="active" fragment="{{fragment}}">{{data.name}}
     </a>
   </nav>
 

@@ -15,8 +15,7 @@ import {SearchView} from "../search-view/search-view.component";
       ],
   declarations: [ AppComponent,
       DetailView,
-      DetailViewTab,
-      SearchView
+      DetailViewTab
   ],
   bootstrap: [ AppComponent ]
 

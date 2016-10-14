@@ -2,22 +2,20 @@ import { ModuleWithProviders }  from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import {DetailView} from "../detail-view/detail-view.component";
-import {AppComponent} from "./app.component";
-import {SearchView} from "../search-view/search-view.component";
 
 const appRoutes: Routes = [
   {
-    path: 'detail',
+    path: 'qual',
     component: DetailView
   },
   {
     path: 'index.html',
-    redirectTo: '/search',
+    redirectTo: '/qual/0',
     pathMatch: 'full'
   },
   {
     path: '',
-    redirectTo: '/search',
+    redirectTo: '/qual/0',
     pathMatch: 'full'
   },
   // {
@@ -25,13 +23,13 @@ const appRoutes: Routes = [
   //   component: AppComponent
   // },
   {
-    path: 'detail/:tab',
+    path: 'qual/:tab',
     component: DetailView
   },
-  {
-    path: 'search',
-    component: SearchView
-  },
+  // {
+  //   path: 'search',
+  //   component: SearchView
+  // },
 ];
 
 

@@ -65,10 +65,6 @@ function updateHash(newHash) {
   lastHash = newHash;
   window.location.hash = newHash;
 }
-function assignLocation(assign) {
-  window.location.assign(assign);
-}
-
 function facetChange() {
   var eqfUris = [];
   var foetUris = [];
@@ -439,16 +435,16 @@ function addFilter(selection, property) {
 }
 function loadDetail(uri) {
 
-  $("#detailContainer").html("");
-  showScreen("detailScreen");
 
   detailUri = uri;
 
-  assignLocation("/detail/0#lang=" + language + "&detailUri=" + detailUri);
-  //updateHash("lang=" + language + "&detailUri=" + detailUri);
-
+  $("#detailContainer").html("");
+  showScreen("detailScreen");
 
   $("#titleDiv").hide();
+
+  updateHash("lang=" + language + "&detailUri=" + detailUri);
+
 
   // var query = "select distinct * where {" +
   //     "  bind(<" + uri + "> as ?uri)" +
