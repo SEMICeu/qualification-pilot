@@ -64,8 +64,6 @@ export class DetailView implements OnInit {
             this.qualificationService.getQualificationDetailed(uri, this.lang)
                 .then(qualification => {
                     if (qualification) {
-                        console.log(qualification);
-
                         this.qualificationService.queryQualificationRelatedObjects(qualification).then( qualification => {
                             this.qualification = qualification;
                             this.generateTabData();
@@ -76,28 +74,30 @@ export class DetailView implements OnInit {
     }
 
     generateTabData() {
-        this.tabDatas = [];
+        if (this.qualification) {
+            this.tabDatas = [];
 
-        let qualification = this.qualification;
-        let lang = this.lang;
+            let qualification = this.qualification;
+            let lang = this.lang;
 
-        this.header = qualification.getPrefLabels(lang);
+            this.header = qualification.getPrefLabels(lang);
 
-        this.tabDatas.push(new TabData("All",0));
+            this.tabDatas.push(new TabData("All", 0));
 
-        this.tabDatas.push(TabDataTemplates.core(1, this.qualification, this.lang));
-        this.tabDatas.push(TabDataTemplates.accreditationRecognition(2, this.qualification, this.lang));
-        this.tabDatas.push(TabDataTemplates.description(3, this.qualification, this.lang));
-        this.tabDatas.push(TabDataTemplates.learningOutcomes(4, this.qualification, this.lang));
+            this.tabDatas.push(TabDataTemplates.core(1, this.qualification, this.lang));
+            this.tabDatas.push(TabDataTemplates.accreditationRecognition(2, this.qualification, this.lang));
+            this.tabDatas.push(TabDataTemplates.description(3, this.qualification, this.lang));
+            this.tabDatas.push(TabDataTemplates.learningOutcomes(4, this.qualification, this.lang));
 
-        for (let i = 1; i < this.tabDatas.length; ++i) {
-            for (let element of this.tabDatas[i].elements) {
-                this.tabDatas[0].addElement(element);
+            for (let i = 1; i < this.tabDatas.length; ++i) {
+                for (let element of this.tabDatas[i].elements) {
+                    this.tabDatas[0].addElement(element);
+                }
             }
-        }
 
-        if (this.selectedTabIndex == -1) this.selectedTabData = this.tabDatas[0];
-        else this.selectedTabData = this.tabDatas[this.selectedTabIndex];
+            if (this.selectedTabIndex == -1) this.selectedTabData = this.tabDatas[0];
+            else this.selectedTabData = this.tabDatas[this.selectedTabIndex];
+        }
     }
 
     private getUriFromFragmentAndSetLang(): String {

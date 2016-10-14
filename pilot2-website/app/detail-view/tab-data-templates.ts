@@ -97,9 +97,9 @@ export class TabDataTemplates {
             var qfValues:TabDataElement[] = [];
             qfValues.push(new TabDataElement().setValues(["Description: ",qf.getDescriptions(lang, qualification.referenceLang)]));
             qfValues.push(new TabDataElement().setValues(["Issued:",[qf.issued]]));
-            qfValues.push(new TabDataElement().setValues(["Target Framework:",[qf.targetFrameWork]]));
+            //qfValues.push(new TabDataElement().setLinkValues(["Target Framework:",[qf.targetFrameWork]]));
             qfValues.push(new TabDataElement().setValues(["Target Framework Version:",[qf.targetFrameworkVersion]]));
-            qfValues.push(new TabDataElement().setValues(["Target:",qf.getTargetLabels(lang, qualification.referenceLang)]));
+            qfValues.push(new TabDataElement().setValues(["EQF:",qf.getTargetLabels(lang, qualification.referenceLang)]));
             qfValues.push(new TabDataElement().setValues(["Target Description: ",qf.getTargetDescriptions(lang, qualification.referenceLang)]));
             qfValues.push(new TabDataElement().setValues(["Target Notation:",qf.targetNotations]));
             qfValues.push(new TabDataElement().setValues(["Target Name: ",qf.getTargetNames(lang, qualification.referenceLang)]));

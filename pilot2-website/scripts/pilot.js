@@ -31,25 +31,21 @@ $(function () {
   $("#searchForm").submit(searchFormSubmit);
 
   var foetFacetContainerHtml = "";
-  //for (var foet in cvUses.foet) {
-  //  if (!cvUses.foet.hasOwnProperty(foet)) continue;
-  //  $('#FoETlevel').append($('<option>', {value: foet, text: cvUses.foet[foet]}));
-  //  foetFacetContainerHtml += "<a><label><input type=\"checkbox\" eqf-facet=\"" + foet + "\"> " + cvUses.foet[foet] + "</label></a>";
-  //}
+
+  foetFacetContainerHtml += "<select id='foet-facet-select'>";
+  foetFacetContainerHtml += "<option selected >Select Field of Education and Training</option>"
   for (var foet in cvUsesLang.foet) {
     if (!cvUsesLang.foet.hasOwnProperty(foet)) continue;
     $('#FoETlevel').append($('<option qp-lang-property=\"data_foet_' + foet + '\" qp-lang-field=\"html\" value=\"' + foet + '\">' + cvUsesLang.foet[foet][language] + '</option>', {value: foet, text: cvUsesLang.foet[foet][language]}));
-    foetFacetContainerHtml += "<a><label><input type=\"checkbox\" eqf-facet=\"" + foet + "\"> <span qp-lang-property=\"data_foet_" + foet + "\" qp-lang-field=\"html\">" + cvUsesLang.foet[foet][language] + "</span></label></a>";
+
+    //foetFacetContainerHtml += "<a><label><input type=\"checkbox\" eqf-facet=\"" + foet + "\"> <span qp-lang-property=\"data_foet_" + foet + "\" qp-lang-field=\"html\">" + cvUsesLang.foet[foet][language] + "</span></label></a>";
+     foetFacetContainerHtml += '<option qp-lang-property=\"data_foet_' + foet + '\" qp-lang-field=\"html\" value=\"' + foet + '\">' + cvUsesLang.foet[foet][language] + '</option>'
   }
+  foetFacetContainerHtml += "</select>";
   $("#foetFacetContainer").html(foetFacetContainerHtml);
 
   var countryFacetContainerHtml = "";
-  //for (var country in cvUses.country) {
-  //  if (!cvUses.country.hasOwnProperty(country)) continue;
-  //  $('#country').append($('<option>', {value: country, text: cvUses.country[country]}));
-  //  $('#relatedCountry').append($('<option>', {value: country, text: cvUses.country[country]}));
-  //  countryFacetContainerHtml += "<a><label><input type=\"checkbox\" country-facet=\"" + country + "\"> " + cvUses.country[country] + "</label></a>";
-  //}
+
   for (var country in cvUsesLang.country) {
     if (!cvUsesLang.country.hasOwnProperty(country)) continue;
     $('#country').append($('<option qp-lang-property=\"data_coun_' + country + '\" qp-lang-field=\"html\" value=\"' + country + '\">' + cvUsesLang.country[country][language] + '</option>', {value: country, text: cvUsesLang.country[country][language]}));
@@ -59,7 +55,8 @@ $(function () {
   $("#countryFacetContainer").html(countryFacetContainerHtml);
   $("#findRelatedButton").click(findRelatedQualifications);
 
-  $("[eqf-facet],[foet-facet],[country-facet]").click(facetChange);
+  $("[eqf-facet],[country-facet]").click(facetChange);
+  $("#foet-facet-select").change(facetChange);
   updateScreen();
   //console.log("page loaded")
 });
@@ -67,6 +64,9 @@ $(function () {
 function updateHash(newHash) {
   lastHash = newHash;
   window.location.hash = newHash;
+}
+function assignLocation(assign) {
+  window.location.assign(assign);
 }
 
 function facetChange() {
@@ -76,13 +76,15 @@ function facetChange() {
   $("[eqf-facet]:checked").each(function () {
     eqfUris.push($(this).attr("eqf-facet"));
   });
-  $("[foet-facet]:checked").each(function () {
-    foetUris.push($(this).attr("foet-facet"));
-  });
+  var selected = $("#foet-facet-select option:selected");
+  if (selected.val() != "Select Field of Education and Training") {
+    eqfUris.push(selected.val());
+  }
   $("[country-facet]:checked").each(function () {
     countryUris.push($(this).attr("country-facet"));
   });
 
+  console.log(eqfUris);
   var shouldShowOneCheck = function (facetUris, toCheck) {
     if (toCheck.length == 0) return true;
     for (var i = 0; i < toCheck.length; i++) if (facetUris.indexOf("[" + toCheck[i] + "]") > -1) return true;
@@ -191,7 +193,7 @@ function searchFormSubmit() {
   var eqf = $("#EQFlevel").val();
   var country = $("#country").val();
 
-  var query = "select distinct ?referenceLanguage ?qualification ?prefLabel ?eqfConcept ?foetConcept ?homepage ?countryUri ?creator where {  " +
+  var query = "select distinct ?referenceLanguage ?qualification ?prefLabel ?eqfConcept ?eqf ?foetConcept ?homepage ?countryUri ?creator where {  " +
       "  ?qualification rdf:type esco:Qualification ." +
       "  ?qualification skos:prefLabel ?prefLabel ." +
       "  ?qualification esco:referenceLanguage ?referenceLanguage . " +
@@ -202,12 +204,15 @@ function searchFormSubmit() {
       "?awardingActivity prov:atLocation ?countryUri" +
       "}" +
       "  optional { ?qualification dcterms:creator ?creator . ?creator foaf:name ?ownerName}" +
-      "  optional { ?qualification esco:hasAssociation ?eqfConcept . ?eqfConcept esco:targetFramework <http://data.europa.eu/esco/ConceptScheme/EQF2012/ConceptScheme> }" +
+      "  optional { ?qualification esco:hasAssociation ?eqfAssoc . " +
+      "             ?eqfAssoc esco:targetFramework <http://data.europa.eu/esco/ConceptScheme/EQF2012/ConceptScheme> ." +
+      "             ?eqfAssoc esco:target ?eqfConcept ." +
+      "             ?eqfConcept skos:prefLabel ?eqf }" +
       "  optional { ?qualification esco:hasISCED-FCode ?foetConcept}";
   if (searchText) query += "  filter exists{ ?qualification ?textProperty ?textValue filter(isLiteral(?textValue) && contains(lcase(?textValue), '" + searchText + "')) } .";
-  query += addFilter(eqf, "qms:hasEQFLevel");
-  // query += addFilter(foet, "qms:hasFoETCode");
-  // query += addFilter(country, "dcterms:spatial");
+  query += addFilter(eqf, "esco:target");
+  query += addFilter(foet, "esco:hasISCED-FCode");
+  query += addFilter(country, "prov:atLocation");
   query += "}";
 
   var errorQuery = function () {
@@ -284,15 +289,15 @@ function fillSearchResultField(grouped) {
     result += "<div class=\"" + getFlag(row) + "\"></div>";
 
     result += "<p>";
-    // if (!row.eqfConcept || row.eqfConcept.length == 0) {
-    //   result += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"level0\" qp-lang-field=\"html\">" + qp_translations["level0"][language] + "</span>";
-    // }
-    // else {
-    //   result += "<span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"level" + row.eqfConcept[0].slice(-1) + "\" qp-lang-field=\"html\">" + qp_translations["level" + row.eqfConcept[0].slice(-1)][language] + "</span>";
-    //   for (var i = 1; i < row.eqfConcept.length; i++) {
-    //     result += "<br/><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"level" + row.eqfConcept[i].slice(-1) + "\" qp-lang-field=\"html\">" + qp_translations["level" + row.eqfConcept[i].slice(-1)][language] + "</span>";
-    //   }
-    // }
+    if (!row.eqfConcept || row.eqfConcept.length == 0) {
+      result += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"level0\" qp-lang-field=\"html\">" + qp_translations["level0"][language] + "</span>";
+    }
+    else {
+      result += "<span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"level" + row.eqfConcept[0].slice(-1) + "\" qp-lang-field=\"html\">" + qp_translations["level" + row.eqfConcept[0].slice(-1)][language] + "</span>";
+      for (var i = 1; i < row.eqfConcept.length; i++) {
+        result += "<br/><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"level" + row.eqfConcept[i].slice(-1) + "\" qp-lang-field=\"html\">" + qp_translations["level" + row.eqfConcept[i].slice(-1)][language] + "</span>";
+      }
+    }
     result += "</p>";
     //result += "<p>" + addCell(row.eqf, false, "No EQF set") + "</p>";
     //if (!lines || lines.length == 0) return defaultText;
@@ -406,14 +411,21 @@ function linkize(value) {
 
 function addFilter(selection, property) {
   if (!selection || selection.length == 0) return "";
-
-  if (selection == "EQFno") {
-    return "filter not exists { ?qualification " + property + " ?eqfNo } ";
-  }
-  else {
+  if (property=="esco:hasISCED-FCode") {
     return "filter exists { ?qualification " + property + " <" + selection + "> } ";
   }
-  //console.log(selection);
+  if (property=="esco:target") {
+    if (selection == "EQFno") {
+      return "filter not exists { ?eqfAssoc " + property + " ?eqfNo } ";
+    }
+    else {
+      return "filter exists { ?eqfAssoc " + property + " <" + selection + "> } ";
+    }
+  }
+  if (property=="prov:atLocation") {
+    return "filter exists { ?awardingActivity " + property + " <" + selection + "> } ";
+  }
+  console.log(selection);
   //
   //var result = null;
   //selection.each(function () {
@@ -425,7 +437,6 @@ function addFilter(selection, property) {
   //result += "}";
   //return result;
 }
-
 function loadDetail(uri) {
 
   $("#detailContainer").html("");
@@ -433,7 +444,9 @@ function loadDetail(uri) {
 
   detailUri = uri;
 
-  updateHash("lang=" + language + "&detailUri=" + detailUri);
+  assignLocation("/detail/0#lang=" + language + "&detailUri=" + detailUri);
+  //updateHash("lang=" + language + "&detailUri=" + detailUri);
+
 
   $("#titleDiv").hide();
 

@@ -9,20 +9,21 @@ import {ActivatedRoute, Router} from "@angular/router";
     template: ``
 })
 
-export class SearchView implements OnInit {
+export class SearchView {//implements OnInit {
 
-    constructor(
-        private route: ActivatedRoute, private router: Router) {}
+    //constructor(
+    //    private route: ActivatedRoute, private router: Router) {}
 
-    ngOnInit(): void {
-        this.route.fragment.forEach((fragment: string) => {
-            if (fragment) {
-                if (this.getFragmentQualificationUri(fragment))  {
-                        this.router.navigate(['/detail/0'] , {fragment: fragment})
-                    }
-                }
-        });
-    }
+    // ngOnInit(): void {
+    //     this.route.fragment.forEach((fragment: string) => {
+    //         // if (fragment) {
+    //         //     console.log(fragment);
+    //         //     if (this.getFragmentQualificationUri(fragment))  {
+    //         //             this.router.navigate(['/detail'] , {fragment: fragment});
+    //         //         }
+    //         //     }
+    //     });
+    // }
 
     getFragmentQualificationUri(fragment: String): String {
         let uri;

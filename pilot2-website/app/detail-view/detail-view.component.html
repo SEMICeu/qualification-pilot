@@ -2,6 +2,7 @@
 <!--<button (click)="gotoDetail()">View Details</button>-->
 
 <h1 *ngIf="header">{{header}}</h1>
+<h1 *ngIf="!header">Loading...</h1>
 
 <div *ngIf="qualification" class="main-details">
   <nav>
