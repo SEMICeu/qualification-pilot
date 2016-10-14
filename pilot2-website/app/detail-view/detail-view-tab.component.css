@@ -24,7 +24,7 @@ a:hover, a:focus, a:active {
     /*padding-left: 0;*/
 /*}*/
 .propertyName {
-    color: #284F75;
+    color: #004494;
 }
 
 .elementsGroup {
@@ -39,15 +39,15 @@ a:hover, a:focus, a:active {
 }
 
 .trusted {
-    margin-left: -15px;
-    margin-right: -15px;
+    margin-left: -12px;
+    margin-right: -12px;
     border-left-width: 5px;
     border-left-color: #00c62f;
 }
 
 .notTrusted {
-    margin-left: -15px;
-    margin-right: -15px;
+    margin-left: -12px;
+    margin-right: -12px;
     border-left-width: 5px;
     border-left-color: #b08080;
 }

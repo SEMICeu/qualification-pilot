@@ -1,9 +1,9 @@
 var qp_translations = {
   "logoUrl": {
-    "en": "images/logo/logo_en.gif",
-    "el": "images/logo/logo_en.gif",
-    "sv": "images/logo/logo_sv.gif",
-    "es": "images/logo/logo_es.gif"
+    "en": "images/logo/logo--en.svg",
+    "el": "images/logo/logo--el.svg",
+    "sv": "images/logo/logo--sv.svg",
+    "es": "images/logo/logo--es.svg"
   },
   "titleClass": {
     "en": "title-en",

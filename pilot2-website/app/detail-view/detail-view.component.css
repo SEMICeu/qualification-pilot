@@ -18,14 +18,16 @@ a {
 }
 nav {
   text-align: center;
-  width: 100%;
+  margin-bottom: 10px;
+  margin-left:20px;
 }
 nav a {
-  padding: 5px 10px;
+  padding: 7px 30px;
   text-decoration: none;
-  margin-top: 10px;
-  display: inline-block;
-  background-color: #eee;
+  margin-right: 1px;
+
+  /*display: inline-block;*/
+  background-color: #ddd;
   border-radius: 4px;
 }
 nav a:visited, a:link {
@@ -36,7 +38,8 @@ nav a:hover {
   background-color: #CFD8DC;
 }
 nav a.active {
-  color: #039be5;
+  color: #ffffff;
+  background-color: #004494;
 }
 .main-details {
   padding-right: 30px;

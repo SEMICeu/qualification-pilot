@@ -58,11 +58,6 @@
   margin: 0px;
 }
 
-#pageTitle {
-  color: #064A8B;
-  text-shadow: none;
-}
-
 ::-webkit-input-placeholder {
    color: #AAAAAA;
 }
@@ -85,4 +80,18 @@ pre {
     white-space: -pre-wrap;      /* Opera 4-6 */
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+#titleDiv {
+  border-top: solid;
+  border-top-width: 1px;
+  border-top-color: #fff;
+  padding-top: 0px;
+  background-color: #004494;
+}
+
+#pageTitle {
+  font-weight: bold;
+  color: #fff;
+  font-size:150%;
 }
