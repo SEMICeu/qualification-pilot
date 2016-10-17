@@ -27,27 +27,73 @@ a:hover, a:focus, a:active {
     color: #004494;
 }
 
-.elementsGroup {
-    margin-left: -10px;
-    margin-right: -10px;
-    padding-left: 10px;
-    padding-right: 10px;
+.elementsGroupBordered {
     border: solid;
     border-color: #cccccc;
     border-width: 1px;
-    list-style: none;
+}
+
+.elementsGroupUnbordered {
+}
+
+table {
+    width: 100%;
+}
+
+
+.element-main {
+
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.element-inner-main {
+    width: 100%;
+    margin-left: -10px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.tooltip {
+    position: relative;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 110px;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 2px;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip .tooltiptext {
+    top: 0px;
+    right: 50%;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
+}
+
+.untrusted {
+    background-color: #b08080;;
+}
+
+.untrusted:hover {
+    background-color: #b08080;;
 }
 
 .trusted {
-    margin-left: -12px;
-    margin-right: -12px;
-    border-left-width: 5px;
-    border-left-color: #00c62f;
+    background-color: #80b080;
 }
 
-.notTrusted {
-    margin-left: -12px;
-    margin-right: -12px;
-    border-left-width: 5px;
-    border-left-color: #b08080;
+.trusted:hover {
+    background-color: #80b080;
 }

@@ -29,15 +29,20 @@ export class TabDataElement {
         if (value && value == "true") {
             this.trusted = "trusted";
         }
-        else this.trusted = "notTrusted";
+        else this.trusted = "untrusted";
+        return this;
+    }
+    setIsBordered() {
+        this.borderClass = "elementsGroupBordered";
         return this;
     }
 
-    trusted = "";
+    trusted = "untrusted";
     values:[String, String[]];
     linkValues:[String, [String,String][]];
     elementsGroup: TabDataElement[];
     elementsGroupTitle: String;
     sectionHeader:String;
+    borderClass = "elementsGroupUnBordered";
 
 }
