@@ -1,0 +1,417 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+  <base href="/">
+
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+  <title qp-lang-property="qualificationsPilotHeadTitle" qp-lang-field="html">Qualifications Pilot - European Commission</title>
+  <meta content="en" http-equiv="Content-Language">
+  <meta content="ESCO qualifications pilot" name="description">
+  <meta content="EUROPA/Qualifications Pilot" name="reference">
+  <meta content="Cognizone" name="creator">
+  <meta content="01/03/2016" name="date">
+  <meta content="ESCO, Qualification, EQF, European Comission, European Union, EU" name="keywords">
+
+  <!--RESPONSIVE-->
+  <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <!--TEMPLATE CSS-->
+  <link href="css/ec2.css" media="all" rel="stylesheet" type="text/css">
+  <link href="css/ec-content2.css" media="all" rel="stylesheet" type="text/css">
+  <!--<link href="css/ec-components-only.css" media="all" rel="stylesheet" type="text/css">-->
+  <link href="css/pilot.css" media="all" rel="stylesheet" type="text/css">
+
+  <!--TEMPLATE JS-->
+  <script src="scripts/data.js" type="text/javascript"></script>
+  <script src="scripts/translations.js" type="text/javascript"></script>
+  <script src="scripts/ec.js" type="text/javascript"></script>
+  <script src="scripts/ec-components.js" type="text/javascript"></script>
+  <script src="scripts/jquery-1.11.0.min.js" type="text/javascript"></script>
+  <script src="scripts/yasqe-2.7.2.bundled.min.js" type="text/javascript"></script>
+  <script src="scripts/pilot.js" type="text/javascript"></script>
+
+  <!--Angular-->
+  <script src="node_modules/core-js/client/shim.min.js"></script>
+
+  <script src="node_modules/zone.js/dist/zone.js"></script>
+  <script src="node_modules/reflect-metadata/Reflect.js"></script>
+  <script src="node_modules/systemjs/dist/system.src.js"></script>
+
+  <script src="app/systemjs.config.js"></script>
+  <script>
+    System.import('app').catch(function(err){ console.error(err); });
+  </script>
+
+</head>
+
+<body class="euShortContent">
+<div id="overlay" class="overlay">
+  <div class="overlayBox" qp-lang-property="loading" qp-lang-field="html">Loading...</div>
+</div>
+<div class="layout" id="layout">
+
+  <!--HEADER-->
+  <div class="lang-en" id="header">
+    <p class="banner-flag">
+      <img alt="European Commission logo" id="banner-flag" qp-lang-property="logoUrl" qp-lang-field="@src" src="images/logo/logo--en.svg">
+    </p>
+
+
+    <p class="off-screen">Service tools</p>
+    <ul class="reset-list" id="services">
+      <li>
+        <a target="ecSite" class="first" href="http://ec.europa.eu/geninfo/legal_notices_en.htm" qp-lang-property="legalNotice" qp-lang-field="html">Legal notice</a>
+      </li>
+      <li>
+        <a href="mailto:info@cogni.zone" qp-lang-property="contact" qp-lang-field="html">Contact</a>
+      </li>
+      <li>
+        <a target="ecSite" href="http://ec.europa.eu/geninfo/query/search_en.html" qp-lang-property="search" qp-lang-field="html">Search</a>
+      </li>
+    </ul>
+
+    <p class="off-screen mob-title" id="language-selector-title">Language selector</p>
+
+    <select id="qp-language-selector" class="reset-list language-selector">
+      <option value="en">English (en)</option>
+      <option value="es">español (es)</option>
+      <option value="sv">svenska (sv)</option>
+      <option value="el">GR (el)</option>
+    </select>
+  </div>
+  <div id="path">
+    <p class="off-screen">Navigation path</p>
+    <ul class="reset-list">
+      <li class="first">
+        <!--<a href="javascript:showScreen('searchScreen')">S1</a>-->
+        <!--<a href="javascript:showScreen('searchResultScreen')">S2</a>-->
+        <!--<a href="javascript:showScreen('detailScreen')">S3</a>-->
+        <a target="ecSite" href="http://ec.europa.eu/index_en.htm" qp-lang-property="ecUrl" qp-lang-field="@href"><span qp-lang-property="ecName" qp-lang-field="html">European Commission</span></a>
+      </li>
+      <li><a id="navigationSelf" href="index.html" qp-lang-property="qualificationsPilot" qp-lang-field="html">Qualifications Pilot</a></li>
+      <!--<li>Search Results</li>-->
+    </ul>
+  </div>
+
+  <!--BODY-->
+  <div class="layout-body">
+    <div class="bg2" id ="titleDiv" align="center">
+      <h1><span id="pageTitle">Search Qualifications</span></h1>
+      <ul class="reset-list" id="additional-tools">
+        <li>
+          <a href="javascript:print();" title="Print"><img alt="Print" src="images/print.gif"></a>
+        </li>
+        <li>
+          <a href="javascript:tools.fonts.decrease();" title="Decrease font size"><img alt="Decrease font size" src="images/font-decrease.gif"></a>
+        </li>
+        <li>
+          <a href="javascript:tools.fonts.increase();" title="Increase font size"><img alt="Increase font size" src="images/font-increase.gif"></a>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+
+  <div class="layout-body" id="searchScreen">
+    <div class="layout-noleft">
+      <div class="layout-content">
+        <form id="searchForm">
+          <label for="search" qp-lang-property="searchField" qp-lang-field="html">SEARCH:</label>
+          <input type="text" id="search" name="search" qp-lang-property="seachPlaceholder" qp-lang-field="@placeholder" placeholder='Free text search, for example "Office"'>
+
+          <div style="float:right;"><a href="https://ec.europa.eu/esco/portal/escopedia/European_Qualifications_Framework_%2528EQF%2529" target="ecSite" id="whatIsEQF"><img alt="What is EQF?" src="images/icon-details.png"></a></div>
+          <label for="EQFlevel">EQF:</label>
+          <select id="EQFlevel" name="EQFlevel" class="placeholder">
+            <option value="" qp-lang-property="selectEQF" qp-lang-field="html">Select EQF level</option>
+            <!--<option value="0">No EQF level</option>-->
+            <option value="EQFno" qp-lang-property="level0" qp-lang-field="html">No EQF level set</option>
+            <option value="http://data.europa.eu/esco/ConceptScheme/EQF2012/1" qp-lang-property="level1" qp-lang-field="html">Level 1</option>
+            <option value="http://data.europa.eu/esco/ConceptScheme/EQF2012/2" qp-lang-property="level2" qp-lang-field="html">Level 2</option>
+            <option value="http://data.europa.eu/esco/ConceptScheme/EQF2012/3" qp-lang-property="level3" qp-lang-field="html">Level 3</option>
+            <option value="http://data.europa.eu/esco/ConceptScheme/EQF2012/4" qp-lang-property="level4" qp-lang-field="html">Level 4</option>
+            <option value="http://data.europa.eu/esco/ConceptScheme/EQF2012/5" qp-lang-property="level5" qp-lang-field="html">Level 5</option>
+            <option value="http://data.europa.eu/esco/ConceptScheme/EQF2012/6" qp-lang-property="level6" qp-lang-field="html">Level 6</option>
+            <option value="http://data.europa.eu/esco/ConceptScheme/EQF2012/7" qp-lang-property="level7" qp-lang-field="html">Level 7</option>
+            <option value="http://data.europa.eu/esco/ConceptScheme/EQF2012/8" qp-lang-property="level8" qp-lang-field="html">Level 8</option>
+          </select>
+
+          <div style="float:right;"><a href="http://ec.europa.eu/education/tools/isced-f_en.htm" target="ecSite" id="whatIsFoET"><img alt="What is FoET?" src="images/icon-details.png"></a></div>
+          <label for="FoETlevel">ISCED FoET 2013:</label>
+          <select id="FoETlevel" name="FoETlevel">
+            <option value="" qp-lang-property="selectFoET" qp-lang-field="html">Select field of education and training</option>
+          </select>
+
+          <label for="country" qp-lang-property="country" qp-lang-field="html">Country:</label>
+          <select id="country" name="country">
+            <option value="" qp-lang-property="selectCountry" qp-lang-field="html">Select country</option>
+          </select>
+          <br><br>
+          <input type="submit" value="Search Results" qp-lang-property="searchResult" qp-lang-field="@value">
+        </form>
+        <!--</div>-->
+
+
+      </div>
+      <!--</div>-->
+      <!--</div>-->
+      <!--</div>-->
+    </div>
+  </div>
+
+  <div class="layout-body" style="display:none;" id="searchResultScreen">
+    <div class="layout-wrapper">
+      <div class="layout-wrapper-reset">
+
+        <!--LEFT COLUMN-->
+        <div class="layout-left">
+          <p class="off-screen">Page navigation</p>
+          <ul class="euMenu euMenu-level-2" id="menu">
+            <li class="level_2">
+              <div class="euItem euNbr_0 euSeqNr_1 euFirst">
+                <a></a>
+                <div id="f1">
+                  <a><span qp-lang-property="EQFlevel" qp-lang-field="html">EQF</span>:
+                    <div id="q" align="right">
+                      <img style="cursor:pointer;" alt="What is EQF?" src="images/icon-details-blue.png" onclick="window.open('https://ec.europa.eu/esco/portal/escopedia/European_Qualifications_Framework_%2528EQF%2529','ecSite')"/></div>
+                  </a>
+                </div>
+                <a><input type="checkbox" eqf-facet="EQFno"> <span qp-lang-property="level0" qp-lang-field="html">No EQF level set</span></a>
+                <a><input type="checkbox" eqf-facet="http://data.europa.eu/esco/ConceptScheme/EQF2012/1"> <span qp-lang-property="level1" qp-lang-field="html">EQF Level 1</span></a>
+                <a><input type="checkbox" eqf-facet="http://data.europa.eu/esco/ConceptScheme/EQF2012/2"> <span qp-lang-property="level2" qp-lang-field="html">EQF Level 2</span></a>
+                <a><input type="checkbox" eqf-facet="http://data.europa.eu/esco/ConceptScheme/EQF2012/3"> <span qp-lang-property="level3" qp-lang-field="html">EQF Level 3</span></a>
+                <a><input type="checkbox" eqf-facet="http://data.europa.eu/esco/ConceptScheme/EQF2012/4"> <span qp-lang-property="level4" qp-lang-field="html">EQF Level 4</span></a>
+                <a><input type="checkbox" eqf-facet="http://data.europa.eu/esco/ConceptScheme/EQF2012/5"> <span qp-lang-property="level5" qp-lang-field="html">EQF Level 5</span></a>
+                <a><input type="checkbox" eqf-facet="http://data.europa.eu/esco/ConceptScheme/EQF2012/6"> <span qp-lang-property="level6" qp-lang-field="html">EQF Level 6</span></a>
+                <a><input type="checkbox" eqf-facet="http://data.europa.eu/esco/ConceptScheme/EQF2012/7"> <span qp-lang-property="level7" qp-lang-field="html">EQF Level 7</span></a>
+                <a><input type="checkbox" eqf-facet="http://data.europa.eu/esco/ConceptScheme/EQF2012/8"> <span qp-lang-property="level8" qp-lang-field="html">EQF Level 8</span></a>
+                </a>
+              </div>
+            </li>
+
+            <li class="level_1">
+              <div class="euItem euNbr_1 euSeqNr_2 euZebra">
+                <a></a>
+                <div id="f1">
+                  <a>ISCED FoET 2013:
+                    <div id="q" align="right"><img style="cursor:pointer;" alt="What is FoET?" src="images/icon-details-blue.png" onclick="window.open('http://ec.europa.eu/education/tools/isced-f_en.htm','ecSite')"/></div>
+                  </a>
+                </div>
+                <div id="foetFacetContainer">
+                  <a><label><input type="checkbox" name="#"> Architecture and construction</label></a>
+                  <a><label><input type="checkbox" name="#"> Information and Communication Technologies (ICTs)</label></a>
+                  <a><label><input type="checkbox" name="#"> Software and applications development and analysis</label></a>
+                  <a><label><input type="checkbox" name="#"> Health</label></a>
+                  <a><label><input type="checkbox" name="#"> Database and network design and administration</label></a>
+                  <a><label><input type="checkbox" name="#"> Building and civil engineering</label></a>
+                  <a><label><input type="checkbox" name="#"> Medicine</label></a>
+                  <a><label><input type="checkbox" name="#"> Health not elsewhere classified</label></a>
+                  <a><label><input type="checkbox" name="#"> Health and welfare</label></a>
+                  <a><label><input type="checkbox" name="#"> Information and Communication Technologies (ICTs)</label></a>
+                  <a><label><input type="checkbox" name="#"> Engineering, manufacturing and construction</label></a>
+                </div>
+              </div>
+            </li>
+            <li class="level_1">
+              <div class="euItem euNbr_2 euSeqNr_3 euZebra">
+                <a></a>
+                <div id="f1"><a qp-lang-property="country" qp-lang-field="html">COUNTRY:</a></div>
+                <div id="countryFacetContainer">
+                  <a><label><input type="checkbox" name="#"> Belgium</label></a>
+                  <a><label><input type="checkbox" name="#"> Netherlands</label></a>
+                  <a><label><input type="checkbox" name="#"> Spain</label></a>
+                  <a><label><input type="checkbox" name="#"> United Kingdom</label></a>
+                  <a><label><input type="checkbox" name="#"> Sweden</label></a>
+                </div>
+              </div>
+            </li>
+
+          </ul>
+        </div>
+
+
+        <!--CENTRAL COLUMN-->
+
+        <div class="layout-content">
+          <div id="searchResultContainer" class="layout-content-reset">
+
+
+            <h5>Title</h5><h2>Web Design</h2>
+            <hr>
+            <h6>Description:</h6>
+            <p>Lorem ipsum dolor sit amet, et vis impedit eleifend, ne vero debet viris vix. Ei molestiae scriptorem interpretaris usu, simul accommodare at nec. Per no justo scaevola, quo id splendide intellegam consectetuer.</p>
+
+            <h6>Learning outcomes : </h6>
+            <p>Vero ullamcorper cu eum, at eam equidem pericula, pri fabellas posidonium te. Ea magna omittantur per, sit ne impedit expetendis, ei euismod denique scaevola vis. Pro ut iriure tacimates, et ius albucius adolescens efficiendi. Pro ad omnium propriae qualisque.<br>
+              Duo veniam expetendis intellegebat ei, est cu minim saperet. Percipit laboramus vix et, has mucius appareat urbanitas cu, homero petentium cum ut. Quas praesent disputationi eu pri, mei iusto oporteat id. An vim etiam mediocritatem. Te vim impedit torquatos. Nam reque atqui partem te, cu affert volumus has.<br>
+              Consequat inciderint mediocritatem at pro, qui velit recusabo et. Ullum constituto liberavisse ex mea, hinc melius pro cu. Ne nibh illud meliore mea, impedit insolens nec ei. Mel modus petentium ut, vis persius expetenda mediocritatem cu, populo honestatis cotidieque his ne. Et nonumes corrumpit referrentur usu, nec tale verear no, cu docendi
+              recteque voluptatum quo.</p>
+
+            <h6>Required Skills: </h6>
+            <span>Duo veniam expetendis</span>
+            <span>Intellegebat ei</span>
+            <span>Est cu minim saperet</span>
+            <span>Percipit laboramus vix et</span><br><br>
+            <input type="submit" value="Details">
+
+            <p></p><p></p>
+
+
+            <h5>Title</h5><h2>Web</h2>
+            <hr>
+            <h6>Description:</h6>
+            <p>Lorem ipsum dolor sit amet, et vis impedit eleifend, ne vero debet viris vix. Ei molestiae scriptorem interpretaris usu, simul accommodare at nec. Per no justo scaevola, quo id splendide intellegam consectetuer.</p>
+
+            <h6>Learning outcomes : </h6>
+            <p>Vero ullamcorper cu eum, at eam equidem pericula, pri fabellas posidonium te. Ea magna omittantur per, sit ne impedit expetendis, ei euismod denique scaevola vis. Pro ut iriure tacimates, et ius albucius adolescens efficiendi. Pro ad omnium propriae qualisque.<br>
+              Duo veniam expetendis intellegebat ei, est cu minim saperet. Percipit laboramus vix et, has mucius appareat urbanitas cu, homero petentium cum ut. Quas praesent disputationi eu pri, mei iusto oporteat id. An vim etiam mediocritatem. Te vim impedit torquatos. Nam reque atqui partem te, cu affert volumus has.<br>
+              Consequat inciderint mediocritatem at pro, qui velit recusabo et. Ullum constituto liberavisse ex mea, hinc melius pro cu. Ne nibh illud meliore mea, impedit insolens nec ei. Mel modus petentium ut, vis persius expetenda mediocritatem cu, populo honestatis cotidieque his ne. Et nonumes corrumpit referrentur usu, nec tale verear no, cu docendi
+              recteque voluptatum quo.</p>
+
+            <h6>Required Skills: </h6>
+            <span>Duo veniam expetendis</span>
+            <span>Intellegebat ei</span>
+            <span>Est cu minim saperet</span>
+            <span>Percipit laboramus vix et</span><br><br>
+            <input type="submit" value="Details">
+
+            <p></p><p></p>
+
+
+            <h5>Title</h5><h2>Design</h2>
+            <hr>
+            <h6>Description:</h6>
+            <p>Lorem ipsum dolor sit amet, et vis impedit eleifend, ne vero debet viris vix. Ei molestiae scriptorem interpretaris usu, simul accommodare at nec. Per no justo scaevola, quo id splendide intellegam consectetuer.</p>
+
+            <h6>Learning outcomes : </h6>
+            <p>Vero ullamcorper cu eum, at eam equidem pericula, pri fabellas posidonium te. Ea magna omittantur per, sit ne impedit expetendis, ei euismod denique scaevola vis. Pro ut iriure tacimates, et ius albucius adolescens efficiendi. Pro ad omnium propriae qualisque.<br>
+              Duo veniam expetendis intellegebat ei, est cu minim saperet. Percipit laboramus vix et, has mucius appareat urbanitas cu, homero petentium cum ut. Quas praesent disputationi eu pri, mei iusto oporteat id. An vim etiam mediocritatem. Te vim impedit torquatos. Nam reque atqui partem te, cu affert volumus has.<br>
+              Consequat inciderint mediocritatem at pro, qui velit recusabo et. Ullum constituto liberavisse ex mea, hinc melius pro cu. Ne nibh illud meliore mea, impedit insolens nec ei. Mel modus petentium ut, vis persius expetenda mediocritatem cu, populo honestatis cotidieque his ne. Et nonumes corrumpit referrentur usu, nec tale verear no, cu docendi
+              recteque voluptatum quo.</p>
+
+            <h6>Required Skills: </h6>
+            <span>Duo veniam expetendis</span>
+            <span>Intellegebat ei</span>
+            <span>Est cu minim saperet</span>
+            <span>Percipit laboramus vix et</span><br><br>
+            <input type="submit" value="Details">
+
+            <p></p><p></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <my-app></my-app>
+
+  <div style="display:none;" id="detailScreen">
+    <div class="layout-body">
+      <!--CENTRAL COLUMN-->
+      <div class="layout-noleft">
+        <div class="layout-content">
+          <div id="detailContainer">
+            <h6>EQF Level: <span class="fieldInfo">5</span></h6>
+            <h6>FoET: <span class="fieldInfo">Database and network design and administration</span></h6>
+            <h6>Duration: <span class="fieldInfo">4 months</span></h6>
+            <h6>Country: <span class="fieldInfo">Spain</span></h6>
+            <div class="flag-es"></div>
+            <div class="clear"></div>
+            <hr>
+
+            <h6>Description:</h6>
+            <p>
+              Lorem ipsum dolor sit amet, et vis impedit eleifend, ne vero debet viris vix. Ei molestiae scriptorem interpretaris usu,
+              simul accommodare at nec. Per no justo scaevola, quo id splendide intellegam consectetuer.</p>
+
+            <h6>Learning outcomes : </h6>
+            <p>Vero ullamcorper cu eum, at eam equidem pericula, pri fabellas posidonium te. Ea magna omittantur per,
+              sit ne impedit expetendis, ei euismod denique scaevola vis. Pro ut iriure tacimates, et ius albucius
+              adolescens efficiendi. Pro ad omnium propriae qualisque. Duo veniam expetendis intellegebat ei, est
+              cu minim saperet. Percipit laboramus vix et, has mucius appareat urbanitas cu, homero petentium cum ut.
+              Quas praesent disputationi eu pri, mei iusto oporteat id. An vim etiam mediocritatem. Te vim impedit torquatos.
+              Nam reque atqui partem te, cu affert volumus has. Consequat inciderint mediocritatem at pro, qui velit recusabo et.
+              Ullum constituto liberavisse ex mea, hinc melius pro cu. Ne nibh illud meliore mea, impedit insolens nec ei.
+              Mel modus petentium ut, vis persius expetenda mediocritatem cu, populo honestatis cotidieque his ne.
+              Et nonumes corrumpit referrentur usu, nec tale verear no, cu docendi recteque voluptatum quo.</p>
+
+            <h6>Required Skills: </h6>
+
+            <div class="skills">Duo veniam expetendis</div>
+            <div class="skills">Intellegebat ei</div>
+            <div class="skills">Est cu minim saperet</div>
+            <div class="skills">Percipit laboramus vix et</div>
+            <div class="skills">Quas praesent</div>
+            <div class="skills">Has mucius appareat urbanitas cu</div>
+            <div class="skills">Homero petentium cum ut</div>
+            <div class="skills">Disputationi eu pri</div>
+            <div class="skills">An vim etiam mediocritatem</div>
+            <div class="skills">Mei iusto oporteat id</div>
+            <div class="clear"></div>
+            <br><br>
+          </div>
+
+
+        </div>
+      </div>
+    </div>
+    <div>
+      <!--sub filter (Find related qualifications)-->
+      <div class="clear"></div>
+      <div class="relatedBox" qp-lang-property="findRelatedQualifications" qp-lang-field="html">find related qualifications:
+      </div>
+
+      <div align="center" style="background-color:#0065A2; width:100%; height:250px;">
+        <div align="center" style=" padding:0px 0px; color:#FFF;">
+          <!--<label for="relatedCountry">Country</label>-->
+          <select id="relatedCountry" name="relatedCountry" style="color:white;background-color: rgba(0, 0, 0, 0.6); border-color:rgba(51, 51, 51, 0.8); width:250px; margin-top:28px; margin-bottom:20px;">
+            <option value="" qp-lang-property="selectCountry" qp-lang-field="html">Select country</option>
+          </select>
+          <!--<label for="relatedCountry">COUNTRY: </label><input type="checkbox" id="relatedCountry" name="relatedCountry"/>-->
+          <br>
+
+          <input type="radio" id="relatedFoET" name="relatedTypeSelection" checked="checked"/><label for="relatedFoET"> FoET</label>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <input type="radio" id="relatedEQF" name="relatedTypeSelection"/><label for="relatedEQF"> EQF &amp; FoET</label>
+
+          <!--<label for="relatedEQF">EQF: </label><input type="checkbox" id="relatedEQF" name="relatedEQF"/>-->
+          <!--<label for="relatedFoET">FoET: </label><input type="checkbox" id="relatedFoET" name="relatedFoET"/>-->
+
+        </div>
+        <hr style="margin-bottom: 28px;
+				   margin-top: 30px;
+				   border: 0;
+				   height: 1px;
+				   background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.75), rgba(255, 255, 255, 0));">
+
+        <div align="center" class="relatedButton" id="findRelatedButton" qp-lang-property="findRelated" qp-lang-field="html">Find Related</div>
+      </div>
+    </div>
+  </div>
+
+  <!--FOOTER-->
+  <div class="layout-footer">
+    <ul class="footer-items">
+      <li class="modification-date">
+        <span><span qp-lang-property="lastUpdate" qp-lang-field="html">Last update</span>: 01/03/2013</span>
+      </li>
+      <li>
+        <a target="ecSite" href="http://ec.europa.eu/geninfo/legal_notices_en.htm" qp-lang-property="legalNotice" qp-lang-field="html">Legal notice</a>
+      </li>
+      <li>
+        <a href="mailto:info@cogni.zone" qp-lang-property="contact" qp-lang-field="html">Contact</a>
+      </li>
+      <li>
+        <a target="ecSite" qp-lang-property="searchOnEcLink" qp-lang-field="@href" href="http://ec.europa.eu/geninfo/query/search_en.html"><span qp-lang-property="search" qp-lang-field="html">Search</span></a>
+      </li>
+      <li class="top-link">
+        <a href="javascript:window.scrollTo(0,0);" qp-lang-property="top" qp-lang-field="html">Top</a>
+      </li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>
