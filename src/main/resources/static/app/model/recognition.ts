@@ -13,4 +13,6 @@ export class Recognition {
     issued: String;
     endDate: String;
     trusted: String;
+
+    publisher: Agent;
 }

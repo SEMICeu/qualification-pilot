@@ -32,7 +32,7 @@ export class TabDataElement {
         return this;
     }
     setIsBordered() {
-        this.borderClass = "elementsGroupBordered";
+        this.borderClass = "elements-group-bordered";
         return this;
     }
     setSource(agentInfoTriple: [String, Link, Link]) {
@@ -52,7 +52,7 @@ export class TabDataElement {
     elementsGroup: TabDataElement[];
     elementsGroupTitle: String;
     sectionHeader:String;
-    borderClass = "elementsGroupUnBordered";
+    borderClass = "elements-group-unbordered";
     sourceName: String;
     sourcePage: Link;
     sourceMail: Link;

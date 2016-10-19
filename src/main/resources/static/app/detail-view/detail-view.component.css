@@ -27,9 +27,8 @@ nav {
 nav a {
   padding: 7px 20px;
   text-decoration: none;
-  margin-right: 1px;
-
-  /*display: inline-block;*/
+  margin: 1px;
+  display: inline-block;
   background-color: #ddd;
   border-radius: 4px;
 }
@@ -47,4 +46,5 @@ nav a.active {
 .main-details {
   padding-right: 30px;
   padding-left: 0px;
+  padding-bottom: 0;
 }

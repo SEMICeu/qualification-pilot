@@ -205,10 +205,10 @@ function searchFormSubmit() {
       "             ?eqfAssoc esco:target ?eqfConcept ." +
       "             ?eqfConcept skos:prefLabel ?eqf }" +
       "  optional { ?qualification esco:hasISCED-FCode ?foetConcept}";
-  if (searchText) query += "  filter exists{ ?qualification ?textProperty ?textValue filter(isLiteral(?textValue) && contains(lcase(?textValue), '" + searchText + "')) } .";
-  query += addFilter(eqf, "esco:target");
-  query += addFilter(foet, "esco:hasISCED-FCode");
-  query += addFilter(country, "prov:atLocation");
+  //if (searchText) query += "  filter exists{ ?qualification ?textProperty ?textValue filter(isLiteral(?textValue) && contains(lcase(?textValue), '" + searchText + "')) } .";
+  //query += addFilter(eqf, "esco:target");
+  // query += addFilter(foet, "esco:hasISCED-FCode");
+  // query += addFilter(country, "prov:atLocation");
   query += "}";
 
   var errorQuery = function () {

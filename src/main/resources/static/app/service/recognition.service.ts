@@ -46,6 +46,12 @@ export class RecognitionService {
                         }
                         if (values.issued) recognition.issued = values.issued.value;
                         if (values.endDate) recognition.endDate = values.endDate.value;
+                        if (values.publisherName_lang_group) {
+                            recognition.publisher = new Agent();
+                            recognition.publisher.names = ConcatsParser.makeMapOfStringArrays(values.publisherName_lang_group.value);
+                            if (values.publisherMail_group) recognition.publisher.mails = ConcatsParser.makeStringArray(values.publisherMail_group.value);
+                            if (values.publisherPage_group) recognition.publisher.pages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
+                        }
                         if (values.trusted) recognition.trusted = values.trusted.value;
 
                         recs.push(recognition);

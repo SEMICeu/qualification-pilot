@@ -18,6 +18,7 @@ export class Accreditation {
     supplementaryDocs: String[];
     subjects: String[];
     trusted: String;
+    publisher: Agent;
 
     getHomepageLinks():Link[] {
             if (!this.homepages) return null;

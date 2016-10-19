@@ -73,8 +73,9 @@ export class TabDataTemplates {
     static accreditationRecognition(index:number, qualification: Qualification, lang:String): TabData {
         let data = new TabData("Qualification Framework/Accreditation", index);
 
+        var noEqf = true;
+
         if (qualification.qualificationFrameworks) for (let qf of qualification.qualificationFrameworks) {
-            var noEqf = true;
             if (qf.trusted == "true") {
                 var qfValues: TabDataElement[] = [];
                 qfValues.push(new TabDataElement().setValues(["Description: ", qf.getDescriptions(lang, qualification.referenceLang)]));
@@ -87,11 +88,11 @@ export class TabDataTemplates {
                 qfValues.push(new TabDataElement().setValues(["Target Name: ", qf.getTargetNames(lang, qualification.referenceLang)]));
                 qfValues.push(new TabDataElement().setValues(["Target URL:", [qf.targetUrl]]));
                 qfValues.push(new TabDataElement().setLinkValues(["Homepage:", qf.getHomepageLinks()]));
-                if (qf.publisher) {
-                    qfValues.push(new TabDataElement().setValues(["Publisher Name:", qf.publisher.getNames(lang, qualification.referenceLang)]));
-                    qfValues.push(new TabDataElement().setLinkValues(["Publisher Mail :", qf.publisher.getMailLinks()]));
-                    qfValues.push(new TabDataElement().setLinkValues(["Publisher Homepage :", qf.publisher.getPageLinks()]));
-                }
+                // if (qf.publisher) {
+                //     qfValues.push(new TabDataElement().setValues(["Publisher Name:", qf.publisher.getNames(lang, qualification.referenceLang)]));
+                //     qfValues.push(new TabDataElement().setLinkValues(["Publisher Mail :", qf.publisher.getMailLinks()]));
+                //     qfValues.push(new TabDataElement().setLinkValues(["Publisher Homepage :", qf.publisher.getPageLinks()]));
+                // }
                 // qfValues.push(new TabDataElement().setValues(["Trusted:", [qf.trusted]]));
                 let title = qf.target ? "European Qualification Framework" : "National Qualification Framework";
                 data.push(new TabDataElement()
@@ -141,7 +142,7 @@ export class TabDataTemplates {
                 data.push(new TabDataElement()
                     .setElementsGroup(accValues)
                     .setElementsGroupTitle("Accreditation")
-                    .setSource(acc.recognizingAgent.getAgentInformationTriple(lang, qualification.referenceLang))
+                    .setSource(acc.publisher.getAgentInformationTriple(lang, qualification.referenceLang))
                     .setIsBordered());
             }
         }
@@ -160,7 +161,6 @@ export class TabDataTemplates {
         data.push( new TabDataElement()
             .setElementsGroup(container1)
             .setSource(qualification.publisher.getAgentInformationTriple(lang, qualification.referenceLang)));
-
 
         if (qualification.learningOutcomes) {
             data.push(new TabDataElement().setSectionHeader("Connected skills"));

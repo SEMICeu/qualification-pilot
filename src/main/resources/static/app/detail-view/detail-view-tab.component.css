@@ -29,13 +29,16 @@ a:hover, a:focus, a:active {
     color: #004494;
 }
 
-.elementsGroupBordered {
+.elements-group-bordered {
     border: solid;
     border-color: #cccccc;
     border-width: 1px;
 }
 
-.elementsGroupUnbordered {
+.elements-group-unbordered {
+    border: solid;
+    border-color: transparent;
+    border-width: 1px;
 }
 
 table {

@@ -49,6 +49,12 @@ export class AccreditationService {
                         if (values.landingPage_group) accreditation.landingPages = ConcatsParser.makeStringArray(values.landingPage_group.value);
                         if (values.supplementaryDoc_group) accreditation.supplementaryDocs = ConcatsParser.makeStringArray(values.supplementaryDoc_group.value);
                         if (values.subject_group) accreditation.subjects = ConcatsParser.makeStringArray(values.subject_group.value);
+                        if (values.publisherName_lang_group) {
+                            accreditation.publisher = new Agent();
+                            accreditation.publisher.names = ConcatsParser.makeMapOfStringArrays(values.publisherName_lang_group.value);
+                            if (values.publisherMail_group) accreditation.publisher.mails = ConcatsParser.makeStringArray(values.publisherMail_group.value);
+                            if (values.publisherPage_group) accreditation.publisher.pages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
+                        }
                         if (values.trusted) accreditation.trusted = values.trusted.value;
 
                         accreds.push(accreditation);
