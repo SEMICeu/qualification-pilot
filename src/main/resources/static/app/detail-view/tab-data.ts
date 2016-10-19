@@ -14,7 +14,7 @@ export class TabData {
 
     private _elements: TabDataElement[] = [];
 
-    addElement(element: TabDataElement) {
+    push(element: TabDataElement) {
         this._elements.push(element);
     }
 

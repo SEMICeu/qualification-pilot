@@ -94,7 +94,7 @@ export class DetailView implements OnInit {
 
             for (let i = 1; i < this.tabDatas.length; ++i) {
                 for (let element of this.tabDatas[i].elements) {
-                    this.tabDatas[0].addElement(element);
+                    this.tabDatas[0].push(element);
                 }
             }
 

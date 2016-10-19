@@ -5,6 +5,12 @@
 
   <table *ngFor = "let element of data.elements">
 
+    <tr *ngIf="element.sectionHeader">
+      <div class="{{element.borderClass}}">
+      <th>&nbsp;&nbsp;</th><th class="element-main"><h2 class="no-padding-bottom">{{element.sectionHeader}}</h2></th>
+      </div>
+    </tr>
+
     <tr *ngIf="element.elementsGroup">
       <div class="{{element.borderClass}}">
 
@@ -24,7 +30,7 @@
         <h5 *ngIf="element.elementsGroupTitle">{{element.elementsGroupTitle}}</h5>
 
         <span *ngFor = "let element of element.elementsGroup" >
-          <h2 *ngIf="element.sectionHeader"><b>{{element.sectionHeader}}</b></h2>
+          <h2 *ngIf="element.sectionHeader">{{element.sectionHeader}}</h2>
 
           <li *ngIf="element.values && element.values[1] && element.values[1].length > 0">
             <span [innerHTML]="element.values[0]" class="propertyName"></span>
