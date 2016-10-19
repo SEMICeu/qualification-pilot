@@ -27,7 +27,7 @@ export class SkillService {
                 var skills: Skill[] = [];
                 for (let values of objects) {
                     if (values.uri && values.prefLabel_lang_group) {
-                        skills.push(new Skill(values.uri));
+                        skills.push(new Skill(values.uri.value));
                         skills[skills.length-1].prefLabels = ConcatsParser.makeMapOfStringArrays(values.prefLabel_lang_group.value);
                         skills[skills.length-1].descriptions = ConcatsParser.makeMapOfStringArrays(values.description_lang_group.value);
                     }

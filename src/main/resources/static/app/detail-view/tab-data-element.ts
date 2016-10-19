@@ -1,4 +1,6 @@
 
+import {Link} from "../model/link";
+
 export class TabDataElement {
 
 
@@ -8,7 +10,7 @@ export class TabDataElement {
         }
         return this;
     }
-    setLinkValues(linkValues:[String, [String,String][]]) {
+    setLinkValues(linkValues:[String, Link[]]) {
         this.linkValues = linkValues;
         return this;
     }
@@ -25,24 +27,35 @@ export class TabDataElement {
         this.sectionHeader = value;
         return this;
     }
-    setTrusted(value: String) {
-        if (value && value == "true") {
-            this.trusted = "trusted";
-        }
-        else this.trusted = "untrusted";
+    setSourceColumnCssClass(value: String) {
+        this.sourceColumnCssClass = value;
         return this;
     }
     setIsBordered() {
         this.borderClass = "elementsGroupBordered";
         return this;
     }
+    setSource(agentInfoTriple: [String, Link, Link]) {
+        if (agentInfoTriple[0] == null) {
+            this.setSourceColumnCssClass("source-column-no-source")
+        }
+        else {
+            this.sourceName = agentInfoTriple[0];
+            this.sourcePage = agentInfoTriple[1];
+            this.sourceMail = agentInfoTriple[2];
+        }
+        return this;
+    }
 
-    trusted = "untrusted";
     values:[String, String[]];
-    linkValues:[String, [String,String][]];
+    linkValues:[String, Link[]];
     elementsGroup: TabDataElement[];
     elementsGroupTitle: String;
     sectionHeader:String;
     borderClass = "elementsGroupUnBordered";
+    sourceName: String;
+    sourcePage: Link;
+    sourceMail: Link;
+    sourceColumnCssClass:String = "source-column-standard";
 
 }

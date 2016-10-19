@@ -8,12 +8,17 @@
     <tr *ngIf="element.elementsGroup">
       <div class="{{element.borderClass}}">
 
-      <th class="tooltip {{element.trusted}}">&nbsp;&nbsp;
-        <span class="tooltiptext {{element.trusted}}">
-        <span *ngIf="element.trusted=='trusted'"> Trusted information </span>
-          <span *ngIf="element.trusted=='untrusted'"> No trust information </span>
-      </span>
+      <th class="tooltip {{element.sourceColumnCssClass}}">&nbsp;&nbsp;
+        <span class="tooltiptext {{element.sourceColumnCssClass}}">
+          Source:
+          <div *ngIf="element.sourceName"> {{element.sourceName}}<br>
+             <div *ngIf="element.sourcePage"><a class="link-on-dark" href='{{element.sourcePage.url}}' [innerHTML]="element.sourcePage.name" ></a></div>
+              <div *ngIf="element.sourceMail"><a class="link-on-dark" href='{{element.sourceMail.url}}' [innerHTML]="element.sourceMail.name" ></a></div>
+          </div>
+          <div *ngIf="!element.sourceName"> No information given</div>
+        </span>
       </th>
+
       <th class="element-main">
 
         <h5 *ngIf="element.elementsGroupTitle">{{element.elementsGroupTitle}}</h5>
@@ -35,13 +40,13 @@
             <span [innerHTML]="element.linkValues[0]" class="propertyName"></span>
             <span *ngIf="element.linkValues[1].length == 1">
                <span  *ngFor = "let linkValue of element.linkValues[1]">
-                <a href='{{linkValue[1]}}' [innerHTML]="linkValue[0]" ></a>
+                <a href='{{linkValue.url}}' [innerHTML]="linkValue.name" ></a>
               </span>
             </span>
 
             <ul *ngIf="element.linkValues[1].length > 1">
               <li *ngFor = "let linkValue of element.linkValues[1]">
-                <a href='{{linkValue[1]}}' [innerHTML]="linkValue[0]" ></a>
+                <a href='{{linkValue.url}}' [innerHTML]="linkValue.name" ></a>
               </li>
             </ul>
           </li>
@@ -66,13 +71,13 @@
                  <span [innerHTML]="element.linkValues[0]" class="propertyName"></span>
                  <span *ngIf="element.linkValues[1].length == 1">
                    <span  *ngFor = "let linkValue of element.linkValues[1]">
-                     <a href='{{linkValue[1]}}' [innerHTML]="linkValue[0]" ></a>
+                     <a href='{{linkValue.url}}' [innerHTML]="linkValue.name" ></a>
                    </span>
                  </span>
 
                  <ul *ngIf="element.linkValues[1].length > 1">
                    <li *ngFor = "let linkValue of element.linkValues[1]">
-                     <a href='{{linkValue[1]}}' [innerHTML]="linkValue[0]" ></a>
+                     <a href='{{linkValue.url}}' [innerHTML]="linkValue.name" ></a>
                    </li>
                  </ul>
               </li>

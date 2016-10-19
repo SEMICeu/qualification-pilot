@@ -1,4 +1,5 @@
 
+import {Link} from "./link";
 export class Agent {
 
     names: Map<String, String[]>;
@@ -14,20 +15,31 @@ export class Agent {
         }
         return null;
     }
-    getMailLinks():[String,String][] {
+    getMailLinks():Link[] {
         if (!this.mails) return null;
-        var links:[String,String][] = [];
+        var links:Link[] = [];
         for (let url of this.mails) {
-            links.push([url, url]);
+            links.push(new Link(url, url));
         }
         return links;
     }
-    getPageLinks():[String,String][] {
+    getPageLinks():Link[] {
         if (!this.pages) return null;
-        var links:[String,String][] = [];
+        var links:Link[] = [];
         for (let url of this.pages) {
-            links.push([url, url]);
+            links.push(new Link(url, url));
         }
         return links;
+    }
+    getAgentInformationTriple(prefLang: String, refLang: String[]): [String, Link, Link] {
+        var name, page, mail;
+        let names = this.getNames(prefLang, refLang);
+        if (names && names.length > 0) name = names[0];
+        let pages = this.getPageLinks();
+        if (pages && pages.length > 0) page = pages[0];
+        let mails = this.getMailLinks();
+        if (mails && mails.length > 0) mail = mails[0];
+
+        return [name, page, mail];
     }
 }

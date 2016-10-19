@@ -4,6 +4,7 @@ import {QualificationFramework} from "./qualification-framework";
 import {Accreditation} from "./accreditation";
 import {Agent} from "./agent";
 import {Recognition} from "./recognition";
+import {Link} from "./link";
 export class Qualification {
 
     constructor(uri: String) {
@@ -127,27 +128,27 @@ export class Qualification {
         }
         return null;
     }
-    getHomepageLinks():[String,String][] {
+    getHomepageLinks():Link[] {
         if (!this.homepages) return null;
-        var links:[String,String][] = [];
+        var links:Link[] = [];
         for (let url of this.homepages) {
-            links.push([url, url]);
+            links.push(new Link(url, url));
         }
         return links;
     }
-    getLandingPageLinks():[String,String][] {
+    getLandingPageLinks():Link[] {
         if (!this.landingPages) return null;
-        var links:[String,String][] = [];
+        var links:Link[] = [];
         for (let url of this.landingPages) {
-            links.push([url, url]);
+            links.push(new Link(url, url));
         }
         return links;
     }
-    getSupplementaryDocLinks():[String,String][] {
+    getSupplementaryDocLinks():Link[] {
         if (!this.supplementaryDocs) return null;
-        var links:[String,String][] = [];
+        var links:Link[] = [];
         for (let url of this.supplementaryDocs) {
-            links.push([url, url]);
+            links.push(new Link(url, url));
         }
         return links;
     }

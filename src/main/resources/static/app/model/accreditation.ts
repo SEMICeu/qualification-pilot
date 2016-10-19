@@ -1,5 +1,6 @@
 
 import {Agent} from "./agent";
+import {Link} from "./link";
 export class Accreditation {
 
     constructor(uri: String) {
@@ -18,27 +19,27 @@ export class Accreditation {
     subjects: String[];
     trusted: String;
 
-    getHomepageLinks():[String,String][] {
-        if (!this.homepages) return null;
-        var links:[String,String][] = [];
-        for (let url of this.homepages) {
-            links.push([url, url]);
-        }
-        return links;
+    getHomepageLinks():Link[] {
+            if (!this.homepages) return null;
+            var links:Link[] = [];
+            for (let url of this.homepages) {
+                links.push(new Link(url, url));
+            }
+            return links;
     }
-    getlandingPageLinks():[String,String][] {
+    getlandingPageLinks():Link[] {
         if (!this.landingPages) return null;
-        var links:[String,String][] = [];
+        var links:Link[] = [];
         for (let url of this.landingPages) {
-            links.push([url, url]);
+            links.push(new Link(url, url));
         }
         return links;
     }
-    getsupplementaryDocLinks():[String,String][] {
+    getsupplementaryDocLinks():Link[] {
         if (!this.supplementaryDocs) return null;
-        var links:[String,String][] = [];
+        var links:Link[] = [];
         for (let url of this.supplementaryDocs) {
-            links.push([url, url]);
+            links.push(new Link(url, url));
         }
         return links;
     }

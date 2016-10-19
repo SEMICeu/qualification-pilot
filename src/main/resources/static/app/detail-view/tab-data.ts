@@ -18,6 +18,12 @@ export class TabData {
         this._elements.push(element);
     }
 
+    putLastElementInFront() {
+        if (this._elements && this.elements.length > 1) {
+            this._elements = [this._elements.pop()].concat(this._elements);
+        }
+    }
+
     get elements(): TabDataElement[] {
         return this._elements;
     }

@@ -15,8 +15,10 @@ a {
     text-shadow: none;
 }
 a:hover, a:focus, a:active {
-    color: blue;
     text-decoration: underline;
+}
+.link-on-dark {
+    color: lightblue;
 }
 /*ul {*/
     /*list-style: none;*/
@@ -40,33 +42,33 @@ table {
     width: 100%;
 }
 
-
 .element-main {
 
     width: 100%;
-    padding-left: 10px;
+    padding-left: 15px;
     padding-right: 10px;
 }
 
 .element-inner-main {
     width: 100%;
     margin-left: -10px;
-    padding-left: 10px;
+    padding-left: 15px;
     padding-right: 10px;
 }
 
 .tooltip {
     position: relative;
-    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+    /*border-bottom: 1px dotted black; !* If you want dots under the hoverable text *!*/
 }
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 110px;
+    width: 150px;
     color: #fff;
     text-align: center;
     border-radius: 6px;
     padding: 5px 2px;
+    font-size: 85%;
 
     /* Position the tooltip */
     position: absolute;
@@ -82,18 +84,14 @@ table {
     visibility: visible;
 }
 
-.untrusted {
-    background-color: #b08080;;
+.source-column-standard {
+    background-color: #505050;
 }
 
-.untrusted:hover {
-    background-color: #b08080;;
+.source-column-no-source {
+    background-color: #b0b0b0;
 }
 
-.trusted {
-    background-color: #80b080;
-}
-
-.trusted:hover {
-    background-color: #80b080;
+.source-column-none {
+    background-color: #b0b0b0;
 }

@@ -1,4 +1,5 @@
 
+import {Link} from "./link";
 export class Skill {
 
 
@@ -19,8 +20,8 @@ export class Skill {
         }
         return null;
     }
-    getSkillLink (prefLang: String, refLang:String[]): [String,String] {
-        if (this.prefLabels) return [this.getPrefLabels(prefLang, refLang)[0], this.uri];
+    getSkillLink (prefLang: String, refLang:String[]): Link {
+        if (this.prefLabels) return new Link (this.uri, this.getPrefLabels(prefLang, refLang)[0]);
     }
     getDescriptions(prefLang: String, refLang:String[]): String[] {
         if (!this.descriptions) return null;

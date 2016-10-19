@@ -1,5 +1,6 @@
 
 import {Agent} from "./agent";
+import {Link} from "./link";
 export class QualificationFramework {
 
     constructor(uri: String) {
@@ -57,11 +58,11 @@ export class QualificationFramework {
         }
         return null;
     }
-    getHomepageLinks():[String,String][] {
+    getHomepageLinks():Link[] {
         if (!this.homepages) return null;
-        var links:[String,String][] = [];
+        var links:Link[] = [];
         for (let url of this.homepages) {
-            links.push([url, url]);
+            links.push(new Link(url, url));
         }
         return links;
     }

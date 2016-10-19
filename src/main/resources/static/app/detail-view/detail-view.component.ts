@@ -89,8 +89,8 @@ export class DetailView implements OnInit {
 
             this.tabDatas.push(TabDataTemplates.core(1, this.qualification, this.lang));
             this.tabDatas.push(TabDataTemplates.accreditationRecognition(2, this.qualification, this.lang));
-            this.tabDatas.push(TabDataTemplates.description(3, this.qualification, this.lang));
-            this.tabDatas.push(TabDataTemplates.learningOutcomes(4, this.qualification, this.lang));
+            this.tabDatas.push(TabDataTemplates.learningOutcomes(3, this.qualification, this.lang));
+            this.tabDatas.push(TabDataTemplates.description(4, this.qualification, this.lang));
 
             for (let i = 1; i < this.tabDatas.length; ++i) {
                 for (let element of this.tabDatas[i].elements) {
