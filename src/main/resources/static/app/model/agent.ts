@@ -19,7 +19,11 @@ export class Agent {
         if (!this.mails) return null;
         var links:Link[] = [];
         for (let url of this.mails) {
-            links.push(new Link(url, url));
+            var name = url;
+            if (url.startsWith("mailto:")) {
+                name = url.substring(7, url.length);
+            }
+            links.push(new Link(url, name));
         }
         return links;
     }

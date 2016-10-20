@@ -42,9 +42,9 @@ export class QueryTemplates {
         queryBuild.addTriple( new Triple().subject("?descriptionNode").predicate("esco:nodeLiteral").object("?description_value").after("}") );
         queryBuild.addFreeFormVariable( " (GROUP_CONCAT (DISTINCT CONCAT(str(?description_value),'@',?description_lang);separator='" + ConcatsParser.defaultDelimiter + "') as ?description_lang_group)");
 
-        queryBuild.addTriple( new Triple().subject("?uri").predicate("esco:hasISCED-FCode").object("?iSCED_FcodeUri"));
+        queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasISCED-FCode").object("?iSCED_FcodeUri"));
         queryBuild.addTriple( new Triple().subject("?iSCED_FcodeUri").predicate("skos:notation").selectObject("?iSCEDFcode").groupConcat());
-        queryBuild.addTriple( new Triple().subject("?iSCED_FcodeUri").predicate("skos:prefLabel").selectObject("?iSCEDFcodeLabel").langGroupConcat());
+        queryBuild.addTriple( new Triple().subject("?iSCED_FcodeUri").predicate("skos:prefLabel").selectObject("?iSCEDFcodeLabel").after("}").langGroupConcat());
 
         queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasAssociation").selectObject("?qfAssociationUri").groupConcat());
         queryBuild.addTriple( new Triple().subject("?qfAssociationUri").predicate("dcterms:type").object("<http://data.europa.eu/esco/association-type#qf-level>").after("}"));

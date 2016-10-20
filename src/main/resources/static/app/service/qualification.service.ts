@@ -72,7 +72,7 @@ export class QualificationService {
             .toPromise()
             .then(res => {
                     let values = res.json().results.bindings[0];
-                    //console.log(res.json().results);
+                    console.log(res.json().results);
                     let qualification = new Qualification(uri);
 
                     if (values.referenceLang_group) qualification.referenceLang = ConcatsParser.makeStringArray(values.referenceLang_group.value);

@@ -12,12 +12,11 @@ export class TabDataTemplates {
         container.push(new TabDataElement().setValues(["Title:", qualification.getPrefLabels(lang)]));
         container.push(new TabDataElement().setValues(["Alternative title:", qualification.getAltLabels(lang)]));
         container.push(new TabDataElement().setValues(["Reference Language:", qualification.getReferenceLangLabels(lang)]));
-        container.push(new TabDataElement().setValues(["Definition:", qualification.getDefinitions(lang)]));
         container.push(new TabDataElement().setValues(["Test",null]));
-        container.push(new TabDataElement().setValues(["iSCED-Fcode:",qualification.getISCEDFcode(lang)]));
+        container.push(new TabDataElement().setValues(["Subject:",qualification.getISCEDFcode(lang)]));
         container.push(new TabDataElement().setValues(["ECTS credits:", [qualification.eCTSCredits]]));
         container.push(new TabDataElement().setValues(["Volume of learning:", [qualification.volumeOfLearning]]));
-        container.push(new TabDataElement().setValues(["Is Partial Qualification:", [qualification.isPartialQualification]]));
+        // container.push(new TabDataElement().setValues(["Is Partial Qualification:", [qualification.isPartialQualification]]));
         container.push(new TabDataElement().setValues(["Ways to Acquire:", qualification.waysToAcquire]));
         let entryReqs:String[] = [];
         if (qualification.entryRequirements) for (let entryReq of qualification.entryRequirements) {
@@ -82,11 +81,11 @@ export class TabDataTemplates {
                 qfValues.push(new TabDataElement().setValues(["Issued:", [qf.issued]]));
                 //qfValues.push(new TabDataElement().setLinkValues(["Target Framework:",[qf.targetFrameWork]]));
                 qfValues.push(new TabDataElement().setValues(["Target Framework Version:", [qf.targetFrameworkVersion]]));
-                qfValues.push(new TabDataElement().setValues(["EQF:", qf.getTargetLabels(lang, qualification.referenceLang)]));
-                qfValues.push(new TabDataElement().setValues(["Target Description: ", qf.getTargetDescriptions(lang, qualification.referenceLang)]));
-                qfValues.push(new TabDataElement().setValues(["Target Notation:", qf.targetNotations]));
-                qfValues.push(new TabDataElement().setValues(["Target Name: ", qf.getTargetNames(lang, qualification.referenceLang)]));
-                qfValues.push(new TabDataElement().setValues(["Target URL:", [qf.targetUrl]]));
+                qfValues.push(new TabDataElement().setValues(["EQF level:", qf.getTargetLabels(lang, qualification.referenceLang)]));
+                qfValues.push(new TabDataElement().setValues(["Framework Description: ", qf.getTargetDescriptions(lang, qualification.referenceLang)]));
+                qfValues.push(new TabDataElement().setValues(["NQF level:", qf.targetNotations]));
+                qfValues.push(new TabDataElement().setValues(["Framework name: ", qf.getTargetNames(lang, qualification.referenceLang)]));
+                qfValues.push(new TabDataElement().setValues(["Framework URL:", [qf.targetUrl]]));
                 qfValues.push(new TabDataElement().setLinkValues(["Homepage:", qf.getHomepageLinks()]));
                 // if (qf.publisher) {
                 //     qfValues.push(new TabDataElement().setValues(["Publisher Name:", qf.publisher.getNames(lang, qualification.referenceLang)]));
@@ -116,34 +115,40 @@ export class TabDataTemplates {
                 .setIsBordered());
         }
 
-        if (qualification.accreditations) for (let acc of qualification.accreditations) {
-            if (acc.trusted == "true") {
-                var accValues: TabDataElement[] = [];
+        if (qualification.accreditations) {
+            data.push(new TabDataElement().setSectionHeader("Accreditation"));
+            for (let acc of qualification.accreditations) {
+                if (acc.trusted == "true" &&
+                    acc.recognizingAgent &&
+                    acc.recognizingAgent.getNames(lang, qualification.referenceLang) &&
+                    acc.recognizingAgent.getNames(lang, qualification.referenceLang).length>0) {
+                    var accValues: TabDataElement[] = [];
 
-                if (acc.recognizedBody) {
-                    accValues.push(new TabDataElement().setValues(["Recognized Awarding Body: ", acc.recognizedBody.getNames(lang, qualification.referenceLang)]));
-                    accValues.push(new TabDataElement().setLinkValues(["Recognized Awarding Body Mail:", acc.recognizedBody.getMailLinks()]));
-                    accValues.push(new TabDataElement().setLinkValues(["Recognized Awarding Body Homepage :", acc.recognizedBody.getPageLinks()]));
+                    if (acc.recognizingAgent) {
+                        // accValues.push(new TabDataElement().setValues(["Recognizer Name: ", acc.recognizingAgent.getNames(lang, qualification.referenceLang)]));
+                        accValues.push(new TabDataElement().setLinkValues(["Mail:", acc.recognizingAgent.getMailLinks()]));
+                        accValues.push(new TabDataElement().setLinkValues(["Homepage :", acc.recognizingAgent.getPageLinks()]));
+                    }
+                    if (acc.recognizedBody) {
+                        accValues.push(new TabDataElement().setValues(["Recognized Awarding Body: ", acc.recognizedBody.getNames(lang, qualification.referenceLang)]));
+                        accValues.push(new TabDataElement().setLinkValues(["Recognized Awarding Body Mail:", acc.recognizedBody.getMailLinks()]));
+                        accValues.push(new TabDataElement().setLinkValues(["Recognized Awarding Body Homepage :", acc.recognizedBody.getPageLinks()]));
+                    }
+                    accValues.push(new TabDataElement().setValues(["Issue date:", [acc.issued]]));
+                    accValues.push(new TabDataElement().setValues(["Review Date:", [acc.reviewDate]]));
+                    accValues.push(new TabDataElement().setValues(["End Date:", [acc.endDate]]));
+
+                    accValues.push(new TabDataElement().setLinkValues(["Homepage:", acc.getHomepageLinks()]));
+                    accValues.push(new TabDataElement().setLinkValues(["Landing Page:", acc.getlandingPageLinks()]));
+                    accValues.push(new TabDataElement().setLinkValues(["Supplementary Documents:", acc.getsupplementaryDocLinks()]));
+                    // accValues.push(new TabDataElement().setValues(["Trusted:", [acc.trusted]]));
+
+                    data.push(new TabDataElement()
+                        .setElementsGroup(accValues)
+                        .setElementsGroupTitle(acc.recognizingAgent.getNames(lang, qualification.referenceLang)[0])
+                        .setSource(acc.publisher.getAgentInformationTriple(lang, qualification.referenceLang))
+                        .setIsBordered());
                 }
-                if (acc.recognizingAgent) {
-                    accValues.push(new TabDataElement().setValues(["Recognizer Name: ", acc.recognizingAgent.getNames(lang, qualification.referenceLang)]));
-                    accValues.push(new TabDataElement().setLinkValues(["Recognizer Mail:", acc.recognizingAgent.getMailLinks()]));
-                    accValues.push(new TabDataElement().setLinkValues(["Recognizer Homepage :", acc.recognizingAgent.getPageLinks()]));
-                }
-                accValues.push(new TabDataElement().setValues(["Issued:", [acc.issued]]));
-                accValues.push(new TabDataElement().setValues(["Review Date:", [acc.reviewDate]]));
-                accValues.push(new TabDataElement().setValues(["End Date:", [acc.endDate]]));
-
-                accValues.push(new TabDataElement().setLinkValues(["Homepage:", acc.getHomepageLinks()]));
-                accValues.push(new TabDataElement().setLinkValues(["Landing Page:", acc.getlandingPageLinks()]));
-                accValues.push(new TabDataElement().setLinkValues(["Supplementary Documents:", acc.getsupplementaryDocLinks()]));
-                // accValues.push(new TabDataElement().setValues(["Trusted:", [acc.trusted]]));
-
-                data.push(new TabDataElement()
-                    .setElementsGroup(accValues)
-                    .setElementsGroupTitle("Accreditation")
-                    .setSource(acc.publisher.getAgentInformationTriple(lang, qualification.referenceLang))
-                    .setIsBordered());
             }
         }
         return data;
@@ -151,12 +156,14 @@ export class TabDataTemplates {
 
     static learningOutcomes(index:number, qualification: Qualification, lang:String): TabData {
 
-        let data = new TabData("Learning outcomes", index);
+        let data = new TabData("Descriptions", index);
 
-        data.push(new TabDataElement().setSectionHeader("Descriptions"));
+        data.push(new TabDataElement().setSectionHeader(data.name));
+
         var container1: TabDataElement[] = [];
+        container1.push(new TabDataElement().setValues(["Definition:", qualification.getDefinitions(lang)]));
         var descArray = [];
-        descArray.push(new TabDataElement().setValues(["",qualification.getDescriptions(lang)]));
+        descArray.push(new TabDataElement().setValues(["Description:",qualification.getDescriptions(lang)]));
         container1.push(new TabDataElement().setElementsGroup(descArray).setIsBordered());
         data.push( new TabDataElement()
             .setElementsGroup(container1)
@@ -186,7 +193,7 @@ export class TabDataTemplates {
         var container: TabDataElement[] = [];
 
         var additArray = [];
-        additArray.push(new TabDataElement().setValues(["",qualification.getAdditionalNotes(lang)]));
+        additArray.push(new TabDataElement().setValues(["Additional note",qualification.getAdditionalNotes(lang)]));
         container.push(new TabDataElement().setElementsGroup(additArray).setIsBordered());
 
         container.push(new TabDataElement().setLinkValues(["Supplementary Documents:",qualification.getSupplementaryDocLinks()]));

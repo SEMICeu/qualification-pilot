@@ -3,6 +3,7 @@ li {
 }
 h2 {
     padding-bottom: 20px;
+    font-weight: bold;
 }
 h5 {
     padding-bottom: 12px;
@@ -67,12 +68,12 @@ table {
 }
 
 .tooltip .tooltiptext {
+
     visibility: hidden;
-    width: 150px;
     color: #fff;
     text-align: center;
     border-radius: 6px;
-    padding: 5px 2px;
+    padding: 5px 4px;
     font-size: 85%;
 
     /* Position the tooltip */
@@ -81,6 +82,9 @@ table {
 }
 
 .tooltip .tooltiptext {
+    width: 300px;
+    /*min-width: 160px;*/
+    /*max-width: 500px;*/
     top: 0px;
     right: 50%;
 }

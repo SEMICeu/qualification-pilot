@@ -48,6 +48,9 @@ export class DetailView implements OnInit {
                     this.loading = true;
                     this.setupDataFromUri(uri);
                 }
+                else {
+                    this.clearData();
+                }
             }
         });
 
@@ -74,6 +77,15 @@ export class DetailView implements OnInit {
                     }
                 });
         }
+        else {
+            if (this.tabDatas.length == 0) {
+                this.generateTabData();
+            }
+        }
+    }
+
+    clearData() {
+        this.tabDatas = [];
     }
 
     generateTabData() {
