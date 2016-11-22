@@ -8,7 +8,7 @@ export class TabDataTemplates {
     constructor(
         private domsanitizer: DomSanitizer) {}
 
-    static core(index:number, qualification: Qualification, lang:String): TabData {
+    static core(index:number, qualification: Qualification, lang:string): TabData {
         let data = new TabData("Core", index);
 
         data.push(new TabDataElement().setSectionHeader(data.name));
@@ -23,7 +23,7 @@ export class TabDataTemplates {
         container.push(new TabDataElement().setValues(["Volume of learning:", [qualification.volumeOfLearning]]));
         // container.push(new TabDataElement().setValues(["Is Partial Qualification:", [qualification.isPartialQualification]]));
         container.push(new TabDataElement().setValues(["Ways to Acquire:", qualification.waysToAcquire]));
-        let entryReqs:String[] = [];
+        let entryReqs:string[] = [];
         if (qualification.entryRequirements) for (let entryReq of qualification.entryRequirements) {
             entryReqs.push("Type: " + entryReq[0]);
             entryReqs.push("Level: " + entryReq[1]);}
@@ -74,7 +74,7 @@ export class TabDataTemplates {
         return data;
     }
 
-    static accreditationRecognition(index:number, qualification: Qualification, lang:String): TabData {
+    static accreditationRecognition(index:number, qualification: Qualification, lang:string): TabData {
         let data = new TabData("Qualification Framework/Accreditation", index);
 
         var noEqf = true;
@@ -159,7 +159,7 @@ export class TabDataTemplates {
         return data;
     }
 
-    static learningOutcomes(index:number, qualification: Qualification, lang:String): TabData {
+    static learningOutcomes(index:number, qualification: Qualification, lang:string): TabData {
 
         let data = new TabData("Descriptions", index);
 
@@ -170,7 +170,7 @@ export class TabDataTemplates {
         var descArray = [];
         descArray.push(new TabDataElement().setValues(["Description:",qualification.getDescriptions(lang)]));
 
-         // let s = new AnnotatedList().setAndParseFromStrings(qualification.getDescriptions(lang));
+         let s = new AnnotatedList().setAndParseFromStrings(qualification.getDescriptions(lang));
          // descArray.push(new TabDataElement().setAnnotatedList(["Annotated:",[s.getAsString()]]));
 
         container1.push(new TabDataElement().setElementsGroup(descArray).setIsBordered());
@@ -194,7 +194,7 @@ export class TabDataTemplates {
         return data;
     }
 
-    static additional(index:number, qualification: Qualification, lang:String) {
+    static additional(index:number, qualification: Qualification, lang:string) {
         let data = new TabData("Additional Notes", index);
 
         data.push(new TabDataElement().setSectionHeader(data.name));

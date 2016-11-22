@@ -2,11 +2,11 @@
 import {Link} from "./link";
 export class Agent {
 
-    names: Map<String, String[]>;
-    mails: String[];
-    pages: String[];
+    names: Map<string, string[]>;
+    mails: string[];
+    pages: string[];
 
-    getNames(prefLang: String, refLang: String[]): String[] {
+    getNames(prefLang: string, refLang: string[]): string[] {
         if (!this.names) return null;
         if (this.names.has(prefLang)) return this.names.get(prefLang);
         if (this.names.has("en")) return this.names.get("en");
@@ -35,7 +35,7 @@ export class Agent {
         }
         return links;
     }
-    getAgentInformationTriple(prefLang: String, refLang: String[]): [String, Link, Link] {
+    getAgentInformationTriple(prefLang: string, refLang: string[]): [string, Link, Link] {
         var name, page, mail;
         let names = this.getNames(prefLang, refLang);
         if (names && names.length > 0) name = names[0];

@@ -15,9 +15,9 @@ export class QfService {
 
     url = endPointUrl;
     headers =  endPointHeaders;
-    prefLang:String = "en";
+    prefLang:string = "en";
 
-    getQualificationFrameworks (qualUri: String, langs:String[]):Promise<QualificationFramework[]> {
+    getQualificationFrameworks (qualUri: string, langs:string[]):Promise<QualificationFramework[]> {
 
         //console.log(QueryTemplates.makeForQualificationFrameworks(qualUri, langs));
         return this.http

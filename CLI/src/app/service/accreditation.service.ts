@@ -16,7 +16,7 @@ export class AccreditationService {
     url = endPointUrl;
     headers =  endPointHeaders;
 
-    getAccreditations (qualUri: String, langs:String[]):Promise<Accreditation[]> {
+    getAccreditations (qualUri: string, langs:string[]):Promise<Accreditation[]> {
 
         //console.log(QueryTemplates.makeForAccreditations(qualUri, langs));
         return this.http

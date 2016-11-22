@@ -17,7 +17,7 @@ export class RecognitionService {
     url = endPointUrl;
     headers =  endPointHeaders;
 
-    getRecognitions (qualUri: String, langs:String[]):Promise<Recognition[]> {
+    getRecognitions (qualUri: string, langs:string[]):Promise<Recognition[]> {
 
         //console.log(QueryTemplates.makeForRecognitions(qualUri, langs));
         return this.http

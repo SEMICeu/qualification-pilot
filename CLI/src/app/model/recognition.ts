@@ -2,17 +2,17 @@
 import {Agent} from "./agent";
 export class Recognition {
 
-    constructor(uri: String) {
+    constructor(uri: string) {
         this.uri = uri;
     }
 
-    uri: String;
+    uri: string;
     recognizedBody: Agent;
     recognizingAgent: Agent;
-    recognizingLocation: String;
-    issued: String;
-    endDate: String;
-    trusted: String;
+    recognizingLocation: string;
+    issued: string;
+    endDate: string;
+    trusted: string;
 
     publisher: Agent;
 }

@@ -15,7 +15,7 @@ export class SkillService {
     url = endPointUrl;
     headers =  endPointHeaders;
 
-    getSkills (qualUri: String, langs:String[]):Promise<Skill[]> {
+    getSkills (qualUri: string, langs:string[]):Promise<Skill[]> {
 
         //console.log(QueryTemplates.makeForSkills(qualUri, langs));
         return this.http

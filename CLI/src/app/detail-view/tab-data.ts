@@ -4,12 +4,12 @@ import {TabDataElement} from "./tab-data-element";
 export class TabData {
 
 
-    constructor(name: String, index: number) {
+    constructor(name: string, index: number) {
         this.name = name;
         this.index = index;
     }
 
-    name:String;
+    name:string;
     index: number;
 
     private _elements: TabDataElement[] = [];

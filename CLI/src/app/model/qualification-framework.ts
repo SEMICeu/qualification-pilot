@@ -3,26 +3,26 @@ import {Agent} from "./agent";
 import {Link} from "./link";
 export class QualificationFramework {
 
-    constructor(uri: String) {
+    constructor(uri: string) {
         this.uri = uri;
     }
 
-    uri:String;
-    descriptions: Map<String, String[]>;
-    issued:String;
-    targetFrameWork:String;
-    targetFrameworkVersion:String;
-    target:String;
-    targetLabels: Map<String, String[]>;
-    targetDescriptions: Map<String, String[]>;
-    targetNotations:String[];
-    targetNames: Map<String, String[]>;
-    targetUrl:String;
-    homepages:String[];
-    trusted:String;
+    uri:string;
+    descriptions: Map<string, string[]>;
+    issued:string;
+    targetFrameWork:string;
+    targetFrameworkVersion:string;
+    target:string;
+    targetLabels: Map<string, string[]>;
+    targetDescriptions: Map<string, string[]>;
+    targetNotations:string[];
+    targetNames: Map<string, string[]>;
+    targetUrl:string;
+    homepages:string[];
+    trusted:string;
     publisher: Agent;
 
-    getDescriptions(prefLang: String, refLang: String[]): String[] {
+    getDescriptions(prefLang: string, refLang: string[]): string[] {
         if (!this.descriptions) return null;
         if (this.descriptions.has(prefLang)) return this.descriptions.get(prefLang);
         if (this.descriptions.has("en")) return this.descriptions.get("en");
@@ -31,7 +31,7 @@ export class QualificationFramework {
         }
         return null;
     }
-    getTargetDescriptions(prefLang: String, refLang: String[]): String[] {
+    getTargetDescriptions(prefLang: string, refLang: string[]): string[] {
         if (!this.targetDescriptions) return null;
         if (this.targetDescriptions.has(prefLang)) return this.targetDescriptions.get(prefLang);
         if (this.targetDescriptions.has("en")) return this.targetDescriptions.get("en");
@@ -40,7 +40,7 @@ export class QualificationFramework {
         }
         return null;
     }
-    getTargetNames(prefLang: String, refLang: String[]): String[] {
+    getTargetNames(prefLang: string, refLang: string[]): string[] {
         if (!this.targetNames) return null;
         if (this.targetNames.has(prefLang)) return this.targetNames.get(prefLang);
         if (this.targetNames.has("en")) return this.targetNames.get("en");
@@ -49,7 +49,7 @@ export class QualificationFramework {
         }
         return null;
     }
-    getTargetLabels(prefLang: String, refLang: String[]): String[] {
+    getTargetLabels(prefLang: string, refLang: string[]): string[] {
         if (!this.targetLabels) return null;
         if (this.targetLabels.has(prefLang)) return this.targetLabels.get(prefLang);
         if (this.targetLabels.has("en")) return this.targetLabels.get("en");

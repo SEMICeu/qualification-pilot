@@ -6,13 +6,13 @@ import {SafeHtml} from "@angular/platform-browser";
 export class TabDataElement {
 
 
-    setValues(values:[String, String[]]) {
+    setValues(values:[string, string[]]) {
         if (values && values[1] && values[1].length > 0 && values[1][0]) {
             this.values = values;
         }
         return this;
     }
-    setLinkValues(linkValues:[String, Link[]]) {
+    setLinkValues(linkValues:[string, Link[]]) {
         this.linkValues = linkValues;
         return this;
     }
@@ -21,15 +21,15 @@ export class TabDataElement {
         this.elementsGroup = elements;
         return this;
     }
-    setElementsGroupTitle (title: String) {
+    setElementsGroupTitle (title: string) {
         this.elementsGroupTitle = title;
         return this;
     }
-    setSectionHeader(value: String) {
+    setSectionHeader(value: string) {
         this.sectionHeader = value;
         return this;
     }
-    setSourceColumnCssClass(value: String) {
+    setSourceColumnCssClass(value: string) {
         this.sourceColumnCssClass = value;
         return this;
     }
@@ -37,7 +37,7 @@ export class TabDataElement {
         this.borderClass = "elements-group-bordered";
         return this;
     }
-    setSource(agentInfoTriple: [String, Link, Link]) {
+    setSource(agentInfoTriple: [string, Link, Link]) {
         if (agentInfoTriple[0] == null) {
             this.setSourceColumnCssClass("source-column-no-source")
         }
@@ -48,21 +48,21 @@ export class TabDataElement {
         }
         return this;
     }
-    setAnnotatedList(annotatedList: [String, SafeHtml]) {
+    setAnnotatedList(annotatedList: [string, SafeHtml]) {
         this.annotatedList = annotatedList;
         return this;
     }
 
-    values:[String, String[]];
-    linkValues:[String, Link[]];
+    values:[string, string[]];
+    linkValues:[string, Link[]];
     elementsGroup: TabDataElement[];
-    elementsGroupTitle: String;
-    sectionHeader:String;
-    annotatedList:[String, SafeHtml];
+    elementsGroupTitle: string;
+    sectionHeader:string;
+    annotatedList:[string, SafeHtml];
     borderClass = "elements-group-unbordered";
-    sourceName: String;
+    sourceName: string;
     sourcePage: Link;
     sourceMail: Link;
-    sourceColumnCssClass:String = "source-column-standard";
+    sourceColumnCssClass:string = "source-column-standard";
 
 }

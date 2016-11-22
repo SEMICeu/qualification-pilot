@@ -3,21 +3,21 @@ import {Agent} from "./agent";
 import {Link} from "./link";
 export class Accreditation {
 
-    constructor(uri: String) {
+    constructor(uri: string) {
         this.uri = uri;
     }
 
-    uri: String;
+    uri: string;
     recognizedBody: Agent;
     recognizingAgent: Agent;
-    issued: String;
-    reviewDate: String;
-    endDate: String;
-    homepages: String[];
-    landingPages: String[];
-    supplementaryDocs: String[];
-    subjects: String[];
-    trusted: String;
+    issued: string;
+    reviewDate: string;
+    endDate: string;
+    homepages: string[];
+    landingPages: string[];
+    supplementaryDocs: string[];
+    subjects: string[];
+    trusted: string;
     publisher: Agent;
 
     getHomepageLinks():Link[] {

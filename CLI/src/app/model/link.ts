@@ -1,10 +1,10 @@
 
 export class Link {
-    url: String;
-    name: String;
+    url: string;
+    name: string;
 
 
-    constructor(url: String, name: String) {
+    constructor(url: string, name: string) {
         this.url = url;
         this.name = name;
     }

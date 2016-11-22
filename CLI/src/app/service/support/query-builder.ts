@@ -4,53 +4,53 @@
 import {ConcatsParser} from "./concats-parser";
 export class QueryBuilder {
 
-    private query:String;
+    private query:string;
 
     private triples: Triple[] = [];
 
-    private _languageCodes: String[] = ["EN"];
+    private _languageCodes: string[] = ["EN"];
 
     private prefixes: Prefix[] = [];
 
     private binds: Prefix[] = [];
 
-    private freeFormFilters: String[] = [];
+    private freeFormFilters: string[] = [];
 
-    private freeFromTriples: String[] = [];
+    private freeFromTriples: string[] = [];
 
-    private freeFormVariables: String[] = [];
+    private freeFormVariables: string[] = [];
 
-    private extraGroupBy: String[] = [];
+    private extraGroupBy: string[] = [];
 
-    set languageCodes(value: String[]) {
+    set languageCodes(value: string[]) {
         this._languageCodes = value;
     }
 
-    addPrefix (prefix: String, uri: String) {
+    addPrefix (prefix: string, uri: string) {
         this.prefixes.push(new Prefix(prefix, uri));
     }
 
-    addBind (varName: String, uri: String) {
+    addBind (varName: string, uri: string) {
         this.binds.push(new Prefix(varName, uri));
     }
 
     addTriple (triple: Triple) : void {
         this.triples.push(triple)
     }
-    addFreeFormFilter(filter:String) {
+    addFreeFormFilter(filter:string) {
         this.freeFormFilters.push(filter);
     }
-    addFreeFormTriple(triple:String) {
+    addFreeFormTriple(triple:string) {
         this.freeFromTriples.push(triple);
     }
-    addFreeFormVariable(variable:String) {
+    addFreeFormVariable(variable:string) {
         this.freeFormVariables.push(variable);
     }
-    addGroupBy(groupBy: String) {
+    addGroupBy(groupBy: string) {
         this.extraGroupBy.push(groupBy);
     }
 
-    buildSelect () : String {
+    buildSelect () : string {
         let prefixesString = "";
         let variablesString = "";
         let triplesString = "";
@@ -122,7 +122,7 @@ export class QueryBuilder {
         return this.query;
     }
 
-    private makeGroupConcat(varName:String, withLangGroup: boolean): String {
+    private makeGroupConcat(varName:string, withLangGroup: boolean): string {
         var result = "(GROUP_CONCAT(DISTINCT " + varName + ";separator='" + ConcatsParser.defaultDelimiter + "') as " + varName + "_group) ";
         if (withLangGroup) {
             result = "(GROUP_CONCAT(DISTINCT CONCAT(STR(" + varName + "),'@',LANG(" + varName + "));separator='" + ConcatsParser.defaultDelimiter + "') as " + varName + "_lang_group) ";
@@ -135,13 +135,13 @@ export class QueryBuilder {
 
 class Prefix {
 
-    constructor(prefix: String, uri: String) {
+    constructor(prefix: string, uri: string) {
         this.prefix = prefix;
         this.uri = uri;
     }
 
-    prefix: String;
-    uri: String;
+    prefix: string;
+    uri: string;
 }
 
 export class Triple {
@@ -150,33 +150,33 @@ export class Triple {
 
     }
 
-    before(preString: String): Triple {
+    before(preString: string): Triple {
         this._preString = preString;
         return this;
     }
-    subject (subject: String): Triple {
+    subject (subject: string): Triple {
         this._subject = subject;
         return this;
     }
-    selectSubject(subject: String): Triple {
+    selectSubject(subject: string): Triple {
         this._subject = subject;
         this._selectVar = subject;
         return this;
     }
-    predicate (predicate: String): Triple {
+    predicate (predicate: string): Triple {
         this._predicate = predicate;
         return this;
     }
-    object (object: String): Triple {
+    object (object: string): Triple {
         this._object = object;
         return this;
     }
-    selectObject(object: String): Triple {
+    selectObject(object: string): Triple {
         this._object = object;
         this._selectVar = object;
         return this;
     }
-    after(postString: String): Triple {
+    after(postString: string): Triple {
         this._postString = postString;
         return this;
     }
@@ -198,16 +198,16 @@ export class Triple {
         return this;
     }
 
-    _selectVar: String;
+    _selectVar: string;
 
-    _preString: String;
-    _subject: String;
+    _preString: string;
+    _subject: string;
 
-    _predicate: String;
+    _predicate: string;
 
-    _object: String;
+    _object: string;
 
-    _postString: String;
+    _postString: string;
 
     _filterByLang= false;
     _filterNodeLiteralByLang = false;

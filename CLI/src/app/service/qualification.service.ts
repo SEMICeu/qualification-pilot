@@ -28,18 +28,18 @@ export class QualificationService {
 
     url = endPointUrl;
     headers =  endPointHeaders;
-    prefLang:String = "en";
+    prefLang:string = "en";
 
     detailedQualification: Qualification;
 
-    getQualificationDetailed(uri: String, prefLang:String): Promise<Qualification> {
+    getQualificationDetailed(uri: string, prefLang:string): Promise<Qualification> {
         this.prefLang = prefLang;
         let promisedQualification = this.queryQualificationDetailedMain(uri, prefLang);
         promisedQualification.then(qualification => this.detailedQualification = qualification);
 
         return promisedQualification;
     }
-    hasNewState(uri: String, prefLang:String): boolean {
+    hasNewState(uri: string, prefLang:string): boolean {
         return (!this.detailedQualification || this.detailedQualification.uri != uri || this.prefLang != prefLang);
     }
 
@@ -63,7 +63,7 @@ export class QualificationService {
         });
     }
 
-    queryQualificationDetailedMain(uri: String, prefLang:String): Promise<Qualification> {
+    queryQualificationDetailedMain(uri: string, prefLang:string): Promise<Qualification> {
 
         //console.log(QueryTemplates.makeForQualificationDetail("<" + uri + ">", prefLang));
 
@@ -136,7 +136,7 @@ export class QualificationService {
                 }
             ).catch(this.handleError);
     }
-    getSkillFromUri (uri: String):Skill {
+    getSkillFromUri (uri: string):Skill {
         if (this.detailedQualification && this.detailedQualification.learningOutcomes) {
             for (let skill of this.detailedQualification.learningOutcomes) {
                 if (skill.uri == uri) {

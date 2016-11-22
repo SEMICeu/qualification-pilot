@@ -3,7 +3,7 @@ import {QueryBuilder, Triple} from "./query-builder";
 import {ConcatsParser} from "./concats-parser";
 export class QueryTemplates {
 
-    static makeForQualificationDetail(uri: String, prefLang: String): String {
+    static makeForQualificationDetail(uri: string, prefLang: string): string {
 
         let queryBuild = new QueryBuilder();
 
@@ -137,10 +137,10 @@ export class QueryTemplates {
         return queryBuild.buildSelect();
     }
 
-    static makeForSkills (qualUri: String, langs:String[]):String {
+    static makeForSkills (qualUri: string, langs:string[]):string {
         let queryBuild = new QueryBuilder();
 
-        var langCodes:String[] = [];
+        var langCodes:string[] = [];
         for (let lang of langs) {
             langCodes.push("'" + lang + "'");
         }
@@ -165,10 +165,10 @@ export class QueryTemplates {
         return queryBuild.buildSelect();
     }
 
-    static makeForQualificationFrameworks (qualUri: String, langs:String[]):String {
+    static makeForQualificationFrameworks (qualUri: string, langs:string[]):string {
         let queryBuild = new QueryBuilder();
 
-        var langCodes:String[] = [];
+        var langCodes:string[] = [];
         for (let lang of langs) {
             langCodes.push("'" + lang + "'");
         }
@@ -206,10 +206,10 @@ export class QueryTemplates {
         return queryBuild.buildSelect();
     }
 
-    static makeForAccreditations (qualUri: String, langs:String[]):String {
+    static makeForAccreditations (qualUri: string, langs:string[]):string {
         let queryBuild = new QueryBuilder();
 
-        var langCodes:String[] = [];
+        var langCodes:string[] = [];
         for (let lang of langs) {
             langCodes.push("'" + lang + "'");
         }
@@ -254,10 +254,10 @@ export class QueryTemplates {
         return queryBuild.buildSelect();
     }
 
-    static makeForRecognitions (qualUri: String, langs:String[]):String {
+    static makeForRecognitions (qualUri: string, langs:string[]):string {
         let queryBuild = new QueryBuilder();
 
-        var langCodes:String[] = [];
+        var langCodes:string[] = [];
         for (let lang of langs) {
             langCodes.push("'" + lang + "'");
         }
