@@ -1,5 +1,0 @@
-AuthGroupFile /dev/null
-AuthType Basic
-AuthUserFile /home/vandevj85/domains/cogni.zone/.htpasswd-qpilot
-AuthName "VIP only"
-require valid-user

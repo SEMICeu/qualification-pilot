@@ -16,6 +16,16 @@ apply plugin: 'idea'
 apply plugin: 'spring-boot'
 apply plugin: "io.spring.dependency-management"
 
+task buildAngular  (type: Exec)  {
+  doFirst {
+    workingDir 'cli'
+    commandLine 'cmd', '/c', 'ng build --output-path=../src/main/resources/static' //windows
+  }
+}
+
+tasks.build.dependsOn(tasks.buildAngular)
+
+
 jar {
 	baseName = 'qpilot2-ui'
 	version = '0.0.1-SNAPSHOT'
@@ -40,12 +50,9 @@ repositories {
     maven { url "https://repo.spring.io/milestone" }
 }
 
-
 dependencies {
 	compile('org.springframework.boot:spring-boot-devtools')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
-
-
