@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {Accreditation} from "../model/accreditation";
-import {QueryScripts} from "./support/query-scripts";
+import {QueryAccreditation} from "./query-scripts/query-accreditation";
 import {Agent} from "../model/agent";
 
 @Injectable()
@@ -20,7 +20,7 @@ export class AccreditationService {
 
         //console.log(QueryScripts.makeForAccreditations(qualUri, langs));
         return this.http
-            .post(this.url, QueryScripts.makeForAccreditations(qualUri, langs) ,  {headers: this.headers})
+            .post(this.url, QueryAccreditation.make(qualUri, langs) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;

@@ -3,6 +3,7 @@ import {Qualification} from "../model/qualification";
 import {TabDataElement} from "./tab-data-element";
 import {AnnotatedList} from "../model/annotated-list";
 import {DomSanitizer} from "@angular/platform-browser";
+import {Agent} from "../model/agent";
 export class TabDataScripts {
 
   static core(index:number, qualification: Qualification, lang:string): TabData {
@@ -36,12 +37,14 @@ export class TabDataScripts {
     container.push(new TabDataElement().setValues(["Awarding Started", [qualification.awardingStarted]]));
     container.push(new TabDataElement().setValues(["Awarding Ended", [qualification.awardingEnded]]));
     container.push(new TabDataElement().setValues(["Awarding Location",qualification.getAwardingLocations(lang)]));
-    if (qualification.awardingBody && qualification.awardingBody.names) {
-      var awardingBody: TabDataElement[] = [];
-      awardingBody.push(new TabDataElement().setValues(["Name:", qualification.awardingBody.getNames(lang, qualification.referenceLang)]));
-      awardingBody.push(new TabDataElement().setLinkValues(["Mail:", qualification.awardingBody.getMailLinks()]));
-      awardingBody.push(new TabDataElement().setLinkValues(["Homepage:", qualification.awardingBody.getPageLinks()]));
-      container.push(new TabDataElement().setElementsGroup(awardingBody).setElementsGroupTitle("Awarding Body").setIsBordered());
+    for (let awardingBody of qualification.awardingBodies) {
+      if (awardingBody.names) {
+        var ABElement: TabDataElement[] = [];
+        ABElement.push(new TabDataElement().setValues(["Name:", awardingBody.getNames(lang, qualification.referenceLang)]));
+        ABElement.push(new TabDataElement().setLinkValues(["Mail:", awardingBody.getMailLinks()]));
+        ABElement.push(new TabDataElement().setLinkValues(["Homepage:", awardingBody.getPageLinks()]));
+        container.push(new TabDataElement().setElementsGroup(ABElement).setElementsGroupTitle("Awarding Body").setIsBordered());
+      }
     }
     if (qualification.owner && qualification.owner.names) {
       var owner: TabDataElement[] = [];

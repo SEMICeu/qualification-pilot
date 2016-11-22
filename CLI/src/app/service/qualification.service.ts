@@ -7,7 +7,6 @@ import {Qualification} from "../model/qualification";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {QfService} from "./qf.service";
-import {QueryScripts} from "./support/query-scripts";
 import {Agent} from "../model/agent";
 import {QualificationFramework} from "../model/qualification-framework";
 import {SkillService} from "./skill.service";
@@ -16,6 +15,8 @@ import {RecognitionService} from "./recognition.service";
 import {Accreditation} from "../model/accreditation";
 import {Recognition} from "../model/recognition";
 import {Skill} from "../model/skill";
+import {QueryQualification} from "./query-scripts/query-qualification";
+import {AwardingBodyService} from "./awarding-body-service";
 
 @Injectable()
 export class QualificationService {
@@ -24,7 +25,8 @@ export class QualificationService {
                 private qfService: QfService,
                 private skillService: SkillService,
                 private accreditationService: AccreditationService,
-                private recognitionService: RecognitionService) { };
+                private recognitionService: RecognitionService,
+                private awardingBodyService: AwardingBodyService) { };
 
     url = endPointUrl;
     headers =  endPointHeaders;
@@ -54,11 +56,13 @@ export class QualificationService {
             qualification.accreditationUris ? this.accreditationService.getAccreditations(uri, langCodes) : Promise.resolve(null),
             qualification.recognitionUris ?  this.recognitionService.getRecognitions(uri, langCodes) : Promise.resolve(null),
             qualification.loSkillUris ? this.skillService.getSkills(uri, langCodes) : Promise.resolve(null),
+            qualification.awardingBodyUris ? this.awardingBodyService.getAgents(uri, langCodes) : Promise.resolve(null),
         ]).then(results => {
             qualification.qualificationFrameworks = results[0] as QualificationFramework[];
             qualification.accreditations = results[1] as Accreditation[];
             qualification.recognitions = results[2] as Recognition[];
             qualification.learningOutcomes = results[3] as Skill[];
+            qualification.awardingBodies = results[4] as Agent[];
             return qualification;
         });
     }
@@ -68,11 +72,11 @@ export class QualificationService {
         //console.log(QueryScripts.makeForQualificationDetail("<" + uri + ">", prefLang));
 
         return this.http
-            .post(this.url, QueryScripts.makeForQualificationDetail("<" + uri + ">", prefLang) ,  {headers: this.headers})
+            .post(this.url, QueryQualification.makeDetail("<" + uri + ">", prefLang) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                     let values = res.json().results.bindings[0];
-                    // console.log(res.json().results);
+                     // console.log(res.json().results);
                     let qualification = new Qualification(uri);
 
                     if (values.referenceLang_group) qualification.referenceLang = ConcatsParser.makeStringArray(values.referenceLang_group.value);
@@ -95,12 +99,13 @@ export class QualificationService {
                     if (values.awardingStarted) qualification.awardingStarted = values.awardingStarted.value;
                     if (values.awardingEnded) qualification.awardingEnded = values.awardingEnded.value;
                     if (values.awardingLocation_lang_group) qualification.awardingLocations = ConcatsParser.makeMapOfStringArrays(values.awardingLocation_lang_group.value);
-                    if (values.awardingBodyName_lang_group) {
-                        qualification.awardingBody = new Agent();
-                        qualification.awardingBody.names = ConcatsParser.makeMapOfStringArrays(values.awardingBodyName_lang_group.value);
-                        if (values.awardingBodyMail_group) qualification.awardingBody.mails = ConcatsParser.makeStringArray(values.awardingBodyMail_group.value);
-                        if (values.awardingBodyPage_group) qualification.awardingBody.pages = ConcatsParser.makeStringArray(values.awardingBodyPage_group.value);
-                    }
+                    // if (values.awardingBodyName_lang_group) {
+                    //     qualification.awardingBody = new Agent();
+                    //     qualification.awardingBody.names = ConcatsParser.makeMapOfStringArrays(values.awardingBodyName_lang_group.value);
+                    //     if (values.awardingBodyMail_group) qualification.awardingBody.mails = ConcatsParser.makeStringArray(values.awardingBodyMail_group.value);
+                    //     if (values.awardingBodyPage_group) qualification.awardingBody.pages = ConcatsParser.makeStringArray(values.awardingBodyPage_group.value);
+                    // }
+                    if (values.awardingBodyUri_group) qualification.awardingBodyUris = ConcatsParser.makeStringArray(values.awardingBodyUri_group.value);
                     if (values.accreditationUri_group) qualification.accreditationUris = ConcatsParser.makeStringArray(values.accreditationUri_group.value);
                     if (values.homepage_group) qualification.homepages =ConcatsParser.makeStringArray(values.homepage_group.value);
                     if (values.landingPage_group) qualification.landingPages = ConcatsParser.makeStringArray(values.landingPage_group.value);

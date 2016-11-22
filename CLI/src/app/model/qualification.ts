@@ -35,7 +35,8 @@ export class Qualification {
     awardingStarted: string;
     awardingEnded: string;
     awardingLocations: Map<string, string[]>;
-    awardingBody: Agent;
+    awardingBodyUris: string[];
+    awardingBodies: Agent[];
     accreditationUris: string[];
     accreditations: Accreditation[];
     homepages:string[];
