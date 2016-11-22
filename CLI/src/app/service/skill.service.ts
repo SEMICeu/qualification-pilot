@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {Skill} from "../model/skill";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
-import {QueryTemplates} from "./support/query-templates";
+import {QueryScripts} from "./support/query-scripts";
 
 @Injectable()
 export class SkillService {
@@ -17,9 +17,9 @@ export class SkillService {
 
     getSkills (qualUri: string, langs:string[]):Promise<Skill[]> {
 
-        //console.log(QueryTemplates.makeForSkills(qualUri, langs));
+        //console.log(QueryScripts.makeForSkills(qualUri, langs));
         return this.http
-            .post(this.url, QueryTemplates.makeForSkills(qualUri, langs) ,  {headers: this.headers})
+            .post(this.url, QueryScripts.makeForSkills(qualUri, langs) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;

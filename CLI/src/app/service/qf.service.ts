@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {QualificationFramework} from "../model/qualification-framework";
-import {QueryTemplates} from "./support/query-templates";
+import {QueryScripts} from "./support/query-scripts";
 import {Agent} from "../model/agent";
 
 @Injectable()
@@ -19,9 +19,9 @@ export class QfService {
 
     getQualificationFrameworks (qualUri: string, langs:string[]):Promise<QualificationFramework[]> {
 
-        //console.log(QueryTemplates.makeForQualificationFrameworks(qualUri, langs));
+        //console.log(QueryScripts.makeForQualificationFrameworks(qualUri, langs));
         return this.http
-            .post(this.url, QueryTemplates.makeForQualificationFrameworks(qualUri, langs), {headers: this.headers})
+            .post(this.url, QueryScripts.makeForQualificationFrameworks(qualUri, langs), {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;

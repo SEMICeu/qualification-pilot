@@ -5,7 +5,7 @@ import 'rxjs/add/operator/toPromise';
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {Accreditation} from "../model/accreditation";
-import {QueryTemplates} from "./support/query-templates";
+import {QueryScripts} from "./support/query-scripts";
 import {Agent} from "../model/agent";
 import {Recognition} from "../model/recognition";
 
@@ -19,9 +19,9 @@ export class RecognitionService {
 
     getRecognitions (qualUri: string, langs:string[]):Promise<Recognition[]> {
 
-        //console.log(QueryTemplates.makeForRecognitions(qualUri, langs));
+        //console.log(QueryScripts.makeForRecognitions(qualUri, langs));
         return this.http
-            .post(this.url, QueryTemplates.makeForRecognitions(qualUri, langs) ,  {headers: this.headers})
+            .post(this.url, QueryScripts.makeForRecognitions(qualUri, langs) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                 let objects = res.json().results.bindings;

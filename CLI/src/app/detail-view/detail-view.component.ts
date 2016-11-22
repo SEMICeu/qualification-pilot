@@ -5,13 +5,8 @@ import {Router, ActivatedRoute, Params} from "@angular/router";
 import {QualificationService} from "../service/qualification.service";
 import {Qualification} from "../model/qualification";
 import {TabData} from "./tab-data";
-import {TabDataElement} from "./tab-data-element";
-import {SkillService} from "../service/skill.service";
-import {QfService} from "../service/qf.service";
-import {TabDataTemplates} from "./tab-data-templates";
-import {AccreditationService} from "../service/accreditation.service";
-import {RecognitionService} from "../service/recognition.service";
-import {DomSanitizer} from "@angular/platform-browser";
+import {TabDataScripts} from "./tab-data-scripts";
+import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'qual',
@@ -31,6 +26,8 @@ export class DetailView implements OnInit {
   selectedTabData: TabData;
   selectedTabIndex = -1;
   qualification: Qualification;
+
+  htmlProperty:SafeHtml;
 
   tabDatas: TabData[] = [];
 
@@ -91,8 +88,6 @@ export class DetailView implements OnInit {
 
   generateTabData() {
 
-    console.log(this.domsanitizer.bypassSecurityTrustHtml("<span class='test'>test</span>"));
-
     if (!this.qualification) return;
     this.tabDatas = [];
 
@@ -103,10 +98,10 @@ export class DetailView implements OnInit {
 
     this.tabDatas.push(new TabData("All", 0));
 
-    this.tabDatas.push(TabDataTemplates.core(1, this.qualification, this.lang));
-    this.tabDatas.push(TabDataTemplates.accreditationRecognition(2, this.qualification, this.lang));
-    this.tabDatas.push(TabDataTemplates.learningOutcomes(3, this.qualification, this.lang));
-    this.tabDatas.push(TabDataTemplates.additional(4, this.qualification, this.lang));
+    this.tabDatas.push(TabDataScripts.core(1, this.qualification, this.lang));
+    this.tabDatas.push(TabDataScripts.accreditationRecognition(2, this.qualification, this.lang));
+    this.tabDatas.push(TabDataScripts.learningOutcomes(3, this.qualification, this.lang));
+    this.tabDatas.push(TabDataScripts.additional(4, this.qualification, this.lang));
 
     for (let i = 1; i < this.tabDatas.length; ++i) {
       for (let element of this.tabDatas[i].elements) {

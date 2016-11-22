@@ -7,7 +7,7 @@ import {Qualification} from "../model/qualification";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {QfService} from "./qf.service";
-import {QueryTemplates} from "./support/query-templates";
+import {QueryScripts} from "./support/query-scripts";
 import {Agent} from "../model/agent";
 import {QualificationFramework} from "../model/qualification-framework";
 import {SkillService} from "./skill.service";
@@ -65,10 +65,10 @@ export class QualificationService {
 
     queryQualificationDetailedMain(uri: string, prefLang:string): Promise<Qualification> {
 
-        //console.log(QueryTemplates.makeForQualificationDetail("<" + uri + ">", prefLang));
+        //console.log(QueryScripts.makeForQualificationDetail("<" + uri + ">", prefLang));
 
         return this.http
-            .post(this.url, QueryTemplates.makeForQualificationDetail("<" + uri + ">", prefLang) ,  {headers: this.headers})
+            .post(this.url, QueryScripts.makeForQualificationDetail("<" + uri + ">", prefLang) ,  {headers: this.headers})
             .toPromise()
             .then(res => {
                     let values = res.json().results.bindings[0];

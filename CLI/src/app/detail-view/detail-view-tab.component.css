@@ -1,115 +1,145 @@
 li {
-    list-style: none;
+  list-style: none;
 }
 h2 {
-    padding-bottom: 20px;
-    font-weight: bold;
+  padding-bottom: 20px;
+  font-weight: bold;
 }
 h5 {
-    padding-bottom: 12px;
-    font-weight: bold;
+  padding-bottom: 12px;
+  font-weight: bold;
 }
 
 a {
-    color: blue;
-    font-weight: normal;
-    text-shadow: none;
+  color: blue;
+  font-weight: normal;
+  text-shadow: none;
 }
 a:hover, a:focus, a:active {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 .link-on-dark {
-    color: lightblue;
+  color: lightblue;
 }
 /*ul {*/
-    /*list-style: none;*/
-    /*display: inline;*/
-    /*padding-left: 0;*/
+/*list-style: none;*/
+/*display: inline;*/
+/*padding-left: 0;*/
 /*}*/
 .propertyName {
-    color: #004494;
+  color: #004494;
 }
 
 .elements-group-bordered {
-    border: solid;
-    border-color: #cccccc;
-    border-width: 1px;
+  border: solid;
+  border-color: #cccccc;
+  border-width: 1px;
 }
 
 .elements-group-unbordered {
-    border: solid;
-    border-color: transparent;
-    border-width: 1px;
+  border: solid;
+  border-color: transparent;
+  border-width: 1px;
 }
 
 table {
-    width: 100%;
-    padding-left: 10px;
+  width: 100%;
+  padding-left: 10px;
 }
 
 .element-main {
 
-    width: 100%;
-    padding-left: 15px;
+  width: 100%;
+  padding-left: 15px;
 }
 
 .element-inner-main {
-    width: 100%;
-    margin-left: -10px;
-    padding-left: 10px;
+  width: 100%;
+  margin-left: -10px;
+  padding-left: 10px;
 
-    margin-top: 4px;
-    margin-bottom: 4px;
+  margin-top: 4px;
+  margin-bottom: 4px;
 }
 
-.tooltip {
-    position: relative;
-    /*border-bottom: 1px dotted black; !* If you want dots under the hoverable text *!*/
+:host .tooltip {
+  position: relative;
+  /*border-bottom: 1px dotted black; !* If you want dots under the hoverable text *!*/
+}
+
+.tooltiptext {
+  visibility: hidden;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 4px;
+  font-size: 85%;
+  background-color: #505050;
+  white-space:nowrap;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
 }
 
 .tooltip .tooltiptext {
-
-    visibility: hidden;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 4px;
-    font-size: 85%;
-    white-space: nowrap;
-
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-}
-
-.tooltip .tooltiptext {
-    width: auto;
-    min-width: 150px;
-    max-width: 600px;
-    text-overflow: ellipsis;
-    top: 0px;
-    right: 50%;
+  width: auto;
+  min-width: 150px;
+  max-width: 600px;
+  text-overflow: ellipsis;
+  top: 0px;
+  right: 50%;
 }
 
 .tooltip:hover .tooltiptext {
-    visibility: visible;
+  visibility: visible;
 }
-
 .source-column-standard {
-    background-color: #505050;
+  background-color: #505050;
 }
 
 .source-column-no-source {
-    background-color: #b0b0b0;
+  background-color: #b0b0b0;
 }
 
 .source-column-none {
-    background-color: #b0b0b0;
+  background-color: #b0b0b0;
 }
 .no-padding-bottom {
-    padding-bottom: 0;
+  padding-bottom: 0;
 }
 
-.annotation-link {
-    color: #6EB0F4;
+:host >>> .annotation {
+  position: relative;
+}
+
+:host >>> .annotationtext {
+  visibility: hidden;
+  color: #fff;
+  text-align: center;
+  padding: 5px 4px;
+  font-size: 85%;
+  background-color: blue;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+:host >>> .annotationtext {
+  width: auto;
+  min-width: 150px;
+  max-width: 600px;
+  text-overflow: ellipsis;
+  top: 18px;
+  left: 0%;
+}
+
+:host >>> .annotation:hover .annotationtext {
+  visibility: visible;
+}
+
+:host >>> .annotation-link {
+  color: blue;
+  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
 }

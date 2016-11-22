@@ -1,7 +1,7 @@
 
 import {QueryBuilder, Triple} from "./query-builder";
 import {ConcatsParser} from "./concats-parser";
-export class QueryTemplates {
+export class QueryScripts {
 
     static makeForQualificationDetail(uri: string, prefLang: string): string {
 
