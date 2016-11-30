@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {Skill} from "../model/qms/skill";
 import {AnnotatedList} from "../model/annotated-list";
 import {AnnotatedListParser} from "./support/annotated-list-parser";
+
 @Injectable()
 export class AnnotatedListService {
 
@@ -23,7 +24,21 @@ export class AnnotatedListService {
   }
 
   private matchWithSkills (annotatedList:AnnotatedList, learningOutcomes: Skill[], langCode: string): AnnotatedList {
-    return annotatedList;//TODO
+
+    if (!learningOutcomes) return annotatedList;
+
+    for (let fragment of annotatedList.values) {
+      if (fragment.annotationValue) {
+
+        for (let skill of learningOutcomes) {
+
+          if (fragment.annotationValue[1] == skill.uri) {
+            fragment.annotationValue[1] = skill.getPrefLabels(langCode, [])[0] + " " + skill.getDescriptions(langCode, [])[0];
+          }
+        }
+      }
+    }
+    return annotatedList;
   }
 
 }

@@ -80,7 +80,6 @@ function facetChange() {
     countryUris.push($(this).attr("country-facet"));
   });
 
-  console.log(eqfUris);
   var shouldShowOneCheck = function (facetUris, toCheck) {
     if (toCheck.length == 0) return true;
     for (var i = 0; i < toCheck.length; i++) if (facetUris.indexOf("[" + toCheck[i] + "]") > -1) return true;
@@ -189,7 +188,9 @@ function searchFormSubmit() {
   var eqf = $("#EQFlevel").val();
   var country = $("#country").val();
 
-  var query = "select distinct ?referenceLanguage ?qualification ?prefLabel ?eqfConcept ?eqf ?foetConcept ?homepage ?countryUri ?creator where {  " +
+  console.log(eqf);
+
+  var query = "select distinct ?referenceLanguage ?qualification ?prefLabel ?eqfConcept ?eqf ?foetConcept ?homepage ?countryUri ?creatorwhere{  " +
       "  ?qualification rdf:type esco:Qualification ." +
       "  ?qualification skos:prefLabel ?prefLabel ." +
       "  ?qualification esco:referenceLanguage ?referenceLanguage . " +
@@ -203,13 +204,17 @@ function searchFormSubmit() {
       "  optional { ?qualification esco:hasAssociation ?eqfAssoc . " +
       "             ?eqfAssoc esco:targetFramework <http://data.europa.eu/esco/ConceptScheme/EQF2012/ConceptScheme> ." +
       "             ?eqfAssoc esco:target ?eqfConcept ." +
+      "             ?eqfAssoc <http://data.europa.eu/esco/qdr#generatedByTrustedSource> ?trusted ." +
       "             ?eqfConcept skos:prefLabel ?eqf }" +
       "  optional { ?qualification esco:hasISCED-FCode ?foetConcept}";
-  //if (searchText) query += "  filter exists{ ?qualification ?textProperty ?textValue filter(isLiteral(?textValue) && contains(lcase(?textValue), '" + searchText + "')) } .";
-  //query += addFilter(eqf, "esco:target");
-  // query += addFilter(foet, "esco:hasISCED-FCode");
-  // query += addFilter(country, "prov:atLocation");
+
+  if (searchText) query += "  filter exists{ ?qualification ?textProperty ?textValue filter(isLiteral(?textValue) && contains(lcase(?textValue), '" + searchText + "')) } .";
+  query += addFilter(eqf, "esco:target");
+  query += addFilter(foet, "esco:hasISCED-FCode");
+  query += addFilter(country, "prov:atLocation");
   query += "}";
+
+  console.log(query);
 
   var errorQuery = function () {
     //$("#result").html("<div class=\"alert alert-danger fade in\">Query failed</div>");
@@ -301,7 +306,9 @@ function fillSearchResultField(grouped) {
     //for (var i = 1; i < lines.length; i++) {
     //  result += "<br/>" + (isLink ? linkize(lines[i]) : lines[i]);
     //}
-
+    if (row.trusted) {
+      result += "trusted";
+    }
 
     //result += "<h6>FoET:</h6><p>" + addCell(row.foet, false, "No FoET set") + "</p>";
     result += "<h6>ISCED FoET 2013:</h6>";
@@ -406,22 +413,23 @@ function linkize(value) {
 }
 
 function addFilter(selection, property) {
+
+  console.log(selection);
   if (!selection || selection.length == 0) return "";
   if (property=="esco:hasISCED-FCode") {
     return "filter exists { ?qualification " + property + " <" + selection + "> } ";
   }
   if (property=="esco:target") {
     if (selection == "EQFno") {
-      return "filter not exists { ?eqfAssoc " + property + " ?eqfNo } ";
+      return "filter ( !bound(?eqfConcept)) ";
     }
     else {
-      return "filter exists { ?eqfAssoc " + property + " <" + selection + "> } ";
+      return "filter ( bound(?eqfConcept) ) filter exists { ?eqfAssoc " + property + " <" + selection + "> } ";
     }
   }
   if (property=="prov:atLocation") {
     return "filter exists { ?awardingActivity " + property + " <" + selection + "> } ";
   }
-  console.log(selection);
   //
   //var result = null;
   //selection.each(function () {

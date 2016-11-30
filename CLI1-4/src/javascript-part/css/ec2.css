@@ -468,131 +468,131 @@
 
   /* IMAGE TITLE IN THE BANNER */
   .title-be {
-    background-image: url("../assets/title/title_be.gif");
+    background-image: url("../../assets/title/title_be.gif");
   }
 
   .title-bg {
-    background-image: url("../assets/title/title_bg.gif");
+    background-image: url("../../assets/title/title_bg.gif");
   }
 
   .title-cs {
-    background-image: url("../assets/title/title_cs.gif");
+    background-image: url("../../assets/title/title_cs.gif");
   }
 
   .title-da {
-    background-image: url("../assets/title/title_da.gif");
+    background-image: url("../../assets/title/title_da.gif");
   }
 
   .title-de {
-    background-image: url("../assets/title/title_de.gif");
+    background-image: url("../../assets/title/title_de.gif");
   }
 
   .title-el {
-    background-image: url("../assets/title/title_el.gif");
+    background-image: url("../../assets/title/title_el.gif");
   }
 
   .title-en {
-    background-image: url("../assets/title/title_en.gif");
+    background-image: url("../../assets/title/title_en.gif");
   }
 
   .title-es {
-    background-image: url("../assets/title/title_es.gif");
+    background-image: url("../../assets/title/title_es.gif");
   }
 
   .title-et {
-    background-image: url("../assets/title/title_et.gif");
+    background-image: url("../../assets/title/title_et.gif");
   }
 
   .title-fi {
-    background-image: url("../assets/title/title_fi.gif");
+    background-image: url("../../assets/title/title_fi.gif");
   }
 
   .title-fr {
-    background-image: url("../assets/title/title_fr.gif");
+    background-image: url("../../assets/title/title_fr.gif");
   }
 
   .title-ga {
-    background-image: url("../assets/title/title_ga.gif");
+    background-image: url("../../assets/title/title_ga.gif");
   }
 
   .title-hu {
-    background-image: url("../assets/title/title_hu.gif");
+    background-image: url("../../assets/title/title_hu.gif");
   }
 
   .title-it {
-    background-image: url("../assets/title/title_it.gif");
+    background-image: url("../../assets/title/title_it.gif");
   }
 
   .title-lt {
-    background-image: url("../assets/title/title_lt.gif");
+    background-image: url("../../assets/title/title_lt.gif");
   }
 
   .title-lv {
-    background-image: url("../assets/title/title_lv.gif");
+    background-image: url("../../assets/title/title_lv.gif");
   }
 
   .title-mt {
-    background-image: url("../assets/title/title_mt.gif");
+    background-image: url("../../assets/title/title_mt.gif");
   }
 
   .title-nl {
-    background-image: url("../assets/title/title_nl.gif");
+    background-image: url("../../assets/title/title_nl.gif");
   }
 
   .title-pl {
-    background-image: url("../assets/title/title_pl.gif");
+    background-image: url("../../assets/title/title_pl.gif");
   }
 
   .title-pt {
-    background-image: url("../assets/title/title_pt.gif");
+    background-image: url("../../assets/title/title_pt.gif");
   }
 
   .title-ro {
-    background-image: url("../assets/title/title_ro.gif");
+    background-image: url("../../assets/title/title_ro.gif");
   }
 
   .title-si {
-    background-image: url("../assets/title/title_si.gif");
+    background-image: url("../../assets/title/title_si.gif");
   }
 
   .title-sk {
-    background-image: url("../assets/title/title_sk.gif");
+    background-image: url("../../assets/title/title_sk.gif");
   }
 
   .title-sl {
-    background-image: url("../assets/title/title_sl.gif");
+    background-image: url("../../assets/title/title_sl.gif");
   }
 
   .title-sv {
-    background-image: url("../assets/title/title_sv.gif");
+    background-image: url("../../assets/title/title_sv.gif");
   }
 
   .title-ta {
-    background-image: url("../assets/title/title_ta.gif");
+    background-image: url("../../assets/title/title_ta.gif");
   }
 
   .title-hr {
-    background-image: url("../assets/title/title_hr.gif");
+    background-image: url("../../assets/title/title_hr.gif");
   }
 
   .title-is {
-    background-image: url("../assets/title/title_en.gif");
+    background-image: url("../../assets/title/title_en.gif");
   }
 
   .title-mk {
-    background-image: url("../assets/title/title_en.gif");
+    background-image: url("../../assets/title/title_en.gif");
   }
 
   .title-no {
-    background-image: url("../assets/title/title_en.gif");
+    background-image: url("../../assets/title/title_en.gif");
   }
 
   .title-tr {
-    background-image: url("../assets/title/title_en.gif");
+    background-image: url("../../assets/title/title_en.gif");
   }
 
   .bg {
-    background-image: url(../assets/header-bg.png);
+    background-image: url(../../assets/header-bg.png);
     background-repeat: none;
     width: 100%;
     height: 100px;
@@ -619,7 +619,7 @@
 
   #services a,
   #services a:visited {
-    background: url("../assets/services-separator.gif") transparent left center no-repeat;
+    background: url("../../assets/services-separator.gif") transparent left center no-repeat;
     color: #396ea2;
     text-decoration: none;
     margin: 0;
@@ -790,7 +790,7 @@
     display: inline;
     padding: 0 12px 0 12px;
     float: left;
-    background: url("../assets/breadcrumb.gif") transparent left center no-repeat;
+    background: url("../../assets/breadcrumb.gif") transparent left center no-repeat;
   }
 
   #path li.first {
@@ -877,7 +877,7 @@
   .layout-footer li {
     display: inline;
     padding-left: 5px;
-    background: url("../assets/services-separator.gif") transparent left center no-repeat;
+    background: url("../../assets/services-separator.gif") transparent left center no-repeat;
   }
 
   .layout-footer li:first-child {

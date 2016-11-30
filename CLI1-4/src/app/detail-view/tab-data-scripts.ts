@@ -145,8 +145,8 @@ export class TabDataScripts {
           accValues.push(new TabDataElement().setValues(["End Date:", [acc.endDate]]));
 
           accValues.push(new TabDataElement().setLinkValues(["Homepage:", acc.getHomepageLinks()]));
-          accValues.push(new TabDataElement().setLinkValues(["Landing Page:", acc.getlandingPageLinks()]));
-          accValues.push(new TabDataElement().setLinkValues(["Supplementary Documents:", acc.getsupplementaryDocLinks()]));
+          accValues.push(new TabDataElement().setLinkValues(["Landing Page:", acc.getLandingPageLinks()]));
+          accValues.push(new TabDataElement().setLinkValues(["Supplementary Documents:", acc.getSupplementaryDocLinks()]));
           // accValues.push(new TabDataElement().setValues(["Trusted:", [acc.trusted]]));
 
           data.push(new TabDataElement()

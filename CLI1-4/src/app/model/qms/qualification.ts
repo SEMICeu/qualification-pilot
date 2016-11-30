@@ -186,7 +186,6 @@ export class Qualification {
   }
 
   getDescriptionAnnotations(prefLang: string): SafeHtml[] {
-    console.log(this.descriptionsAnnotations);
     if (!this.descriptionsAnnotations) return null;
     if (this.descriptionsAnnotations.has(prefLang)) return this.annotationListArrayToSafeHtmlArray(this.descriptionsAnnotations.get(prefLang));
     if (this.descriptions.has("en")) return this.annotationListArrayToSafeHtmlArray(this.descriptionsAnnotations.get("en"));
@@ -206,5 +205,5 @@ export class Qualification {
 
 
 
-  //TODO return [] in stead of null for array return values
+  //TODO return [] in stead of null for array return values, this is a major change
 }
