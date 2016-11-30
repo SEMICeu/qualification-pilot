@@ -17,9 +17,9 @@ export class Agent {
     }
     getMailLinks():Link[] {
         if (!this.mails) return null;
-        var links:Link[] = [];
+        let links:Link[] = [];
         for (let url of this.mails) {
-            var name = url;
+            let name = url;
             if (url.startsWith("mailto:")) {
                 name = url.substring(7, url.length);
             }
@@ -29,14 +29,14 @@ export class Agent {
     }
     getPageLinks():Link[] {
         if (!this.pages) return null;
-        var links:Link[] = [];
+        let links:Link[] = [];
         for (let url of this.pages) {
             links.push(new Link(url, url));
         }
         return links;
     }
     getAgentInformationTriple(prefLang: string, refLang: string[]): [string, Link, Link] {
-        var name, page, mail;
+        let name, page, mail;
         let names = this.getNames(prefLang, refLang);
         if (names && names.length > 0) name = names[0];
         let pages = this.getPageLinks();

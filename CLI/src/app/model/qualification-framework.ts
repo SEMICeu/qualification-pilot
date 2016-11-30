@@ -60,7 +60,7 @@ export class QualificationFramework {
     }
     getHomepageLinks():Link[] {
         if (!this.homepages) return null;
-        var links:Link[] = [];
+        let links:Link[] = [];
         for (let url of this.homepages) {
             links.push(new Link(url, url));
         }

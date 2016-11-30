@@ -11,7 +11,7 @@ export class TabDataScripts {
 
     data.push(new TabDataElement().setSectionHeader(data.name));
 
-    var container: TabDataElement[] = [];
+    let container: TabDataElement[] = [];
     container.push(new TabDataElement().setValues(["Title:", qualification.getPrefLabels(lang)]));
     container.push(new TabDataElement().setValues(["Alternative title:", qualification.getAltLabels(lang)]));
     container.push(new TabDataElement().setValues(["Reference Language:", qualification.getReferenceLangLabels(lang)]));
@@ -39,7 +39,7 @@ export class TabDataScripts {
     container.push(new TabDataElement().setValues(["Awarding Location",qualification.getAwardingLocations(lang)]));
     for (let awardingBody of qualification.awardingBodies) {
       if (awardingBody.names) {
-        var ABElement: TabDataElement[] = [];
+        let ABElement: TabDataElement[] = [];
         ABElement.push(new TabDataElement().setValues(["Name:", awardingBody.getNames(lang, qualification.referenceLang)]));
         ABElement.push(new TabDataElement().setLinkValues(["Mail:", awardingBody.getMailLinks()]));
         ABElement.push(new TabDataElement().setLinkValues(["Homepage:", awardingBody.getPageLinks()]));
@@ -47,21 +47,21 @@ export class TabDataScripts {
       }
     }
     if (qualification.owner && qualification.owner.names) {
-      var owner: TabDataElement[] = [];
+      let owner: TabDataElement[] = [];
       owner.push(new TabDataElement().setValues(["Name:", qualification.owner.getNames(lang, qualification.referenceLang)]));
       owner.push(new TabDataElement().setLinkValues(["Mail:", qualification.owner.getMailLinks()]));
       owner.push(new TabDataElement().setLinkValues(["Homepage:", qualification.owner.getPageLinks()]));
       container.push(new TabDataElement().setElementsGroup(owner).setElementsGroupTitle("Owner").setIsBordered());
     }
     if (qualification.provenanceAgent && qualification.provenanceAgent.names) {
-      var provenanceAgent: TabDataElement[] = [];
+      let provenanceAgent: TabDataElement[] = [];
       provenanceAgent.push(new TabDataElement().setValues(["Name:", qualification.provenanceAgent.getNames(lang, qualification.referenceLang)]));
       provenanceAgent.push(new TabDataElement().setLinkValues(["Mail:", qualification.provenanceAgent.getMailLinks()]));
       provenanceAgent.push(new TabDataElement().setLinkValues(["Homepage:", qualification.provenanceAgent.getPageLinks()]));
       container.push(new TabDataElement().setElementsGroup(provenanceAgent).setElementsGroupTitle("Provenance Agent").setIsBordered());
     }
     if (qualification.publisher && qualification.publisher.names) {
-      var publisher: TabDataElement[] = [];
+      let publisher: TabDataElement[] = [];
       publisher.push(new TabDataElement().setValues(["Name:", qualification.publisher.getNames(lang, qualification.referenceLang)]));
       publisher.push(new TabDataElement().setLinkValues(["Mail:", qualification.publisher.getMailLinks()]));
       publisher.push(new TabDataElement().setLinkValues(["Homepage:", qualification.publisher.getPageLinks()]));
@@ -75,13 +75,14 @@ export class TabDataScripts {
   }
 
   static accreditationRecognition(index:number, qualification: Qualification, lang:string): TabData {
+    let qfValues: TabDataElement[];
     let data = new TabData("Qualification Framework/Accreditation", index);
 
-    var noEqf = true;
+    let noEqf = true;
 
     if (qualification.qualificationFrameworks) for (let qf of qualification.qualificationFrameworks) {
       if (qf.trusted == "true") {
-        var qfValues: TabDataElement[] = [];
+        qfValues = [];
         qfValues.push(new TabDataElement().setValues(["Description: ", qf.getDescriptions(lang, qualification.referenceLang)]));
         qfValues.push(new TabDataElement().setValues(["Issued:", [qf.issued]]));
         //qfValues.push(new TabDataElement().setLinkValues(["Target Framework:",[qf.targetFrameWork]]));
@@ -111,7 +112,7 @@ export class TabDataScripts {
       }
     }
     if (noEqf) {
-      var qfValues: TabDataElement[] = [];
+      qfValues = [];
       qfValues.push(new TabDataElement().setValues(["", ["No information given/Not applicable"]]));
       data.push(new TabDataElement()
         .setElementsGroup(qfValues)
@@ -127,7 +128,7 @@ export class TabDataScripts {
           acc.recognizingAgent &&
           acc.recognizingAgent.getNames(lang, qualification.referenceLang) &&
           acc.recognizingAgent.getNames(lang, qualification.referenceLang).length>0) {
-          var accValues: TabDataElement[] = [];
+          let accValues: TabDataElement[] = [];
 
           if (acc.recognizingAgent) {
             // accValues.push(new TabDataElement().setValues(["Recognizer Name: ", acc.recognizingAgent.getNames(lang, qualification.referenceLang)]));
@@ -180,9 +181,9 @@ export class TabDataScripts {
 
     if (qualification.learningOutcomes) {
       data.push(new TabDataElement().setSectionHeader("Connected skills"));
-      var container2: TabDataElement[] = [];
+      let container2: TabDataElement[] = [];
       for (let skill of qualification.learningOutcomes) {
-        var skillValues: TabDataElement[] = [];
+        let skillValues: TabDataElement[] = [];
         skillValues.push(new TabDataElement().setLinkValues(["", [skill.getSkillLink(lang, qualification.referenceLang)]]));
         skillValues.push(new TabDataElement().setValues(["", skill.getDescriptions(lang, qualification.referenceLang)]));
         container2.push(new TabDataElement().setElementsGroup(skillValues).setIsBordered());
@@ -199,9 +200,9 @@ export class TabDataScripts {
 
     data.push(new TabDataElement().setSectionHeader(data.name));
 
-    var container: TabDataElement[] = [];
+    let container: TabDataElement[] = [];
 
-    var additArray = [];
+    let additArray = [];
     additArray.push(new TabDataElement().setValues(["Additional note",qualification.getAdditionalNotes(lang)]));
     container.push(new TabDataElement().setElementsGroup(additArray).setIsBordered());
 
