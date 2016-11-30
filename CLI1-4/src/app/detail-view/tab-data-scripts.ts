@@ -166,13 +166,12 @@ export class TabDataScripts {
 
     data.push(new TabDataElement().setSectionHeader(data.name));
 
-    var container1: TabDataElement[] = [];
+    let container1: TabDataElement[] = [];
     container1.push(new TabDataElement().setValues(["Definition:", qualification.getDefinitions(lang)]));
-    var descArray = [];
+    let descArray = [];
     //descArray.push(new TabDataElement().setValues(["Description:",qualification.getDescriptions(lang)]));
 
-    let s = new AnnotatedList().setAndParseFromStrings(qualification.getDescriptions(lang));
-    descArray.push(new TabDataElement().setAnnotatedList(["Annotated:",[s.getAsSafeHtml()]]));
+    descArray.push(new TabDataElement().setAnnotatedList(["Annotated:",qualification.getDescriptionAnnotations(lang)]));
 
     container1.push(new TabDataElement().setElementsGroup(descArray).setIsBordered());
     data.push( new TabDataElement()
@@ -202,9 +201,9 @@ export class TabDataScripts {
 
     let container: TabDataElement[] = [];
 
-    let additArray = [];
-    additArray.push(new TabDataElement().setValues(["Additional note",qualification.getAdditionalNotes(lang)]));
-    container.push(new TabDataElement().setElementsGroup(additArray).setIsBordered());
+    let additionalArray = [];
+    additionalArray.push(new TabDataElement().setValues(["Additional note",qualification.getAdditionalNotes(lang)]));
+    container.push(new TabDataElement().setElementsGroup(additionalArray).setIsBordered());
 
     container.push(new TabDataElement().setLinkValues(["Supplementary Documents:",qualification.getSupplementaryDocLinks()]));
     container.push( new TabDataElement().setValues(["Change Notes:", qualification.getChangeNotes(lang)]));

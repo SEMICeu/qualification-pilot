@@ -88,7 +88,8 @@
                  </ul>
               </li>
 
-              <li *ngIf="element.annotatedList"  [innerHTML]="element.annotatedList[1]">
+              <li *ngIf="element.annotatedList && element.annotatedList[1]">
+                <span  *ngFor = "let annotationFragment of element.annotatedList[1]" [innerHTML]="annotationFragment"></span>
               </li>
             </span>
           </li>

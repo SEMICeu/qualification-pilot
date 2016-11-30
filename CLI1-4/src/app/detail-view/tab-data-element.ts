@@ -48,7 +48,7 @@ export class TabDataElement {
         }
         return this;
     }
-    setAnnotatedList(annotatedList: [string, SafeHtml]) {
+    setAnnotatedList(annotatedList: [string, SafeHtml[]]) {
         this.annotatedList = annotatedList;
         return this;
     }
@@ -58,7 +58,7 @@ export class TabDataElement {
     elementsGroup: TabDataElement[];
     elementsGroupTitle: string;
     sectionHeader:string;
-    annotatedList:[string, SafeHtml];
+    annotatedList:[string, SafeHtml[]];
     borderClass = "elements-group-unbordered";
     sourceName: string;
     sourcePage: Link;

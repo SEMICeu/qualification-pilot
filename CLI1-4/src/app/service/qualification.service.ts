@@ -17,6 +17,7 @@ import {Recognition} from "../model/qms/recognition";
 import {Skill} from "../model/qms/skill";
 import {QueryQualification} from "./query-scripts/query-qualification";
 import {AwardingBodyService} from "./awarding-body-service";
+import {AnnotatedListService} from "./annotated-list.service";
 
 @Injectable()
 export class QualificationService {
@@ -26,7 +27,8 @@ export class QualificationService {
                 private skillService: SkillService,
                 private accreditationService: AccreditationService,
                 private recognitionService: RecognitionService,
-                private awardingBodyService: AwardingBodyService) { };
+                private awardingBodyService: AwardingBodyService,
+                private annotatedListService: AnnotatedListService) { };
 
     url = endPointUrl;
     headers =  endPointHeaders;
@@ -63,6 +65,9 @@ export class QualificationService {
             qualification.recognitions = results[2] as Recognition[];
             qualification.learningOutcomes = results[3] as Skill[];
             qualification.awardingBodies = results[4] as Agent[];
+
+            qualification.descriptionsAnnotations = this.annotatedListService.getAnnotatedList(qualification.descriptions, qualification.learningOutcomes);
+
             return qualification;
         });
     }

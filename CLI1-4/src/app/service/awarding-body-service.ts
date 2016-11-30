@@ -23,7 +23,7 @@ export class AwardingBodyService {
       .then(res => {
         let objects = res.json().results.bindings;
         // console.log(res.json().results);
-        var awardingBodies: Agent[] = [];
+        let awardingBodies: Agent[] = [];
         for (let values of objects) {
             if (values.agentName_lang_group) {
               let agent = new Agent();
