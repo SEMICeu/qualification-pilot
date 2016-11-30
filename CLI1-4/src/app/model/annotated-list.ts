@@ -4,9 +4,7 @@ import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
 import {SecurityContext} from "@angular/core";
 export class AnnotatedList {
 
-  constructor(
-    private qualificationService?: QualificationService) {
-
+  constructor() {
   }
 
   identifier = "<span about=";
@@ -68,7 +66,7 @@ export class AnnotatedList {
 
     //console.log(annotation);
     if (annotation.substring(0, this.identifier.length) == this.identifier && annotation[this.identifier.length]=='\"') {
-      var i = this.identifier.length + 1;
+      let i = this.identifier.length + 1;
       while (i < annotation.length && annotation[i] != "\"") {
         ++i;
       }

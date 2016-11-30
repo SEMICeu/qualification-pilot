@@ -4,12 +4,12 @@ import {Component} from "@angular/core";
 import {TabData} from "./tab-data";
 import {Input} from "@angular/core";
 @Component({
-    selector: 'detail-view-tab',
-    templateUrl: 'detail-view-tab.component.html',
-    styleUrls: [ 'detail-view-tab.component.css' ]
+    selector: 'data-view',
+    templateUrl: 'data-view.component.html',
+    styleUrls: [ 'data-view.component.css' ]
 })
 
-export class DetailViewTab {
+export class DataView {
 
     @Input()
     private data: TabData;

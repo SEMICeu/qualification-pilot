@@ -1,14 +1,14 @@
-<div *ngIf="tabDatas.length && tabDatas.length>0">
+<div *ngIf="tabDataList.length && tabDataList.length>0">
 <h1 *ngIf="header">{{header}}</h1>
 <h1 *ngIf="loading && !header">Loading...</h1>
 
 <div *ngIf="qualification" class="main-details">
   <nav>
-    <a *ngFor = "let data of tabDatas" [routerLink]="['/qual',data.index]" routerLinkActive="active" fragment="{{fragment}}">{{data.name}}
+    <a *ngFor = "let data of tabDataList" [routerLink]="['/detail',data.index]" routerLinkActive="active" fragment="{{fragment}}">{{data.name}}
     </a>
   </nav>
 
-  <detail-view-tab [data]="selectedTabData"></detail-view-tab>
+  <data-view [data]="selectedTabData"></data-view>
 
 </div>
 </div>

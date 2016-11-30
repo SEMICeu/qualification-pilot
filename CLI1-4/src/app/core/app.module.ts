@@ -6,13 +6,13 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import {AppRoutingModule} from "./app-routing.module";
 import {DetailView} from "../detail-view/detail-view.component";
-import {DetailViewTab} from "../detail-view/detail-view-tab.component";
+import {DataView} from "../detail-view/data-view.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     DetailView,
-    DetailViewTab
+    DataView
   ],
   imports: [
     BrowserModule,

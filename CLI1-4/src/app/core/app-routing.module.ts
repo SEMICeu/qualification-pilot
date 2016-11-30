@@ -4,17 +4,17 @@ import {LocationStrategy, HashLocationStrategy} from "@angular/common";
 import {DetailView} from "../detail-view/detail-view.component";
 const routes: Routes = [
   {
-    path: 'qual',
+    path: 'detail',
     component: DetailView
   },
   {
-    path: 'index.html',
-    redirectTo: '/qual/0',
+    path: 'index.html', //TODO redirect more appropriately
+    redirectTo: '/detail/0',
     pathMatch: 'full'
   },
   {
     path: '',
-    redirectTo: '/qual/0',
+    redirectTo: '/detail/0',
     pathMatch: 'full'
   },
   // {
@@ -22,7 +22,7 @@ const routes: Routes = [
   //   component: AppComponent
   // },
   {
-    path: 'qual/:tab',
+    path: 'detail/:tab',
     component: DetailView
   },
   // {

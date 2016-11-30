@@ -9,7 +9,7 @@ import {TabDataScripts} from "./tab-data-scripts";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
-  selector: 'qual',
+  selector: 'detail',
   templateUrl: 'detail-view.component.html',
   styleUrls: [ 'detail-view.component.css' ],
 })
@@ -27,21 +27,18 @@ export class DetailView implements OnInit {
   selectedTabIndex = -1;
   qualification: Qualification;
 
-  htmlProperty:SafeHtml;
-
-  tabDatas: TabData[] = [];
+  tabDataList: TabData[] = [];
 
   constructor(
     private qualificationService: QualificationService,
-    private route: ActivatedRoute,
-    private domsanitizer: DomSanitizer) {}
+    private route: ActivatedRoute) {}
 
   ngOnInit(): void {
 
     this.route.fragment.forEach((fragment: string) => {
       if (fragment) {
         this.fragment = fragment;
-        var uri = this.getUriFromFragmentAndSetLang();
+        let uri = this.getUriFromFragmentAndSetLang();
         if (uri) {
           this.loading = true;
           this.setupDataFromUri(uri);
@@ -56,7 +53,7 @@ export class DetailView implements OnInit {
 
       if (params.hasOwnProperty("tab")) {
         this.selectedTabIndex = +params['tab'];
-        this.selectedTabData = this.tabDatas[this.selectedTabIndex];
+        this.selectedTabData = this.tabDataList[this.selectedTabIndex];
       }
     });
   }
@@ -64,58 +61,58 @@ export class DetailView implements OnInit {
   setupDataFromUri(uri:string): void {
     if (this.qualificationService.hasNewState(uri, this.lang)) {
 
-
       this.qualificationService.getQualificationDetailed(uri, this.lang)
         .then(qualification => {
-          if (qualification) {
-            this.qualificationService.queryQualificationRelatedObjects(qualification).then( qualification => {
-              this.qualification = qualification;
-              this.generateTabData();
-            });
-          }
+
+          if (!qualification) return;
+
+          this.qualificationService.queryQualificationRelatedObjects(qualification).then( qualification => {
+            this.qualification = qualification;
+            this.generateTabData();
+          });
+
         });
     }
     else {
-      if (this.tabDatas.length == 0) {
+      if (this.tabDataList.length == 0 && this.qualification) {
         this.generateTabData();
       }
     }
   }
 
   clearData() {
-    this.tabDatas = [];
+    this.tabDataList = [];
   }
 
   generateTabData() {
 
-    if (!this.qualification) return;
-    this.tabDatas = [];
+    this.tabDataList = [];
 
     let qualification = this.qualification;
     let lang = this.lang;
 
     this.header = qualification.getPrefLabels(lang);
 
-    this.tabDatas.push(new TabData("All", 0));
+    this.tabDataList.push(new TabData("All", 0));
 
-    this.tabDatas.push(TabDataScripts.core(1, this.qualification, this.lang));
-    this.tabDatas.push(TabDataScripts.accreditationRecognition(2, this.qualification, this.lang));
-    this.tabDatas.push(TabDataScripts.learningOutcomes(3, this.qualification, this.lang));
-    this.tabDatas.push(TabDataScripts.additional(4, this.qualification, this.lang));
+    this.tabDataList.push(TabDataScripts.core(1, this.qualification, this.lang));
+    this.tabDataList.push(TabDataScripts.accreditationRecognition(2, this.qualification, this.lang));
+    this.tabDataList.push(TabDataScripts.learningOutcomes(3, this.qualification, this.lang));
+    this.tabDataList.push(TabDataScripts.additional(4, this.qualification, this.lang));
 
-    for (let i = 1; i < this.tabDatas.length; ++i) {
-      for (let element of this.tabDatas[i].elements) {
-        this.tabDatas[0].push(element);
+    for (let i = 1; i < this.tabDataList.length; ++i) {
+      for (let element of this.tabDataList[i].elements) {
+        this.tabDataList[0].push(element);
       }
     }
 
-    if (this.selectedTabIndex == -1) this.selectedTabData = this.tabDatas[0];
-    else this.selectedTabData = this.tabDatas[this.selectedTabIndex];
+    if (this.selectedTabIndex == -1) this.selectedTabData = this.tabDataList[0];
+    else this.selectedTabData = this.tabDataList[this.selectedTabIndex];
   }
 
   private getUriFromFragmentAndSetLang(): string {
     let uri;
-    var split1 = this.fragment.split("&");
+    let split1 = this.fragment.split("&");
     for (let str of split1) {
       let split2 = str.split("=");
       if (split2.length == 2) {
