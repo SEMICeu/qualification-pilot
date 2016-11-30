@@ -122,7 +122,7 @@ export class AnnotatedList {
         s +=
           "<span class='annotation annotation-link'>" +
           fragment.annotationValue[0] +
-          "<span class='annotationtext'>" +
+          "<span class='annotationText'>" +
           fragment.annotationValue[1] +
           "</span>" + "</span>";
       }

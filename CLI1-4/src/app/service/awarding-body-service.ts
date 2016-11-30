@@ -3,7 +3,7 @@ import {Http} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
-import {Agent} from "../model/agent";
+import {Agent} from "../model/qms/agent";
 import {QueryAwardingBody} from "./query-scripts/query-awarding-body";
 import {ConcatsParser} from "./support/concats-parser";
 

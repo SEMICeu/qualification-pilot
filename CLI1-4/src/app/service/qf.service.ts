@@ -4,8 +4,8 @@ import 'rxjs/add/operator/toPromise';
 
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
-import {QualificationFramework} from "../model/qualification-framework";
-import {Agent} from "../model/agent";
+import {QualificationFramework} from "../model/qms/qualification-framework";
+import {Agent} from "../model/qms/agent";
 import {QueryQf} from "./query-scripts/query-qf";
 
 @Injectable()

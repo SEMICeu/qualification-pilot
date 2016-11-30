@@ -4,9 +4,9 @@ import 'rxjs/add/operator/toPromise';
 
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
-import {Accreditation} from "../model/accreditation";
+import {Accreditation} from "../model/qms/accreditation";
 import {QueryAccreditation} from "./query-scripts/query-accreditation";
-import {Agent} from "../model/agent";
+import {Agent} from "../model/qms/agent";
 
 @Injectable()
 export class AccreditationService {

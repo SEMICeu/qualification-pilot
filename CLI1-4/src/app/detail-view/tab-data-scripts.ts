@@ -1,9 +1,9 @@
 import {TabData} from "./tab-data";
-import {Qualification} from "../model/qualification";
+import {Qualification} from "../model/qms/qualification";
 import {TabDataElement} from "./tab-data-element";
 import {AnnotatedList} from "../model/annotated-list";
 import {DomSanitizer} from "@angular/platform-browser";
-import {Agent} from "../model/agent";
+import {Agent} from "../model/qms/agent";
 export class TabDataScripts {
 
   static core(index:number, qualification: Qualification, lang:string): TabData {

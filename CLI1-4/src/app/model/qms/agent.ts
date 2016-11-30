@@ -1,5 +1,5 @@
 
-import {Link} from "./link";
+import {Link} from "../link";
 export class Agent {
 
     names: Map<string, string[]>;

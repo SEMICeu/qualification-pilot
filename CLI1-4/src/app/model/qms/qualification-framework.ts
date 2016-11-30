@@ -1,6 +1,6 @@
 
 import {Agent} from "./agent";
-import {Link} from "./link";
+import {Link} from "../link";
 export class QualificationFramework {
 
     constructor(uri: string) {

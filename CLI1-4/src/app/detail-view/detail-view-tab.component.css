@@ -67,7 +67,7 @@ table {
   /*border-bottom: 1px dotted black; !* If you want dots under the hoverable text *!*/
 }
 
-.tooltiptext {
+.tooltipText {
   visibility: hidden;
   color: #fff;
   text-align: center;
@@ -82,7 +82,7 @@ table {
   z-index: 1;
 }
 
-.tooltip .tooltiptext {
+.tooltip .tooltipText {
   width: auto;
   min-width: 150px;
   max-width: 600px;
@@ -91,7 +91,7 @@ table {
   right: 50%;
 }
 
-.tooltip:hover .tooltiptext {
+.tooltip:hover .tooltipText {
   visibility: visible;
 }
 .source-column-standard {
@@ -113,7 +113,7 @@ table {
   position: relative;
 }
 
-:host >>> .annotationtext {
+:host >>> .annotationText {
   visibility: hidden;
   color: #fff;
   text-align: center;
@@ -126,7 +126,7 @@ table {
   z-index: 1;
 }
 
-:host >>> .annotationtext {
+:host >>> .annotationText {
   width: auto;
   min-width: 150px;
   max-width: 600px;
@@ -135,7 +135,7 @@ table {
   left: 0%;
 }
 
-:host >>> .annotation:hover .annotationtext {
+:host >>> .annotation:hover .annotationText {
   visibility: visible;
 }
 

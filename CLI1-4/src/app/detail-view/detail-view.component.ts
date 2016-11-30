@@ -3,7 +3,7 @@ import { OnInit } from '@angular/core';
 
 import {Router, ActivatedRoute, Params} from "@angular/router";
 import {QualificationService} from "../service/qualification.service";
-import {Qualification} from "../model/qualification";
+import {Qualification} from "../model/qms/qualification";
 import {TabData} from "./tab-data";
 import {TabDataScripts} from "./tab-data-scripts";
 import {DomSanitizer, SafeHtml} from "@angular/platform-browser";

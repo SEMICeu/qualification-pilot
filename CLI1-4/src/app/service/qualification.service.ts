@@ -3,18 +3,18 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
-import {Qualification} from "../model/qualification";
+import {Qualification} from "../model/qms/qualification";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {QfService} from "./qf.service";
-import {Agent} from "../model/agent";
-import {QualificationFramework} from "../model/qualification-framework";
+import {Agent} from "../model/qms/agent";
+import {QualificationFramework} from "../model/qms/qualification-framework";
 import {SkillService} from "./skill.service";
 import {AccreditationService} from "./accreditation.service";
 import {RecognitionService} from "./recognition.service";
-import {Accreditation} from "../model/accreditation";
-import {Recognition} from "../model/recognition";
-import {Skill} from "../model/skill";
+import {Accreditation} from "../model/qms/accreditation";
+import {Recognition} from "../model/qms/recognition";
+import {Skill} from "../model/qms/skill";
 import {QueryQualification} from "./query-scripts/query-qualification";
 import {AwardingBodyService} from "./awarding-body-service";
 

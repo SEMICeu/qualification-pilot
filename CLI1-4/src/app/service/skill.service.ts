@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import 'rxjs/add/operator/toPromise';
 
-import {Skill} from "../model/skill";
+import {Skill} from "../model/qms/skill";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {QuerySkill} from "./query-scripts/query-skill";

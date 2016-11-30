@@ -4,7 +4,7 @@ import {QualificationFramework} from "./qualification-framework";
 import {Accreditation} from "./accreditation";
 import {Agent} from "./agent";
 import {Recognition} from "./recognition";
-import {Link} from "./link";
+import {Link} from "../link";
 export class Qualification {
 
     constructor(uri: string) {
