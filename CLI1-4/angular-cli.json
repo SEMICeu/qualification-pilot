@@ -9,7 +9,8 @@
       "outDir": "dist",
       "assets": [
         "assets",
-        "favicon.ico",
+        "endpointUrl.js",
+        "favicon-96x96.png",
         "javascript-part"
       ],
       "index": "index.html",

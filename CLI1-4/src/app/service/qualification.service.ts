@@ -47,8 +47,7 @@ export class QualificationService {
         return (!this.detailedQualification || this.detailedQualification.uri != uri || this.prefLang != prefLang);
     }
 
-
-    queryQualificationRelatedObjects(qualification: Qualification): Promise<Qualification> {
+    getQualificationRelatedObjects(qualification: Qualification): Promise<Qualification> {
 
         let uri = qualification.uri;
         let langCodes = qualification.referenceLang ? qualification.referenceLang.concat(this.prefLang, "en") : [this.prefLang, "en"];

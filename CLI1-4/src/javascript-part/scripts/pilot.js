@@ -3,8 +3,10 @@
 //var serverUrl = "https://cognizone.poolparty.biz/PoolParty/sparql/QP_EscoICTTest?format=";
 //Server URL - Virtuoso format
 //var serverUrl = "http://...virtuoso-server-url...:8890/sparql?default-graph-uri=&timeout=60000&format=";
-var serverUrl = "http://localhost:8080/rdf4j-server/repositories/QPilot2?output=json&Accept=";
+// var serverUrl = "http://localhost:8080/rdf4j-server/repositories/QPilot2?output=json&Accept=";
 //var serverUrl = "http://sesame.cfapps.io/repositories/qualifications2?output=json&Accept=";
+
+  serverUrl = ENDPOINT_URL + "?output=json&Accept=";
 
 var pilotInnerYasqe = YASQE();
 var queryPrefixes =
@@ -33,7 +35,7 @@ $(function () {
   var foetFacetContainerHtml = "";
 
   foetFacetContainerHtml += "<select id='foet-facet-select'>";
-  foetFacetContainerHtml += "<option selected >Select Field of Education and Training</option>"
+  foetFacetContainerHtml += "<option selected >Select Field of Education and Training</option>";
   for (var foet in cvUsesLang.foet) {
     if (!cvUsesLang.foet.hasOwnProperty(foet)) continue;
     $('#FoETlevel').append($('<option qp-lang-property=\"data_foet_' + foet + '\" qp-lang-field=\"html\" value=\"' + foet + '\">' + cvUsesLang.foet[foet][language] + '</option>', {value: foet, text: cvUsesLang.foet[foet][language]}));

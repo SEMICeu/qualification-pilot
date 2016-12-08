@@ -21,22 +21,26 @@ export class TabDataScripts {
     container.push(new TabDataElement().setValues(["Volume of learning:", [qualification.volumeOfLearning]]));
     // container.push(new TabDataElement().setValues(["Is Partial Qualification:", [qualification.isPartialQualification]]));
     container.push(new TabDataElement().setValues(["Ways to Acquire:", qualification.waysToAcquire]));
-    let entryReqs:string[] = [];
-    if (qualification.entryRequirements) for (let entryReq of qualification.entryRequirements) {
-      entryReqs.push("Type: " + entryReq[0]);
-      entryReqs.push("Level: " + entryReq[1]);}
-    container.push(new TabDataElement().setValues(["Entry Requirement:", entryReqs]));
-    container.push(new TabDataElement().setValues(["Expiry Period:",[qualification.expiryPeriod]]));
 
+    let entryReqs:string[] = [];
+    if (qualification.entryRequirements) {
+      for (let entryReq of qualification.entryRequirements) {
+        entryReqs.push("Type: " + entryReq[0]);
+        entryReqs.push("Level: " + entryReq[1]);
+      }
+    }
+    container.push(new TabDataElement().setValues(["Entry Requirement:", entryReqs]));
+
+    container.push(new TabDataElement().setValues(["Expiry Period:",[qualification.expiryPeriod]]));
     container.push(new TabDataElement().setLinkValues(["Homepage:",qualification.getHomepageLinks()]));
     container.push(new TabDataElement().setLinkValues(["Landing Page:",qualification.getLandingPageLinks()]));
     container.push(new TabDataElement().setValues(["Release/Publication Date:", [qualification.issued]]));
     container.push(new TabDataElement().setValues(["Modification Date:", [qualification.modified]]));
     container.push(new TabDataElement().setValues(["Status:", [qualification.status]]));
 
-    container.push(new TabDataElement().setValues(["Awarding Started", [qualification.awardingStarted]]));
-    container.push(new TabDataElement().setValues(["Awarding Ended", [qualification.awardingEnded]]));
-    container.push(new TabDataElement().setValues(["Awarding Location",qualification.getAwardingLocations(lang)]));
+    container.push(new TabDataElement().setValues(["Awarding Started:", [qualification.awardingStarted]]));
+    container.push(new TabDataElement().setValues(["Awarding Ended:", [qualification.awardingEnded]]));
+    container.push(new TabDataElement().setValues(["Awarding Location:",qualification.getAwardingLocations(lang)]));
     for (let awardingBody of qualification.awardingBodies) {
       if (awardingBody.names) {
         let ABElement: TabDataElement[] = [];

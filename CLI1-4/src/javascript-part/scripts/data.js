@@ -1,6 +1,6 @@
 var cvUsesLang = {
   "country": {
-    "http://data.europa.eu/esco/country/BE": {"en": "Belgium", "el": "Belgium", "sv": "Belgien", "es": "Bélgica"},
+    "http://data.europa.eu/esco/ConceptScheme/NUTS2008/c.BE": {"en": "Belgium", "el": "Belgium", "sv": "Belgien", "es": "Bélgica"},
     "http://data.europa.eu/esco/country/ES": {"en": "Spain", "el": "Spain", "sv": "Spanien", "es": "España"},
     "http://data.europa.eu/esco/ConceptScheme/NUTS2008/c.UK": {"en": "United Kingdom", "el": "United Kingdom", "sv": "Storbritannien", "es": "Reino Unido"},
     "http://data.europa.eu/esco/country/SE": {"en": "Sweden", "el": "Sweden", "sv": "Sverige", "es": "Suecia"},

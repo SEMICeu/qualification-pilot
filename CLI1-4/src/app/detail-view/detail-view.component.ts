@@ -66,7 +66,7 @@ export class DetailView implements OnInit {
 
           if (!qualification) return;
 
-          this.qualificationService.queryQualificationRelatedObjects(qualification).then( qualification => {
+          this.qualificationService.getQualificationRelatedObjects(qualification).then(qualification => {
             this.qualification = qualification;
             this.generateTabData();
           });

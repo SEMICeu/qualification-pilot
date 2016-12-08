@@ -96,8 +96,8 @@ var qp_translations = {
     "es": "Selección de país"
   },
   "pageTitle-search": {
-    "en": "Search qualifications",
-    "el": "Search qualifications",
+    "en": "Search Qualifications",
+    "el": "Search Qualifications",
     "sv": "Sök kvalifikationer",
     "es": "Búsqueda cualificaciones"
   },
@@ -293,8 +293,8 @@ var qp_translations = {
     "es": "http://ec.europa.eu/geninfo/query/search_es.html"
   },
   "qualificationsPilot": {
-    "en": "Qualifications pilot",
-    "el": "Qualifications pilot",
+    "en": "Qualifications Pilot",
+    "el": "Qualifications Pilot",
     "sv": "Kvalifikationer pilot",
     "es": "Piloto sobre cualificaciones"
   },
