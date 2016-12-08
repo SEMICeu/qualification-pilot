@@ -28,7 +28,7 @@ task buildAngular  (type: Exec)  {
   }
 }
 
-tasks.build.dependsOn(tasks.buildAngular)
+tasks.compileJava.dependsOn(tasks.buildAngular)
 
 
 jar {
