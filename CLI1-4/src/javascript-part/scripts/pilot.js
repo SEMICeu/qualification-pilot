@@ -190,8 +190,6 @@ function searchFormSubmit() {
   var eqf = $("#EQFlevel").val();
   var country = $("#country").val();
 
-  console.log(eqf);
-
   var query = "select distinct ?referenceLanguage ?qualification ?prefLabel ?eqfConcept ?eqf ?foetConcept ?homepage ?countryUri ?creatorwhere{  " +
       "  ?qualification rdf:type esco:Qualification ." +
       "  ?qualification skos:prefLabel ?prefLabel ." +
@@ -215,8 +213,6 @@ function searchFormSubmit() {
   query += addFilter(foet, "esco:hasISCED-FCode");
   query += addFilter(country, "prov:atLocation");
   query += "}";
-
-  console.log(query);
 
   var errorQuery = function () {
     //$("#result").html("<div class=\"alert alert-danger fade in\">Query failed</div>");
@@ -416,7 +412,6 @@ function linkize(value) {
 
 function addFilter(selection, property) {
 
-  console.log(selection);
   if (!selection || selection.length == 0) return "";
   if (property=="esco:hasISCED-FCode") {
     return "filter exists { ?qualification " + property + " <" + selection + "> } ";

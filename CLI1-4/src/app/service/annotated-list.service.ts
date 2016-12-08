@@ -33,12 +33,16 @@ export class AnnotatedListService {
         for (let skill of learningOutcomes) {
 
           if (fragment.annotationValue[1] == skill.uri) {
-            fragment.annotationValue[1] = skill.getPrefLabels(langCode, [])[0] + " - " + skill.getDescriptions(langCode, [])[0];
+            fragment.annotationValue[1] =  this.firstToUpperCase(skill.getPrefLabels(langCode, [])[0]) + " - " + skill.getDescriptions(langCode, [])[0];
           }
         }
       }
     }
     return annotatedList;
+  }
+
+  private firstToUpperCase(string:string ) {
+    return string.substr(0, 1).toUpperCase() + string.substr(1);
   }
 
 }

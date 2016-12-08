@@ -13,9 +13,9 @@ public class Qpilot2UiApplication {
 		SpringApplication.run(Qpilot2UiApplication.class, args);
 	}
 
-	@RequestMapping(value = {"/detail/0"})
+	@RequestMapping(value = {"/", "/detail/**"})
 	protected String redirect() {
-		return "redirect:/index.html";
+		return "forward:/index.html";
 	}
 
 }
