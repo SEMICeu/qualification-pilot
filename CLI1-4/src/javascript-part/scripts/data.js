@@ -5,7 +5,7 @@ var cvUsesLang = {
     "http://data.europa.eu/esco/ConceptScheme/NUTS2008/c.UK": {"en": "United Kingdom", "el": "United Kingdom", "sv": "Storbritannien", "es": "Reino Unido"},
     "http://data.europa.eu/esco/country/SE": {"en": "Sweden", "el": "Sweden", "sv": "Sverige", "es": "Suecia"},
     "http://data.europa.eu/esco/country/GR": {"en": "Greece", "el": "Greece", "sv": "Greece", "es": "Greece"},
-    "http://data.europa.eu/esco/ConceptScheme/NUTS2008/c.HR": {"en": "Hungary"}
+    "http://data.europa.eu/esco/ConceptScheme/NUTS2008/c.UKM": {"en": "Scotland"}
   },
   "foet": {
     "http://data.europa.eu/esco/ConceptScheme/FoET2013/FoET/06": {"en": "06 Information and Communication Technologies (ICTs)", "el": "06 Information and Communication Technologies (ICTs)", "sv": "06 Informations- och kommunikationsteknik (IKT)", "es": "06 Tecnologías de la Información y la Comunicación (TIC)"},

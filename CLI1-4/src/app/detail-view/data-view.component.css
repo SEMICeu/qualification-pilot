@@ -141,5 +141,5 @@ table {
 
 :host >>> .annotation-link {
   color: blue;
-  border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  border-bottom: 1px dotted black;
 }

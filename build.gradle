@@ -13,6 +13,14 @@ buildscript {
 apply plugin: 'idea'
 apply plugin: 'spring-boot'
 
+
+task npmInstall  (type: Exec)  {
+	doFirst {
+		workingDir 'CLI1-4'
+		commandLine 'cmd', '/c', 'npm install'
+	}
+}
+
 task buildAngular  (type: Exec)  {
   doFirst {
     workingDir 'CLI1-4'
