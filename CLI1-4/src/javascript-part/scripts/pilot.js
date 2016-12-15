@@ -1,10 +1,4 @@
 
-//Server URL - PoolParty format
-//var serverUrl = "https://cognizone.poolparty.biz/PoolParty/sparql/QP_EscoICTTest?format=";
-//Server URL - Virtuoso format
-//var serverUrl = "http://...virtuoso-server-url...:8890/sparql?default-graph-uri=&timeout=60000&format=";
-// var serverUrl = "http://localhost:8080/rdf4j-server/repositories/QPilot2?output=json&Accept=";
-//var serverUrl = "http://sesame.cfapps.io/repositories/qualifications2?output=json&Accept=";
 
 serverUrl = ENDPOINT_URL + "?output=json&Accept=";
 
@@ -40,7 +34,6 @@ $(function () {
     if (!cvUsesLang.foet.hasOwnProperty(foet)) continue;
     $('#FoETlevel').append($('<option qp-lang-property=\"data_foet_' + foet + '\" qp-lang-field=\"html\" value=\"' + foet + '\">' + cvUsesLang.foet[foet][language] + '</option>', {value: foet, text: cvUsesLang.foet[foet][language]}));
 
-    //foetFacetContainerHtml += "<a><label><input type=\"checkbox\" eqf-facet=\"" + foet + "\"> <span qp-lang-property=\"data_foet_" + foet + "\" qp-lang-field=\"html\">" + cvUsesLang.foet[foet][language] + "</span></label></a>";
     foetFacetContainerHtml += '<option qp-lang-property=\"data_foet_' + foet + '\" qp-lang-field=\"html\" value=\"' + foet + '\">' + cvUsesLang.foet[foet][language] + '</option>'
   }
   foetFacetContainerHtml += "</select>";
@@ -60,7 +53,6 @@ $(function () {
   $("[eqf-facet],[country-facet]").click(facetChange);
   $("#foet-facet-select").change(facetChange);
   updateScreen();
-  //console.log("page loaded")
 });
 
 function updateHash(newHash) {
@@ -164,7 +156,6 @@ function executeFindRelatedQualifications(eqf, foet, countryUri) {
   query += "}";
 
   var errorQuery = function () {
-    //$("#result").html("<div class=\"alert alert-danger fade in\">Query failed</div>");
     alert("Query failed");
     $("#overlay").hide();
   };
@@ -225,7 +216,6 @@ function searchFormSubmit() {
   query += "}";
 
   var errorQuery = function () {
-    //$("#result").html("<div class=\"alert alert-danger fade in\">Query failed</div>");
     alert("Query failed");
     $("#overlay").hide();
   };
@@ -264,31 +254,8 @@ function successSearchQuery(data) {
   //var resultField = $("#result");
   if (rows.length == 0) {
     alert("No results found");
-    //resultField.html("<div class=\"alert alert-warning fade in\">No results found</div>");
     return;
   }
-  //searchResultContainer
-//<h5>Title</h5><h2>Web Design</h2>
-//          <hr>
-//          <h6>Description:</h6>
-//          <p>Lorem ipsum dolor sit amet, et vis impedit eleifend, ne vero debet viris vix. Ei molestiae scriptorem interpretaris usu, simul accommodare at nec. Per no justo scaevola, quo id splendide intellegam consectetuer.</p>
-//
-//          <h6>Learning outcomes : </h6>
-//          <p>Vero ullamcorper cu eum, at eam equidem pericula, pri fabellas posidonium te. Ea magna omittantur per, sit ne impedit expetendis, ei euismod denique scaevola vis. Pro ut iriure tacimates, et ius albucius adolescens efficiendi. Pro ad omnium propriae qualisque.<br>
-//            Duo veniam expetendis intellegebat ei, est cu minim saperet. Percipit laboramus vix et, has mucius appareat urbanitas cu, homero petentium cum ut. Quas praesent disputationi eu pri, mei iusto oporteat id. An vim etiam mediocritatem. Te vim impedit torquatos. Nam reque atqui partem te, cu affert volumus has.<br>
-//            Consequat inciderint mediocritatem at pro, qui velit recusabo et. Ullum constituto liberavisse ex mea, hinc melius pro cu. Ne nibh illud meliore mea, impedit insolens nec ei. Mel modus petentium ut, vis persius expetenda mediocritatem cu, populo honestatis cotidieque his ne. Et nonumes corrumpit referrentur usu, nec tale verear no, cu docendi
-//            recteque voluptatum quo.</p>
-//
-//          <h6>Required Skills: </h6>
-//          <span>Duo veniam expetendis</span>
-//          <span>Intellegebat ei</span>
-//          <span>Est cu minim saperet</span>
-//          <span>Percipit laboramus vix et</span><br><br>
-//          <input type="submit" value="Details">
-//
-//          <p></p><p></p>
-
-
 
   searchResultData = groupSelectResult(rows, "qualification");
   fillSearchResultField(searchResultData);
@@ -297,7 +264,6 @@ function successSearchQuery(data) {
 
   showScreen("searchResultScreen");
 
-  //resultField.html(table);
 }
 
 function fillSearchResultField(grouped) {
@@ -328,17 +294,11 @@ function fillSearchResultField(grouped) {
       }
     }
     result += "</p>";
-    //result += "<p>" + addCell(row.eqf, false, "No EQF set") + "</p>";
-    //if (!lines || lines.length == 0) return defaultText;
-    //var result = (isLink ? linkize(lines[0]) : lines[0]);
-    //for (var i = 1; i < lines.length; i++) {
-    //  result += "<br/>" + (isLink ? linkize(lines[i]) : lines[i]);
-    //}
+
     if (row.trusted) {
       result += "trusted";
     }
 
-    //result += "<h6>FoET:</h6><p>" + addCell(row.foet, false, "No FoET set") + "</p>";
     result += "<h6>ISCED FoET 2013:</h6>";
     result += "<p>";
     if (!row.foetConcept || row.foetConcept.length == 0) {
@@ -358,10 +318,7 @@ function fillSearchResultField(grouped) {
     result += "<br/><br/><br/><br/>";
     result += "</div>";
 
-    //var uriWithLink = "<a target=\"qualificationDetail\" href=\"detail.html#" + rowUri + "\">" + rowUri + "</a>";
-    //table += "<tr><td>" + uriWithLink + "</a></td>" + addCell(row.prefLabel, false) + addCell(row.homepage, true) + addCell(row.eqf, false) + addCell(row.foet, false) + "</tr>";
   }
-  //table += "</table>";
 
   $("#searchResultContainer").html(result);
 }
@@ -451,65 +408,6 @@ function loadDetail(uri) {
 
   updateHash("lang=" + language + "&detailUri=" + detailUri);
 
-
-  // var query = "select distinct * where {" +
-  //     "  bind(<" + uri + "> as ?uri)" +
-  //     "  ?uri rdf:type esco:Qualification ." +
-  //     "  ?uri esco:referenceLanguage ?referenceLanguage ." +
-  //     "  ?uri skos:prefLabel ?prefLabel ." +
-  //     "  optional {?uri skos:definition ?definitionNode ." +
-  //     "            ?definitionNode esco:nodeLiteral ?definition }" +
-  //     "  optional { ?uri esco:hasAssociation ?eqfConcept . ?eqfConcept esco:targetFramework <http://data.europa.eu/esco/ConceptScheme/EQF2012/ConceptScheme> }" +
-  //     "  optional {  ?uri esco:hasISCED-FCode ?foetConcept. }" +
-  //     "  optional { " +
-  //     "?uri esco:hasAwardingActivity ?awardingLocationActivity . " +
-  //     "?awardingLocationActivity prov:atLocation ?countryUri }" +
-  //     " optional {  ?uri dcterms:description ?descriptionNode . ?descriptionNode esco:nodeLiteral ?description }" +
-  //     " optional {  ?uri esco:additionalNote ?additionalNoteNode . ?additionalNoteNode esco:nodeLiteral ?additionalNotes }" +
-  //     " optional {  ?uri skos:altLabel ?altLabel }" +
-  //     " optional {  ?uri foaf:homepage ?homepage }" +
-  //     " optional {  ?uri esco:supplementaryDoc ?supplementaryDoc }" +
-  //     " optional {  ?uri esco:hasAwardingActivity ?awardingBodyActivity ." +
-  //     "              ?awardingBodyActivity prov:wasAssociatedWith ?abUri ." +
-  //     "                   optional { ?abUri foaf:name ?abName }" +
-  //     "                   optional {?abUri foaf:mbox ?abEmail } " +
-  //     "                   optional {?abUri foaf:homePage ?abHomepage } } " +
-  //     " optional {  ?uri dcterms:creator ?ownerUri . " +
-  //     "                  optional {  ?ownerUri foaf:name ?ownerName  } " +
-  //     "                  optional {  ?ownerUri foaf:mbox ?ownerEmail } " +
-  //     "                  optional {  ?ownerUri foaf:homepage ?ownerHomepage } }" +
-  //     " optional {  ?uri dcterms:publisher ?publisherUri . " +
-  //     "                  optional {  ?publisherUri foaf:name ?publisherName } " +
-  //     "                  optional {  ?publisherUri foaf:mbox ?publisherEmail } }" +
-  //     " optional {  ?uri esco:hasECTSCreditPoints ?hasECTSCreditPoints . }" +
-  //     " optional {  ?uri esco:isPartialQualification ?isPartialQualification . }" +
-  //     " optional {  ?uri esco:waysToAcquire ?waysToAcquire . }" +
-  //     " optional {  ?uri esco:volumeOfLearning ?volumeOfLearning . }" +
-  //     " optional {  ?uri dcterms:issued ?issued . }" +
-  //     " optional {  ?uri dcterms:modified ?modified . }" +
-  //     " optional {  ?uri dcat:landingPage ?landingPage . }" +
-  //     " optional {  ?uri esco:hasAssociation ?nqfAssoc . " +
-  //     "              ?nqfAssoc esco:targetName ?nqfValue . " +
-  //     "              ?nqfAssoc dcterms:type <http://data.europa.eu/esco/association-type#qf-level> . }" +
-  //     " optional { ?uri esco:hasAssociation ?LOAssoc ." +
-  //     "            ?LOAssoc dcterms:type <http://data.europa.eu/esco/association-type#learning-outcome> ." +
-  //     "            ?LOAssoc esco:targetFramework <http://data.europa.eu/esco/concept-scheme/skills> ." +
-  //     "            ?LOAssoc esco:target ?skill ." +
-  //     "            ?skill skosXl:prefLabel ?skillPrefLabel ." +
-  //     "            ?skillPrefLabel skosXl:literalForm ?skillLabel }" +
-  //     "}";
-  //
-  // var errorQuery = function () {
-  //   //$("#result").html("<div class=\"alert alert-danger fade in\">Query failed</div>");
-  //   alert("Query failed");
-  //   $("#overlay").hide();
-  // };
-  // $("#overlay").show();
-  // executeQuery(query, function (data) {
-  //   successDetailQuery(data, uri);
-  // }, errorQuery);
-
-
 }
 var detailHasEqf;
 var detailGrouped;
@@ -521,7 +419,6 @@ function successDetailQuery(data, uri) {
     return;
   }
 
-  //console.log(data);
 
   detailGrouped = groupSelectResult(data.results.bindings, "uri")[uri];
   fillInDetailContent(detailGrouped);
@@ -600,7 +497,7 @@ function fillInDetailContent(row) {
   content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"refLang\" qp-lang-field=\"html\">" + qp_translations["refLang"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.referenceLanguage, false, "") + "</span></h6>";
   content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"awardingBody\" qp-lang-field=\"html\">" + qp_translations["awardingBody"][language] + "</span>: <span class=\"fieldInfo\">" + addCellLanguage(row, "abName", false, "") + "</span></h6>";
   content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"awardingBodyEmail\" qp-lang-field=\"html\">" + qp_translations["awardingBodyEmail"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.abEmail, true, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"awardingBodyHomepage\" qp-lang-field=\"html\">" + qp_translations["awardingBodyHomepage"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.abHomepage, true, "") + "</span></h6>"
+  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"awardingBodyHomepage\" qp-lang-field=\"html\">" + qp_translations["awardingBodyHomepage"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.abHomepage, true, "") + "</span></h6>";;;;;;;;;;;;;;;
   content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"owner\" qp-lang-field=\"html\">" + qp_translations["owner"][language] + "</span>: <span class=\"fieldInfo\">" + addCellLanguage(row, "ownerName", false, "") + "</span></h6>";
   content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"ownerEmail\" qp-lang-field=\"html\">" + qp_translations["ownerEmail"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.ownerEmail, true, "") + "</span></h6>";
   content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"ownerHomepage\" qp-lang-field=\"html\">" + qp_translations["ownerHomepage"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.ownerHomepage, true, "") + "</span></h6>";
@@ -711,17 +608,7 @@ function updateScreen() {
   //console.log(values);
   setLanguage(values);
 
-  //var uri = values["uri"];
-  //if (uri && uri.trim().length > 0) {
-  //  loadUri(uri);
-  //  return;
-  //}
-  //
   if (values.hasOwnProperty("search")) {
-    //var search = values["search"] ? decodeURIComponent(values["search"]).trim() : "";
-    //var eqf = values["eqf"] ? values["eqf"].trim() : "";
-    //var foet = values["foet"] ? values["foet"].trim() : "";
-    //var country = values["country"] ? values["country"].trim() : "";
 
     $("#search").val(decodeURIComponent(values["search"]).trim());
     $("#FoETlevel").val(values["foet"].trim());

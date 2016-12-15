@@ -1,6 +1,3 @@
-
-
-
 import {ConcatsParser} from "./concats-parser";
 export class QueryBuilder {
 
