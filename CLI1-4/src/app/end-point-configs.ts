@@ -5,5 +5,5 @@ export const endPointHeaders = new Headers({
     'accept': 'application/json'
 });
 
-declare const ENDPOINT_URL;
+declare const ENDPOINT_URL; //fetches global variable from endpointUrl.js
 export const endPointUrl = ENDPOINT_URL;

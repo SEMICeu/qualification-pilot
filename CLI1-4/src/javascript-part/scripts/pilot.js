@@ -6,18 +6,18 @@
 // var serverUrl = "http://localhost:8080/rdf4j-server/repositories/QPilot2?output=json&Accept=";
 //var serverUrl = "http://sesame.cfapps.io/repositories/qualifications2?output=json&Accept=";
 
-  serverUrl = ENDPOINT_URL + "?output=json&Accept=";
+serverUrl = ENDPOINT_URL + "?output=json&Accept=";
 
 var pilotInnerYasqe = YASQE();
 var queryPrefixes =
-    "PREFIX esco: <http://data.europa.eu/esco/model#> " +
-    "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
-    "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> " +
-    "PREFIX dcterms: <http://purl.org/dc/terms/> " +
-    "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
-    "PREFIX prov: <http://www.w3.org/ns/prov#>" +
-    "PREFIX dcat: <http://www.w3.org/ns/dcat#>" +
-    "PREFIX skosXl: <http://www.w3.org/2008/05/skos-xl#>";
+  "PREFIX esco: <http://data.europa.eu/esco/model#> " +
+  "PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> " +
+  "PREFIX skos: <http://www.w3.org/2004/02/skos/core#> " +
+  "PREFIX dcterms: <http://purl.org/dc/terms/> " +
+  "PREFIX foaf: <http://xmlns.com/foaf/0.1/> " +
+  "PREFIX prov: <http://www.w3.org/ns/prov#>" +
+  "PREFIX dcat: <http://www.w3.org/ns/dcat#>" +
+  "PREFIX skosXl: <http://www.w3.org/2008/05/skos-xl#>";
 
 var language = "en";
 var detailUri;
@@ -41,7 +41,7 @@ $(function () {
     $('#FoETlevel').append($('<option qp-lang-property=\"data_foet_' + foet + '\" qp-lang-field=\"html\" value=\"' + foet + '\">' + cvUsesLang.foet[foet][language] + '</option>', {value: foet, text: cvUsesLang.foet[foet][language]}));
 
     //foetFacetContainerHtml += "<a><label><input type=\"checkbox\" eqf-facet=\"" + foet + "\"> <span qp-lang-property=\"data_foet_" + foet + "\" qp-lang-field=\"html\">" + cvUsesLang.foet[foet][language] + "</span></label></a>";
-     foetFacetContainerHtml += '<option qp-lang-property=\"data_foet_' + foet + '\" qp-lang-field=\"html\" value=\"' + foet + '\">' + cvUsesLang.foet[foet][language] + '</option>'
+    foetFacetContainerHtml += '<option qp-lang-property=\"data_foet_' + foet + '\" qp-lang-field=\"html\" value=\"' + foet + '\">' + cvUsesLang.foet[foet][language] + '</option>'
   }
   foetFacetContainerHtml += "</select>";
   $("#foetFacetContainer").html(foetFacetContainerHtml);
@@ -131,26 +131,36 @@ function executeFindRelatedQualifications(eqf, foet, countryUri) {
 
 //  "  filter (lang(?prefLabel) = str(?referenceLanguage)) ";
   var query = "select distinct ?qualification ?prefLabel ?homepage ?eqfConcept ?eqf ?foetConcept ?foet ?countryUri ?ownerName ?referenceLanguage where {  " +
-      "  ?qualification rdf:type qms:Qualification ." +
-      "  ?qualification skos:prefLabel ?prefLabel ." +
-      "  ?qualification esco:referenceLanguage ?referenceLanguage ." +
-      //"  filter (lang(?prefLabel) = str(?referenceLanguage)) " +
-      "  optional {  ?qualification qms:hasEQFLevel ?eqfConcept. ?eqfConcept skos:prefLabel ?eqf }" +
-      "  optional {  ?qualification qms:hasFoETCode ?foetConcept. ?foetConcept skos:prefLabel ?foet }" +
-      "  optional {  ?qualification qms:owner ?owner . ?owner foaf:name ?ownerName }" +
-      "  optional {  ?qualification dcterms:spatial ?countryUri }" +
-      "  optional { ?qualification foaf:homepage ?homepage . } " +
-      "  filter (?qualification != <" + detailUri + "> )";
+    "  ?qualification rdf:type esco:Qualification ." +
+    "  ?qualification skos:prefLabel ?prefLabel ." +
+    "  ?qualification esco:referenceLanguage ?referenceLanguage ." +
+    //"  filter (lang(?prefLabel) = str(?referenceLanguage)) " +
+    "  optional { ?qualification esco:hasAssociation ?eqfAssoc . " +
+    "             ?eqfAssoc esco:targetFramework <http://data.europa.eu/esco/ConceptScheme/EQF2012/ConceptScheme> ." +
+    "             ?eqfAssoc esco:target ?eqfConcept ." +
+    "             ?eqfAssoc <http://data.europa.eu/esco/qdr#generatedByTrustedSource> ?trusted ." +
+    "             ?eqfConcept skos:prefLabel ?eqf }" +
+    "  optional {  ?qualification esco:hasISCED-FCode ?foetConcept. ?foetConcept skos:prefLabel ?foet }" +
+    "  optional {  ?qualification esco:owner ?owner . ?owner foaf:name ?ownerName }" +
+    "  optional { " +
+    "?qualification esco:hasAwardingActivity ?awardingActivity . " +
+    "?awardingActivity prov:atLocation ?countryUri" +
+    "}" +
+    "  optional { ?qualification foaf:homepage ?homepage . }" +
+    "  filter (?qualification != <" + detailUri + "> )";
 
-  if (eqf == "YES") query +=
-      "  filter exists { <" + detailUri + "> qms:hasEQFLevel ?eqfFilter ." +
-      "    ?qualification qms:hasEQFLevel ?eqfFilter . }";
-  else if (eqf == "NO") query +=
-      "  filter not exists { ?qualification qms:hasEQFLevel ?eqfFilter . }";
-  if (foet) query +=
-      " filter exists { <" + detailUri + "> qms:hasFoETCode ?foetFilter ." +
-      "    ?qualification qms:hasFoETCode ?foetFilter .}";
-  if (countryUri) query += " filter exists { ?qualification dcterms:spatial <" + countryUri + "> .}";
+  if (eqf == "YES") { query +=
+    "  filter exists { <" + detailUri + "> esco:hasAssociation ?eqfAssocFilter .  ?eqfAssocFilter esco:target ?eqfFilter ." +
+    "    ?eqfAssoc esco:target ?eqfFilter . }";
+  }
+  // else if (eqf == "NO") query +=
+  //   "  filter not exists { ?qualification qms:hasEQFLevel ?eqfFilter . }";
+  if (foet) {
+    query +=
+      " filter exists { <" + detailUri + "> esco:hasISCED-FCode ?foetFilter ." +
+      "    ?qualification esco:hasISCED ?foetFilter .}";
+  }
+  // if (countryUri) query += " filter exists { ?qualification dcterms:spatial <" + countryUri + "> .}";
   query += "}";
 
   var errorQuery = function () {
@@ -191,22 +201,22 @@ function searchFormSubmit() {
   var country = $("#country").val();
 
   var query = "select distinct ?referenceLanguage ?qualification ?prefLabel ?eqfConcept ?eqf ?foetConcept ?homepage ?countryUri ?creatorwhere{  " +
-      "  ?qualification rdf:type esco:Qualification ." +
-      "  ?qualification skos:prefLabel ?prefLabel ." +
-      "  ?qualification esco:referenceLanguage ?referenceLanguage . " +
+    "  ?qualification rdf:type esco:Qualification ." +
+    "  ?qualification skos:prefLabel ?prefLabel ." +
+    "  ?qualification esco:referenceLanguage ?referenceLanguage . " +
 
-      "  optional { ?qualification foaf:homepage ?homepage . }" +
-      "  optional { " +
-      "?qualification esco:hasAwardingActivity ?awardingActivity . " +
-      "?awardingActivity prov:atLocation ?countryUri" +
-      "}" +
-      "  optional { ?qualification dcterms:creator ?creator . ?creator foaf:name ?ownerName}" +
-      "  optional { ?qualification esco:hasAssociation ?eqfAssoc . " +
-      "             ?eqfAssoc esco:targetFramework <http://data.europa.eu/esco/ConceptScheme/EQF2012/ConceptScheme> ." +
-      "             ?eqfAssoc esco:target ?eqfConcept ." +
-      "             ?eqfAssoc <http://data.europa.eu/esco/qdr#generatedByTrustedSource> ?trusted ." +
-      "             ?eqfConcept skos:prefLabel ?eqf }" +
-      "  optional { ?qualification esco:hasISCED-FCode ?foetConcept}";
+    "  optional { ?qualification foaf:homepage ?homepage . }" +
+    "  optional { " +
+    "?qualification esco:hasAwardingActivity ?awardingActivity . " +
+    "?awardingActivity prov:atLocation ?countryUri" +
+    "}" +
+    "  optional { ?qualification dcterms:creator ?creator . ?creator foaf:name ?ownerName}" +
+    "  optional { ?qualification esco:hasAssociation ?eqfAssoc . " +
+    "             ?eqfAssoc esco:targetFramework <http://data.europa.eu/esco/ConceptScheme/EQF2012/ConceptScheme> ." +
+    "             ?eqfAssoc esco:target ?eqfConcept ." +
+    "             ?eqfAssoc <http://data.europa.eu/esco/qdr#generatedByTrustedSource> ?trusted ." +
+    "             ?eqfConcept skos:prefLabel ?eqf }" +
+    "  optional { ?qualification esco:hasISCED-FCode ?foetConcept}";
 
   if (searchText) query += "  filter exists{ ?qualification ?textProperty ?textValue filter(isLiteral(?textValue) && contains(lcase(?textValue), '" + searchText + "')) } .";
   query += addFilter(eqf, "esco:target");
@@ -226,6 +236,26 @@ function searchFormSubmit() {
   //updateScreen();
   return false;
 }
+
+function addFilter(selection, property) {
+
+  if (!selection || selection.length == 0) return "";
+  if (property=="esco:hasISCED-FCode") {
+    return "filter exists { ?qualification " + property + " <" + selection + "> } ";
+  }
+  if (property=="esco:target") {
+    if (selection == "EQFno") {
+      return "filter ( !bound(?eqfConcept)) ";
+    }
+    else {
+      return "filter ( bound(?eqfConcept) ) filter exists { ?eqfAssoc " + property + " <" + selection + "> } ";
+    }
+}
+  if (property=="prov:atLocation") {
+    return "filter exists { ?awardingActivity " + property + " <" + selection + "> } ";
+  }
+}
+
 var searchResultData;
 function successSearchQuery(data) {
   $("#overlay").hide();
@@ -408,35 +438,6 @@ function linkize(value) {
   }
 
   return "<a" +targetPart +" href=\"" + value + "\">" + innerText + "</a>";
-}
-
-function addFilter(selection, property) {
-
-  if (!selection || selection.length == 0) return "";
-  if (property=="esco:hasISCED-FCode") {
-    return "filter exists { ?qualification " + property + " <" + selection + "> } ";
-  }
-  if (property=="esco:target") {
-    if (selection == "EQFno") {
-      return "filter ( !bound(?eqfConcept)) ";
-    }
-    else {
-      return "filter ( bound(?eqfConcept) ) filter exists { ?eqfAssoc " + property + " <" + selection + "> } ";
-    }
-  }
-  if (property=="prov:atLocation") {
-    return "filter exists { ?awardingActivity " + property + " <" + selection + "> } ";
-  }
-  //
-  //var result = null;
-  //selection.each(function () {
-  //  if (!result) result = " filter exists {";
-  //  else result += " UNION ";
-  //  result += "{ ?qualification " + property + " <" + $(this).attr("value") + "> } ";
-  //});
-  //
-  //result += "}";
-  //return result;
 }
 function loadDetail(uri) {
 
