@@ -1,8 +1,8 @@
 import {Headers} from "@angular/http";
 
 export const endPointHeaders = new Headers({
-    'content-type': 'application/sparql-query',
-    'accept': 'application/json'
+  'Accept': 'application/json',
+  'Content-Type': 'application/sparql-query',
 });
 
 declare const ENDPOINT_URL; //fetches global variable from endpointUrl.js

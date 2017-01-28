@@ -1,4 +1,3 @@
-
 import {QueryBuilder, Triple} from "../support/query-builder";
 export class QueryAccreditation {
 
@@ -44,8 +43,8 @@ export class QueryAccreditation {
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:mbox").selectObject("?publisherMail").after("}").groupConcat());
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:homepage").selectObject("?publisherPage").after("}}").groupConcat());
 
-    queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("<http://data.europa.eu/esco/qdr#generatedByTrustedSource>").selectObject("?trusted").after("}"))
-
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?uri").predicate("<http://data.europa.eu/esco/qdr#generatedByTrustedSource>").selectObject("?trusted").after("}"));
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?uri").predicate("<http://data.europa.eu/esco/qdr#sourceDistributionPage>").selectObject("?sourceDistributionPage").after("}"));
 
     return queryBuild.buildSelect();
   }

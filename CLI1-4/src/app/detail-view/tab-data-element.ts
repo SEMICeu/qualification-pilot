@@ -1,6 +1,4 @@
-
 import {Link} from "../model/link";
-import {AnnotatedList} from "../model/annotated-list";
 import {SafeHtml} from "@angular/platform-browser";
 
 export class TabDataElement {
@@ -37,13 +35,14 @@ export class TabDataElement {
         this.borderClass = "elements-group-bordered";
         return this;
     }
-    setSource(agentInfoTriple: [string, Link, Link]) {
+
+  setSource(agentInfoTriple: [string, Link, Link], sourcePage: Link) {
         if (agentInfoTriple[0] == null) {
             this.setSourceColumnCssClass("source-column-no-source")
         }
         else {
             this.sourceName = agentInfoTriple[0];
-            this.sourcePage = agentInfoTriple[1];
+          this.sourcePage = sourcePage;
             this.sourceMail = agentInfoTriple[2];
         }
         return this;

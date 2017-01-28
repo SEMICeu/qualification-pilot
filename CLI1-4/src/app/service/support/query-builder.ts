@@ -115,7 +115,6 @@ export class QueryBuilder {
             filtersString +
             "}\n" +
             groupBysString;
-
         return this.query;
     }
 

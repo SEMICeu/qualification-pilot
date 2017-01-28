@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
-import 'rxjs/add/operator/toPromise';
-
+import "rxjs/add/operator/toPromise";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {Agent} from "../model/qms/agent";
 import {QueryAwardingBody} from "./query-scripts/query-awarding-body";
@@ -30,6 +29,13 @@ export class AwardingBodyService {
               agent.names = ConcatsParser.makeMapOfStringArrays(values.agentName_lang_group.value);
               if (values.agentMail_group) agent.mails = ConcatsParser.makeStringArray(values.agentMail_group.value);
               if (values.agentPage_group) agent.pages = ConcatsParser.makeStringArray(values.agentPage_group.value);
+              if (values.publisherName_lang_group) {
+                agent.publisher = new Agent();
+                agent.publisher.names = ConcatsParser.makeMapOfStringArrays(values.publisherName_lang_group.value);
+                if (values.publisherMail_group) agent.publisher.mails = ConcatsParser.makeStringArray(values.publisherMail_group.value);
+                if (values.publisherPage_group) agent.publisher.pages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
+              }
+              if (values.sourceDistributionPage) agent.sourceDistributionPage = values.sourceDistributionPage.value;
               awardingBodies.push(agent);
             }
         }

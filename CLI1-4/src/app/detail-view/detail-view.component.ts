@@ -1,12 +1,9 @@
-import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
-
-import {Router, ActivatedRoute, Params} from "@angular/router";
+import {Component, OnInit} from "@angular/core";
+import {ActivatedRoute, Params} from "@angular/router";
 import {QualificationService} from "../service/qualification.service";
 import {Qualification} from "../model/qms/qualification";
 import {TabData} from "./tab-data";
 import {TabDataScripts} from "./tab-data-scripts";
-import {DomSanitizer, SafeHtml} from "@angular/platform-browser";
 
 @Component({
   selector: 'detail',
@@ -59,7 +56,7 @@ export class DetailView implements OnInit {
   }
 
   setupDataFromUri(uri:string): void {
-    if (this.qualificationService.hasNewState(uri, this.lang)) {
+    if (this.qualificationService.hasNewState(uri, this.lang) || !this.qualification) {
 
       this.qualificationService.getQualificationDetailed(uri, this.lang)
         .then(qualification => {

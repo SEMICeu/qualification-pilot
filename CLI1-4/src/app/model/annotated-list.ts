@@ -1,5 +1,4 @@
-
-import {SafeHtml, DomSanitizer} from "@angular/platform-browser";
+import {SafeHtml} from "@angular/platform-browser";
 export class AnnotatedList {
 
   constructor() {
@@ -8,7 +7,7 @@ export class AnnotatedList {
   values:AnnotatedListFragment[] = [];
 
   getAsSafeHtml(): SafeHtml {
-    if (this.values.length > 0) console.warn("UNSAFE METHOD: getAsStringAndSanitizeAnnotations - using this method could be unsafe and is used only for the skill annotations in the demo");
+    // if (this.values.length > 0) console.warn("UNSAFE METHOD: getAsStringAndSanitizeAnnotations - using this method could be unsafe and is used only for the skill annotations in the demo");
     let s: string = "";
     for (let fragment of this.values) {
       if (fragment.value) {

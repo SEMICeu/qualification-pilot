@@ -16,6 +16,7 @@ var queryPrefixes =
 var language = "en";
 var detailUri;
 var lastHash;
+
 $(function () {
   lastHash = document.location.hash.substr(1);
   $("#qp-language-selector").change(updateLanguage);
@@ -25,6 +26,11 @@ $(function () {
     updateScreen();
   };
   $("#searchForm").submit(searchFormSubmit);
+
+  $(window).on("popstate", function (e) {
+    if (e.originalEvent.state == null) updateScreen();
+
+  });
 
   var foetFacetContainerHtml = "";
 
@@ -407,149 +413,10 @@ function loadDetail(uri) {
   $("#titleDiv").hide();
 
   updateHash("lang=" + language + "&detailUri=" + detailUri);
+  // window.location.pathname = "detail/0";
 
 }
 var detailHasEqf;
-var detailGrouped;
-function successDetailQuery(data, uri) {
-  $("#overlay").hide();
-
-  if (data.results.bindings.length == 0) {
-    alert("No result found.");
-    return;
-  }
-
-
-  detailGrouped = groupSelectResult(data.results.bindings, "uri")[uri];
-  fillInDetailContent(detailGrouped);
-
-  detailUri = uri;
-
-  updateHash("lang=" + language + "&detailUri=" + detailUri);
-  //$("#relatedFoET").prop("checked", false);
-  //$("#relatedEQF").prop("checked", false);
-  showScreen("detailScreen");
-}
-
-function fillInDetailContent(row) {
-
-  $("#pageTitle").html(getLanguageRows(row, "prefLabel")[0]);
-
-  detailHasEqf = (row.eqf && row.eqf.length > 0);
-  var content = "";
-
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"EQFlevel\" qp-lang-field=\"html\">" + qp_translations["EQFlevel"][language] + "</span></span>: <span class=\"fieldInfo\">";
-  if (!row.eqfConcept || row.eqfConcept.length == 0) {
-    content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"level0\" qp-lang-field=\"html\">" + qp_translations["level0"][language] + "</span>";
-  }
-  else {
-    content += "<span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"level" + row.eqfConcept[0].slice(-1) + "\" qp-lang-field=\"html\">" + qp_translations["level" + row.eqfConcept[0].slice(-1)][language] + "</span>";
-    for (var i = 1; i < row.eqfConcept.length; i++) {
-      content += "<br/><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"level" + row.eqfConcept[i].slice(-1) + "\" qp-lang-field=\"html\">" + qp_translations["level" + row.eqfConcept[i].slice(-1)][language] + "</span>";
-    }
-  }
-  content += "</span></h6>";
-
-
-  content += "<div class=\"" + getFlag(row) + "\"></div>";
-
-
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\">ISCED FoET 2013:</span> <span class=\"fieldInfo\">";
-  if (!row.foetConcept || row.foetConcept.length == 0) {
-    content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"noFoETset\" qp-lang-field=\"html\">" + qp_translations["noFoETset"][language] + "</span>";
-  }
-  else {
-    content += "<span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_foet_" + row.foetConcept[0] + "\" qp-lang-field=\"html\">" + cvUsesLang.foet[row.foetConcept[0]][language] + "</span>";
-    for (i = 1; i < row.foetConcept.length; i++) {
-      content += "<br/><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_foet_" + row.foetConcept[i] + "\" qp-lang-field=\"html\">" + cvUsesLang.foet[row.foetConcept[i]][language] + "</span>";
-    }
-  }
-  content += "</span></h6>";
-
-
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"country\" qp-lang-field=\"html\">" + qp_translations["country"][language] + "</span> <span class=\"fieldInfo\">";
-  if (!row.countryUri || row.countryUri.length == 0) {
-    content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"noCountrySet\" qp-lang-field=\"html\">" + qp_translations["noCountrySet"][language] + "</span>";
-  }
-  else {
-    content += "<span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.countryUri[0] + "\" qp-lang-field=\"html\">" + cvUsesLang.country[row.countryUri[0]][language] + "</span>";
-    for (i = 1; i < row.countryUri.length; i++) {
-      content += "<br/><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.countryUri[i] + "\" qp-lang-field=\"html\">" + cvUsesLang.country[row.countryUri[i]][language] + "</span>";
-    }
-  }
-  content += "</span></h6>";
-
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"waysToAcquire\" qp-lang-field=\"html\">" + qp_translations["waysToAcquire"][language] + "</span> <span class=\"fieldInfo\">";
-  if (!row.waysToAcquire || row.waysToAcquire.length == 0) {
-    content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"noWaysToAcquire\" qp-lang-field=\"html\">" + qp_translations["noWaysToAcquire"][language] + "</span>";
-  }
-  else {
-    content += "<br><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.waysToAcquire[0] + "\" qp-lang-field=\"html\">" + row.waysToAcquire[0] + "</span>";
-    for (i = 1; i < row.waysToAcquire.length; i++) {
-      content += "<br/><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.waysToAcquire[i] + "\" qp-lang-field=\"html\">" + row.waysToAcquire[i] + "</span>";
-    }
-  }
-  content += "</span></h6>";
-
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"altLabel\" qp-lang-field=\"html\">" + qp_translations["altLabel"][language] + "</span>: <span class=\"fieldInfo\">" + addCellLanguage(row, "altLabel", false, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"homepage\" qp-lang-field=\"html\">" + qp_translations["homepage"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.homepage, true, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"landingPage\" qp-lang-field=\"html\">" + qp_translations["landingPage"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.landingPage, true, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"refLang\" qp-lang-field=\"html\">" + qp_translations["refLang"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.referenceLanguage, false, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"awardingBody\" qp-lang-field=\"html\">" + qp_translations["awardingBody"][language] + "</span>: <span class=\"fieldInfo\">" + addCellLanguage(row, "abName", false, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"awardingBodyEmail\" qp-lang-field=\"html\">" + qp_translations["awardingBodyEmail"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.abEmail, true, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"awardingBodyHomepage\" qp-lang-field=\"html\">" + qp_translations["awardingBodyHomepage"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.abHomepage, true, "") + "</span></h6>";;;;;;;;;;;;;;;
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"owner\" qp-lang-field=\"html\">" + qp_translations["owner"][language] + "</span>: <span class=\"fieldInfo\">" + addCellLanguage(row, "ownerName", false, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"ownerEmail\" qp-lang-field=\"html\">" + qp_translations["ownerEmail"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.ownerEmail, true, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"ownerHomepage\" qp-lang-field=\"html\">" + qp_translations["ownerHomepage"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.ownerHomepage, true, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"publisher\" qp-lang-field=\"html\">" + qp_translations["publisher"][language] + "</span>: <span class=\"fieldInfo\">" + addCellLanguage(row, "publisherName", false, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"publisherEmail\" qp-lang-field=\"html\">" + qp_translations["publisherEmail"][language] + "</span>: <span class=\"fieldInfo\">" + addCell(row.publisherEmail, true, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"nqf\" qp-lang-field=\"html\">" + qp_translations["nqf"][language] + "</span>: <span class=\"fieldInfo\">" + addCellLanguage(row, "nqfValue", false, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"etcs\" qp-lang-field=\"html\">" + qp_translations["etcs"][language] + "</span>: <span class=\"fieldInfo\">" + addCellLanguage(row, "hasECTSCreditPoints", false, "") + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"partialQualification\" qp-lang-field=\"html\">" + qp_translations["partialQualification"][language] + "</span>: <span class=\"fieldInfo\">" + addFormattedCell(row.isPartialQualification, "",  booleanToImg) + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"volumeOfLearning\" qp-lang-field=\"html\">" + qp_translations["volumeOfLearning"][language] + "</span>: <span class=\"fieldInfo\">" + addFormattedCell(row.volumeOfLearning, "", decimalToInt) + "</span></h6>";
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"issuedDate\" qp-lang-field=\"html\">" + qp_translations["issuedDate"][language] + "</span>: <span class=\"fieldInfo\">" + addFormattedCell(row.issued, "", dateFormat) + "</span></h6>";
-
-  content += "<div class=\"clear\"></div><hr/>";
-
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"definition\" qp-lang-field=\"html\">" + qp_translations["definition"][language] + "</span> <span class=\"fieldInfo\">";
-  if (!row.definition || row.definition.length == 0) {
-    content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"none\" qp-lang-field=\"html\">" + qp_translations["none"][language] + "</span>";
-  }
-  else {
-    content += "<br><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.definition[0] + "\" qp-lang-field=\"html\">" + row.definition[0] + "</span>";
-    for (i = 1; i < row.definition.length; i++) {
-      content += "<br/><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.definition[i] + "\" qp-lang-field=\"html\">" + row.definition[i] + "</span>";
-    }
-  }
-
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"learningOutcomes\" qp-lang-field=\"html\">" + qp_translations["learningOutcomes"][language] + "</span> <span class=\"fieldInfo\">";
-  if (!row.skillLabel || row.skillLabel.length == 0) {
-    content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"none\" qp-lang-field=\"html\">" + qp_translations["none"][language] + "</span>";
-  }
-  else {
-    content += "<br><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.skillLabel[0] + "\" qp-lang-field=\"html\">" + row.skillLabel[0] + "</span>";
-    for (i = 1; i < row.skillLabel.length; i++) {
-      content += "<br/><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.skillLabel[i] + "\" qp-lang-field=\"html\">" + row.skillLabel[i] + "</span>";
-    }
-  }
-
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"description\" qp-lang-field=\"html\">" + qp_translations["description"][language] + "</span>:</h6><p><pre>" + addCellLanguage(row, "description", false, "") + "</pre></p>";
-
-  content += "<h6><span style=\"padding:0;color: #284F75;background:none;\" qp-lang-property=\"additionalNotes\" qp-lang-field=\"html\">" + qp_translations["additionalNotes"][language] + "</span> <span class=\"fieldInfo\">";
-  if (!row.additionalNotes || row.additionalNotes.length == 0) {
-    content += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"none\" qp-lang-field=\"html\">" + qp_translations["none"][language] + "</span>";
-  }
-  else {
-    content += "<br><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.additionalNotes[0] + "\" qp-lang-field=\"html\">" + row.additionalNotes[0] + "</span>";
-    for (i = 1; i < row.additionalNotes.length; i++) {
-      content += "<br/><span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"data_coun_" + row.additionalNotes[i] + "\" qp-lang-field=\"html\">" + row.additionalNotes[i] + "</span>";
-    }
-  }
-  content += "</span></h6>";
-
-  content += "<div class=\"clear\"></div><br/><br/>";
-  $("#detailContainer").html(content);
-}
 
 function getLanguageRows(row, fieldName) {
   var referenceLanguage = (row.hasOwnProperty("referenceLanguage") && row["referenceLanguage"].length > 0) ? row["referenceLanguage"][0] : "en";
@@ -561,14 +428,10 @@ function getLanguageRows(row, fieldName) {
   return null;
 }
 
-
-function nop() {
-}
 function updateLanguage() {
   language = $("#qp-language-selector").val();
   if (toShowTitle) $("#pageTitle").html(qp_translations[toShowTitle][language]);
   $("#navigationSelf").attr("href", "index.html#lang=" + language);
-  if (detailGrouped) fillInDetailContent(detailGrouped);
   if (searchResultData) fillSearchResultField(searchResultData);
   $("[qp-lang-property]").each(updateLanguageForThis);
 

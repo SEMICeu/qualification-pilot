@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
-import 'rxjs/add/operator/toPromise';
-
+import "rxjs/add/operator/toPromise";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {Accreditation} from "../model/qms/accreditation";
@@ -56,7 +55,7 @@ export class AccreditationService {
               if (values.publisherPage_group) accreditation.publisher.pages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
             }
             if (values.trusted) accreditation.trusted = values.trusted.value;
-
+            if (values.sourceDistributionPage) accreditation.sourceDistributionPage = values.sourceDistributionPage.value;
             accreds.push(accreditation);
           }
         }

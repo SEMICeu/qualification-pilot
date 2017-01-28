@@ -1,4 +1,3 @@
-
 import {Skill} from "./skill";
 import {QualificationFramework} from "./qualification-framework";
 import {Accreditation} from "./accreditation";
@@ -28,7 +27,7 @@ export class Qualification {
   eCTSCredits: string;
   volumeOfLearning: string;
   isPartialQualification: string;
-  waysToAcquire: string[];
+  waysToAcquire: Map<string, string[]>;
   entryRequirements: [string, string][];
   expiryPeriod: string;
   learningOutcomes: Skill[];
@@ -41,7 +40,8 @@ export class Qualification {
   awardingBodies: Agent[];
   accreditationUris: string[];
   accreditations: Accreditation[];
-  homepages:string[];
+  homepage: string;
+  homepageTitle: string;
   landingPages:string[];
   supplementaryDocs: string[];
   issued:string;
@@ -54,6 +54,7 @@ export class Qualification {
   provenanceAgent: Agent;
   publisher: Agent;
   trusted: string;
+  sourceDistributionPage: string;
 
   descriptionsAnnotations: Map<string, AnnotatedList[]>;
 
@@ -103,15 +104,6 @@ export class Qualification {
     }
     return null;
   }
-  private getISCEDFcodeLabels(prefLang: string): string[] {
-    if (!this.iSCEDFcodeLabel) return null;
-    if (this.iSCEDFcodeLabel.has(prefLang)) return this.iSCEDFcodeLabel.get(prefLang);
-    if (this.iSCEDFcodeLabel.has("en")) return this.iSCEDFcodeLabel.get("en");
-    for (let lang of this.referenceLang) {
-      if (this.iSCEDFcodeLabel.has(lang)) return this.iSCEDFcodeLabel.get(lang);
-    }
-    return null;
-  }
   getISCEDFcode (prefLang: string): string[] {
     if (!this.iSCEDFcode) return null;
     let labels = this.getISCEDFcodeLabels(prefLang);
@@ -124,6 +116,26 @@ export class Qualification {
     }
     return this.iSCEDFcode;
   }
+
+  private getISCEDFcodeLabels(prefLang: string): string[] {
+    if (!this.iSCEDFcodeLabel) return null;
+    if (this.iSCEDFcodeLabel.has(prefLang)) return this.iSCEDFcodeLabel.get(prefLang);
+    if (this.iSCEDFcodeLabel.has("en")) return this.iSCEDFcodeLabel.get("en");
+    for (let lang of this.referenceLang) {
+      if (this.iSCEDFcodeLabel.has(lang)) return this.iSCEDFcodeLabel.get(lang);
+    }
+    return null;
+  }
+
+  getWaysToAcquire(prefLang: string): string[] {
+    if (!this.waysToAcquire) return null;
+    if (this.waysToAcquire.has(prefLang)) return this.waysToAcquire.get(prefLang);
+    if (this.waysToAcquire.has("en")) return this.waysToAcquire.get("en");
+    for (let lang of this.referenceLang) {
+      if (this.waysToAcquire.has(lang)) return this.waysToAcquire.get(lang);
+    }
+    return null;
+  }
   getAwardingLocations(prefLang: string): string[] {
     if (!this.awardingLocations) return null;
     if (this.awardingLocations.has(prefLang)) return this.awardingLocations.get(prefLang);
@@ -134,16 +146,15 @@ export class Qualification {
     return null;
   }
   getHomepageLinks():Link[] {
-    if (!this.homepages) return null;
-    var links:Link[] = [];
-    for (let url of this.homepages) {
-      links.push(new Link(url, url));
-    }
+    if (!this.homepage) return null;
+    let links: Link[] = [];
+    if (!this.homepageTitle) links.push(new Link(this.homepage, this.homepage));
+    else links.push(new Link(this.homepage, this.homepageTitle));
     return links;
   }
   getLandingPageLinks():Link[] {
     if (!this.landingPages) return null;
-    var links:Link[] = [];
+    let links: Link[] = [];
     for (let url of this.landingPages) {
       links.push(new Link(url, url));
     }
@@ -151,7 +162,7 @@ export class Qualification {
   }
   getSupplementaryDocLinks():Link[] {
     if (!this.supplementaryDocs) return null;
-    var links:Link[] = [];
+    let links: Link[] = [];
     for (let url of this.supplementaryDocs) {
       links.push(new Link(url, url));
     }
@@ -195,6 +206,14 @@ export class Qualification {
     return null;
   }
 
+  getSourceDistributionPage(): Link {
+    if (!this.sourceDistributionPage) return null;
+    return new Link(this.sourceDistributionPage, "Source: " + this.sourceDistributionPage
+        .replace(/%20/g, " ")
+        .replace("cogni.zone/qpilot2/", " ")
+        .replace("http://", ""));
+  }
+
   private annotationListArrayToSafeHtmlArray (annotatedListArray: AnnotatedList[]): String[] {
     let array = [];
     for (let annotatedList of annotatedListArray) {
@@ -203,7 +222,5 @@ export class Qualification {
     return array;
   }
 
-
-
-  //TODO return [] in stead of null for array return values, this is a major change
+  //TODO return [] in stead of null for array return values
 }

@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
-import 'rxjs/add/operator/toPromise';
-
+import "rxjs/add/operator/toPromise";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
 import {QualificationFramework} from "../model/qms/qualification-framework";
@@ -49,6 +48,7 @@ export class QfService {
                             if (values.publisherMail_group) qf.publisher.mails = ConcatsParser.makeStringArray(values.publisherMail_group.value);
                             if (values.publisherPage_group) qf.publisher.pages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
                         }
+                      if (values.sourceDistributionPage) qf.sourceDistributionPage = values.sourceDistributionPage.value;
                         qfs.push(qf);
                     }
                 }

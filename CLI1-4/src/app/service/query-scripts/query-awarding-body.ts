@@ -1,4 +1,3 @@
-
 import {QueryBuilder, Triple} from "../support/query-builder";
 export class QueryAwardingBody {
 
@@ -23,6 +22,12 @@ export class QueryAwardingBody {
     queryBuild.addTriple( new Triple().subject("?awardingBodyUri").predicate("foaf:name").selectObject("?agentName").langGroupConcat() );
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?awardingBodyUri").predicate("foaf:mbox").selectObject("?agentMail").after("}").groupConcat());
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?awardingBodyUri").predicate("foaf:homepage").selectObject("?agentPage").after("}").groupConcat());
+
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?bodyActivity").predicate("dcterms:publisher").object("?publisherUri"));
+    queryBuild.addTriple(new Triple().subject("?publisherUri").predicate("foaf:name").selectObject("?publisherName").langGroupConcat());
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:mbox").selectObject("?publisherMail").after("}").groupConcat());
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:homepage").selectObject("?publisherPage").after("}}").groupConcat());
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?bodyActivity").predicate("<http://data.europa.eu/esco/qdr#sourceDistributionPage>").selectObject("?sourceDistributionPage").after("}"));
 
     return queryBuild.buildSelect();
   }

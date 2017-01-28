@@ -299,9 +299,9 @@ var qp_translations = {
     "es": "Piloto sobre cualificaciones"
   },
   "qualificationsPilotHeadTitle": {
-    "en": "Qualifications pilot - European Commission",
-    "el": "Qualifications pilot - European Commission",
-    "sv": "Kvalifikationer pilot - Europeiska kommissionen",
+    "en": "Qualifications Pilot - European Commission",
+    "el": "Qualifications Pilot - European Commission",
+    "sv": "Kvalifikationer Pilot - Europeiska kommissionen",
     "es": "Piloto sobre cualificaciones - Comisión Europea"
   },
   "nqf": {

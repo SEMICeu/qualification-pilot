@@ -1,4 +1,3 @@
-
 import {QueryBuilder, Triple} from "../support/query-builder";
 import {ConcatsParser} from "../support/concats-parser";
 export class QueryQualification {
@@ -55,11 +54,14 @@ export class QueryQualification {
 
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:isPartialQualification").selectObject("?isPartialQualification").after("}"));
 
-    queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:waysToAcquire").selectObject("?waysToAcquire").after("}").groupConcat() );
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:waysToAcquire").object("?waysToAcquireUri"));
+    queryBuild.addTriple(new Triple().subject("?waysToAcquireUri").predicate("skos:prefLabel").selectObject("?waysToAcquire").after("}").langGroupConcat());
 
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasEntryRequirement").object("?entryRequirement") );
-    queryBuild.addTriple( new Triple().subject("?entryRequirement").predicate("dcterms:type").object("?entryReqType"));
-    queryBuild.addTriple( new Triple().subject("?entryRequirement").predicate("esco:requirementLevel").object("?entryReqLevel").after("}"));
+    queryBuild.addTriple(new Triple().subject("?entryRequirement").predicate("dcterms:type").object("?entryReqTypeUri"));
+    queryBuild.addTriple(new Triple().subject("?entryReqTypeUri").predicate("skos:prefLabel").object("?entryReqType"));
+    queryBuild.addTriple(new Triple().subject("?entryRequirement").predicate("esco:requirementLevel").object("?entryReqLevelUri"));
+    queryBuild.addTriple(new Triple().subject("?entryReqLevelUri").predicate("skos:prefLabel").object("?entryReqLevel").after("}"));
     queryBuild.addFreeFormVariable( " (GROUP_CONCAT (DISTINCT CONCAT(str(?entryReqType),'" + ConcatsParser.defaultDelimiter + "',str(?entryReqLevel));separator='" + ConcatsParser.defaultDelimiter + "') as ?entryRequirement_group)");
 
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:expiryPeriod").selectObject("?expiryPeriod").after("}") );
@@ -93,7 +95,9 @@ export class QueryQualification {
 
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasAccreditation").selectObject("?accreditationUri").groupConcat().after("}") );
 
-    queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("foaf:homepage").selectObject("?homepage").after("}").groupConcat());
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?uri").predicate("foaf:homepage").selectObject("?homepage").groupConcat());
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?homepage").predicate("dcterms:title").selectObject("?homepageTitle").after("}}").groupConcat());
+
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcat:landingPage").selectObject("?landingPage").after("}").groupConcat());
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:supplementaryDoc").selectObject("?supplementaryDoc").after("}").groupConcat());
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcterms:issued").selectObject("?issued").after("}"));
@@ -136,6 +140,8 @@ export class QueryQualification {
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?publisherUri").predicate("foaf:homepage").selectObject("?publisherPage").after("}}").groupConcat());
 
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("<http://data.europa.eu/esco/qdr#generatedByTrustedSource>").selectObject("?trusted").after("}"));
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?uri").predicate("<http://data.europa.eu/esco/qdr#sourceDistributionPage>").selectObject("?sourceDistributionPage").after("}"));
+
 
     return queryBuild.buildSelect();
   }

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component} from "@angular/core";
 import {RecognitionService} from "../service/recognition.service";
 import {AccreditationService} from "../service/accreditation.service";
 import {QfService} from "../service/qf.service";
@@ -20,5 +20,4 @@ import {AnnotatedListService} from "../service/annotated-list.service";
 })
 
 export class AppComponent {
-  title = 'angular 2:';
 }

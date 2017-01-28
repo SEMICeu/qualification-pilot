@@ -18,8 +18,10 @@
         <span class="tooltipText {{element.sourceColumnCssClass}}">
           Source:
           <div *ngIf="element.sourceName"> {{element.sourceName}}<br>
-             <div *ngIf="element.sourcePage"><a class="link-on-dark" href='{{element.sourcePage.url}}' [innerHTML]="element.sourcePage.name" ></a></div>
-              <div *ngIf="element.sourceMail"><a class="link-on-dark" href='{{element.sourceMail.url}}' [innerHTML]="element.sourceMail.name" ></a></div>
+             <div *ngIf="element.sourceMail"><a class="link-on-dark" href='{{element.sourceMail.url}}'
+                                                [innerHTML]="element.sourceMail.name"></a></div>
+              <div *ngIf="element.sourcePage"><a class="link-on-dark" href='{{element.sourcePage.url}}'
+                                                 [innerHTML]="element.sourcePage.name"></a></div>
           </div>
           <div *ngIf="!element.sourceName"> No information given</div>
         </span>

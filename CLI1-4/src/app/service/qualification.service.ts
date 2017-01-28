@@ -1,8 +1,6 @@
-
-
 import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
-import 'rxjs/add/operator/toPromise';
+import "rxjs/add/operator/toPromise";
 import {Qualification} from "../model/qms/qualification";
 import {endPointUrl, endPointHeaders} from "../end-point-configs";
 import {ConcatsParser} from "./support/concats-parser";
@@ -95,7 +93,7 @@ export class QualificationService {
                     if (values.eCTSCredits) qualification.eCTSCredits = values.eCTSCredits.value;
                     if (values.volumeOfLearning) qualification.volumeOfLearning = values.volumeOfLearning.value;
                     if (values.isPartialQualification) qualification.isPartialQualification = values.isPartialQualification.value;
-                    if (values.waysToAcquire_group) qualification.waysToAcquire = ConcatsParser.makeStringArray(values.waysToAcquire_group.value);
+              if (values.waysToAcquire_lang_group) qualification.waysToAcquire = ConcatsParser.makeMapOfStringArrays(values.waysToAcquire_lang_group.value);
                     if (values.entryRequirement_group) qualification.entryRequirements = ConcatsParser.makeStringTupleArray(values.entryRequirement_group.value);
                     if (values.expiryPeriod) qualification.expiryPeriod = values.expiryPeriod.value;
                     if (values.skillUri_group) qualification.loSkillUris = ConcatsParser.makeStringArray(values.skillUri_group.value);
@@ -111,7 +109,9 @@ export class QualificationService {
                     // }
                     if (values.awardingBodyUri_group) qualification.awardingBodyUris = ConcatsParser.makeStringArray(values.awardingBodyUri_group.value);
                     if (values.accreditationUri_group) qualification.accreditationUris = ConcatsParser.makeStringArray(values.accreditationUri_group.value);
-                    if (values.homepage_group) qualification.homepages =ConcatsParser.makeStringArray(values.homepage_group.value);
+              if (values.homepage_group) qualification.homepage = ConcatsParser.makeStringArray(values.homepage_group.value)[0];
+              if (values.homepageTitle_group) qualification.homepageTitle = ConcatsParser.makeStringArray(values.homepageTitle_group.value)[0];
+
                     if (values.landingPage_group) qualification.landingPages = ConcatsParser.makeStringArray(values.landingPage_group.value);
                     if (values.supplementaryDoc_group) qualification.supplementaryDocs = ConcatsParser.makeStringArray(values.supplementaryDoc_group.value);
                     if (values.issued)  qualification.issued = values.issued.value;
@@ -139,6 +139,7 @@ export class QualificationService {
                         if (values.publisherPage_group) qualification.publisher.pages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
                     }
                     if (values.trusted) qualification.trusted = values.trusted.value;
+              if (values.sourceDistributionPage) qualification.sourceDistributionPage = values.sourceDistributionPage.value;
 
 
                     return qualification;
@@ -157,7 +158,7 @@ export class QualificationService {
     }
 
     private handleError(error: any): Promise<any> {
-        console.error('Query failed,', error); // for demo purposes only
+      console.error('Query failed,', error);
         return Promise.reject(error.message || error);
     }
 }
