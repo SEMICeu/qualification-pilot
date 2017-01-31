@@ -102,7 +102,7 @@ export class TabDataScripts {
     let noEqf = true;
 
     if (qualification.qualificationFrameworks) for (let qf of qualification.qualificationFrameworks) {
-      if (qf.trusted == "true") {
+      if (qf.trusted == "true" && (noEqf || !qf.target)) {
         qfValues = [];
         qfValues.push(new TabDataElement().setValues(["Description: ", qf.getDescriptions(lang, qualification.referenceLang)]));
         qfValues.push(new TabDataElement().setValues(["Issued:", [qf.issued]]));

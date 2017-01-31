@@ -49,9 +49,16 @@ export class Accreditation {
 
   getSourceDistributionPage(): Link {
     if (!this.sourceDistributionPage) return null;
-    return new Link(this.sourceDistributionPage, "Source: " + this.sourceDistributionPage
-        .replace(/%20/g, " ")
-        .replace("cogni.zone/qpilot2/", " ")
-        .replace("http://", ""));
+
+    var link = this.sourceDistributionPage;
+    if (!this.sourceDistributionPage.startsWith("http://")) {
+      link = "http://" + link;
+    }
+    let name = this.sourceDistributionPage
+      .replace(/%20/g, " ")
+      .replace("cogni.zone/qpilot2/", " ")
+      .replace("http://", "");
+
+    return new Link(link, "Source: " + name);
   }
 }
