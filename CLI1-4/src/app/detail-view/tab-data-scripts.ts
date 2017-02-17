@@ -5,7 +5,6 @@ export class TabDataScripts {
 
   static core(index:number, qualification: Qualification, lang:string): TabData {
     let data = new TabData("Core", index);
-
     data.push(new TabDataElement().setSectionHeader(data.name));
 
     let container: TabDataElement[] = [];

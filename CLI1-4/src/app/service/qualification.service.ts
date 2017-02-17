@@ -46,7 +46,6 @@ export class QualificationService {
     }
 
     getQualificationRelatedObjects(qualification: Qualification): Promise<Qualification> {
-
         let uri = qualification.uri;
         let langCodes = qualification.referenceLang ? qualification.referenceLang.concat(this.prefLang, "en") : [this.prefLang, "en"];
 

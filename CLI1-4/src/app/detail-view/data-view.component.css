@@ -67,7 +67,6 @@ table {
 
 :host .tooltip {
   position: relative;
-  /*border-bottom: 1px dotted black; !* If you want dots under the hoverable text *!*/
 }
 
 .tooltipText {
@@ -75,10 +74,12 @@ table {
   color: #fff;
   text-align: center;
   border-radius: 6px;
-  padding: 5px 4px;
+  padding: 5px 5px;
   font-size: 85%;
   background-color: #505050;
-  white-space:nowrap;
+  white-space: normal;
+
+  min-width: 180px;
 
   /* Position the tooltip */
   position: absolute;
@@ -87,10 +88,6 @@ table {
 
 .tooltip .tooltipText {
   width: auto;
-  min-width: 150px;
-  max-width: 400px;
-  text-overflow: ellipsis;
-  overflow: hidden;
   top: 0px;
   right: 50%;
 }
