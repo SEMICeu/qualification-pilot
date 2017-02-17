@@ -13,7 +13,7 @@ import {TabDataScripts} from "./tab-data-scripts";
 
 export class DetailView implements OnInit {
 
-  loading = false;
+  loading = true;
 
   header;
   lang = "en";
@@ -105,6 +105,7 @@ export class DetailView implements OnInit {
 
     if (this.selectedTabIndex == -1) this.selectedTabData = this.tabDataList[0];
     else this.selectedTabData = this.tabDataList[this.selectedTabIndex];
+    this.loading = false;
   }
 
   private getUriFromFragmentAndSetLang(): string {

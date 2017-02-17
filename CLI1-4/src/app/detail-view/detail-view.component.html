@@ -1,6 +1,5 @@
 <div *ngIf="tabDataList.length && tabDataList.length>0">
 <h1 *ngIf="header">{{header}}</h1>
-<h1 *ngIf="loading && !header">Loading...</h1>
 
 <div *ngIf="qualification" class="main-details">
   <nav>
@@ -12,3 +11,4 @@
 
 </div>
 </div>
+<h4 class="loading" *ngIf="loading==true">Loading...</h4>

@@ -14,6 +14,14 @@ h1 {
   text-shadow: none;
   text-align: center;
 }
+
+.loading {
+  padding-top: 30px;
+  color: #284F75;
+  font-weight: normal;
+  text-shadow: none;
+  text-align: center;
+}
 a {
   color: #284F75;
   font-weight: bold;
