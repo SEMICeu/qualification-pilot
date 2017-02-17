@@ -53,10 +53,20 @@ $(function () {
     $('#relatedCountry').append($('<option qp-lang-property=\"data_coun_' + country + '\" qp-lang-field=\"html\" value=\"' + country + '\">' + cvUsesLang.country[country][language] + '</option>', {value: country, text: cvUsesLang.country[country][language]}));
     countryFacetContainerHtml += "<a><label><input type=\"checkbox\" country-facet=\"" + country + "\"> <span qp-lang-property=\"data_coun_" + country + "\" qp-lang-field=\"html\">" + cvUsesLang.country[country][language] + "</label></a>";
   }
+
+  var dataProviderFacetContainerHtml = "";
+
+  for (var country in cvUsesLang.country) {
+    if (!cvUsesLang.country.hasOwnProperty(country)) continue;
+    dataProviderFacetContainerHtml += "<a><label><input type=\"checkbox\" data-facet=\"" + country + "\"> <span qp-lang-property=\"data_coun_" + country + "\" qp-lang-field=\"html\">" + cvUsesLang.country[country][language] + "</label></a>";
+  }
+  dataProviderFacetContainerHtml += "<a><label><input type=\"checkbox\"data-facet='microsoft' > Microsoft Corporation </label></a>";
+  $("#dataProviderFacetContainer").html(dataProviderFacetContainerHtml);
+
   $("#countryFacetContainer").html(countryFacetContainerHtml);
   $("#findRelatedButton").click(findRelatedQualifications);
 
-  $("[eqf-facet],[country-facet]").click(facetChange);
+  $("[eqf-facet],[country-facet],[data-facet]").click(facetChange);
   $("#foet-facet-select").change(facetChange);
   updateScreen();
 });
@@ -69,6 +79,7 @@ function facetChange() {
   var eqfUris = [];
   var foetUris = [];
   var countryUris = [];
+  var dataProvidersUris = [];
   $("[eqf-facet]:checked").each(function () {
     eqfUris.push($(this).attr("eqf-facet"));
   });
@@ -79,6 +90,9 @@ function facetChange() {
   $("[country-facet]:checked").each(function () {
     countryUris.push($(this).attr("country-facet"));
   });
+  $("[data-facet]:checked").each(function () {
+    dataProvidersUris.push($(this).attr("data-facet"));
+  });
 
   var shouldShowOneCheck = function (facetUris, toCheck) {
     if (toCheck.length == 0) return true;
@@ -88,7 +102,10 @@ function facetChange() {
 
   $("[for-facet-filter]").each(function () {
     var facetUris = $(this).attr("for-facet-filter");
-    var ok = (shouldShowOneCheck(facetUris, eqfUris) && shouldShowOneCheck(facetUris, foetUris) && shouldShowOneCheck(facetUris, countryUris));
+    var ok = (shouldShowOneCheck(facetUris, eqfUris) &&
+    shouldShowOneCheck(facetUris, foetUris) &&
+    shouldShowOneCheck(facetUris, countryUris) &&
+    shouldShowOneCheck(facetUris, dataProvidersUris));
     if (ok) $(this).show();
     else $(this).hide();
   });
@@ -284,6 +301,7 @@ function fillSearchResultField(grouped) {
     else result += "[EQFno]";
     if (row.foetConcept) for (i = 0; i < row.foetConcept.length; i++) result += "[" + row.foetConcept[i] + "]";
     if (row.countryUri) for (i = 0; i < row.countryUri.length; i++) result += "[" + row.countryUri[i] + "]";
+    if (row.hasOwnProperty("prefLabel") && row["prefLabel"][0].startsWith("Microsoft")) result += "[microsoft]";//demo purposes only
     result += "\">";
     result += "<h5 qp-lang-property=\"title\" qp-lang-field=\"html\">" + qp_translations["title"][language] + "</h5><h2>" + addCellLanguage(row, "prefLabel", false, "") + "</h2><hr/>";
     result += "<h6><span style=\"background: none;color:#284F75;padding:0;\" qp-lang-property=\"EQFlevel\" qp-lang-field=\"html\">"+qp_translations["EQFlevel"][language] +"</span>:</h6>";
