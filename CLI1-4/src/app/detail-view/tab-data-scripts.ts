@@ -133,7 +133,12 @@ export class TabDataScripts {
     }
     if (noEqf) {
       qfValues = [];
-      qfValues.push(new TabDataElement().setValues(["", ["No information given/Not applicable"]]));
+      var noEqfLabel = "Not referenced yet";
+      if (qualification.publisher && qualification.publisher.getNames(lang, qualification.referenceLang)[0].startsWith("Microsoft")) {
+        var noEqfLabel = "Non applicable"; //for demo purposes only
+      }
+
+      qfValues.push(new TabDataElement().setValues(["", [noEqfLabel]]));
       data.push(new TabDataElement()
         .setElementsGroup(qfValues)
         .setElementsGroupTitle("European Qualification Framework")

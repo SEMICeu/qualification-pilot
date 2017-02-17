@@ -291,7 +291,10 @@ function fillSearchResultField(grouped) {
 
     result += "<p>";
     if (!row.eqfConcept || row.eqfConcept.length == 0) {
-      result += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"level0\" qp-lang-field=\"html\">" + qp_translations["level0"][language] + "</span>";
+
+      var noEqfLabel = "level0";
+      if (row.hasOwnProperty("prefLabel") && row["prefLabel"][0].startsWith("Microsoft")) noEqfLabel = "level0-non-applicable";//demo purposes only
+      result += "<span style=\"background: none;color:black;padding:0;\" qp-lang-property=\"" + noEqfLabel + "\" qp-lang-field=\"html\">" + qp_translations[noEqfLabel][language] + "</span>";
     }
     else {
       result += "<span style=\"background: none;color:black;padding:0;\"  qp-lang-property=\"level" + row.eqfConcept[0].slice(-1) + "\" qp-lang-field=\"html\">" + qp_translations["level" + row.eqfConcept[0].slice(-1)][language] + "</span>";

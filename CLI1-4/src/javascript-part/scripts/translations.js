@@ -107,10 +107,15 @@ var qp_translations = {
     "sv": "Välj resultat",
     "es": "Búsqueda de resultados"
   },
+  "level0-non-applicable": {
+    "en": "Non applicable",
+    "es": "No aplicable",
+    "sv": "Ej tillämpbar"
+  },
   "level0": {
-    "en": "No EQF level set",
-    "sv": "Ingen EQF Nivå uppsättning",
-    "es": "Nivel EQF no asignado"
+    "en": "Not referenced yet",
+    "sv": "Inte refererade til ennu",
+    "es": "No se hace referencia todavía"
   },
   "level1": {
     "en": "Level 1",
