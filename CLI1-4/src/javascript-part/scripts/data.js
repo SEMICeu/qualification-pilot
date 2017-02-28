@@ -24,12 +24,12 @@ var cvUsesLang = {
     // "http://data.europa.eu/esco/ConceptScheme/FoET2013/FoET/091": {"en": "091 Health", "el": "091 Health", "sv": "091 Hälsa", "es": "091 Salud"},
     // "http://data.europa.eu/esco/ConceptScheme/FoET2013/FoET/0912": {"en": "0912 Medicine", "el": "0912 Medicine", "sv": "0912 Medicin", "es": "0912 Medicina"},
     // "http://data.europa.eu/esco/ConceptScheme/FoET2013/FoET/0919": {"en": "0919 Health not elsewhere classified", "el": "0919 Health not elsewhere classified", "sv": "0919 Hälsa ej klassificeras annorstädes", "es": "0919 Salud no clasificada en otro sitio"},
-    "http://data.europa.eu/esco/ConceptScheme/FoET2013/FoET/1014": {"en": "1014 Sports", "el": "1014", "sv": "1014", "es": "1014"},
+
     "http://data.europa.eu/esco/ConceptScheme/FoET2013/FoET/0913": {
       "en": "0913 Nursing and midwifery",
-      "el": "1014",
-      "sv": "1014",
-      "es": "1014"
+      "el": "0913 Nursing and midwifery",
+      "sv": "0913 Nursing and midwifery",
+      "es": "0913 Nursing and midwifery"
     },
   }
 };

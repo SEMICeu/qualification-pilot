@@ -239,7 +239,7 @@ export class TabDataScripts {
       .setSource(qualification.publisher.getAgentInformationTriple(lang, qualification.referenceLang), qualification.getSourceDistributionPage()));
 
     container.push(new TabDataElement()
-      .setElementsGroup([new TabDataElement().setValues(["", ["&nbsp;"]])])
+      .setElementsGroup([new TabDataElement().setValues(["Not set", ["&nbsp;"]])])
       .setElementsGroupTitle("Qualification Assurance Document")
       .setIsBordered());
 
