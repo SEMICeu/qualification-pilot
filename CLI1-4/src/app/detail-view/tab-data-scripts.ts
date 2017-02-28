@@ -33,7 +33,7 @@ export class TabDataScripts {
     container.push(new TabDataElement().setValues(["Entry Requirement:", entryReqs]));
 
     container.push(new TabDataElement().setValues(["Expiry Period:",[qualification.expiryPeriod]]));
-    container.push(new TabDataElement().setLinkValues(["Homepage:",qualification.getHomepageLinks()]));
+    container.push(new TabDataElement().setLinkValues(["Homepage:", qualification.getHomepageLinks(lang)]));
     container.push(new TabDataElement().setLinkValues(["Landing Page:",qualification.getLandingPageLinks()]));
     container.push(new TabDataElement().setValues(["Release/Publication Date:", [qualification.issued]]));
     container.push(new TabDataElement().setValues(["Modification Date:", [qualification.modified]]));

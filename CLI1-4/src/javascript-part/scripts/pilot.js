@@ -72,6 +72,7 @@ $(function () {
 });
 
 function updateHash(newHash) {
+  if (lastHash == newHash) return;
   lastHash = newHash;
   window.location.hash = newHash;
 }
@@ -425,16 +426,13 @@ function linkize(value) {
 }
 function loadDetail(uri) {
 
-
   detailUri = uri;
 
   $("#detailContainer").html("");
   showScreen("detailScreen");
 
   $("#titleDiv").hide();
-
   updateHash("lang=" + language + "&detailUri=" + detailUri);
-  // window.location.pathname = "detail/0";
 
 }
 var detailHasEqf;
@@ -489,7 +487,6 @@ function updateLanguageForThis() {
 
 function updateScreen() {
   var values = parseUrl();
-  //console.log(values);
   setLanguage(values);
 
   if (values.hasOwnProperty("search")) {

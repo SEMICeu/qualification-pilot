@@ -14,7 +14,10 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
 
+    var stop = false;
+
     this.route.fragment.forEach((fragment: string) => {
+
       if (fragment) {
         if (fragment.includes("detailUri")) {
           this.router.navigate(["/detail"], {preserveFragment: true, replaceUrl: true});

@@ -96,7 +96,7 @@ export class QueryQualification {
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:hasAccreditation").selectObject("?accreditationUri").groupConcat().after("}") );
 
     queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?uri").predicate("foaf:homepage").selectObject("?homepage").groupConcat());
-    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?homepage").predicate("dcterms:title").selectObject("?homepageTitle").after("}}").groupConcat());
+    queryBuild.addTriple(new Triple().before("OPTIONAL {").subject("?homepage").predicate("dcterms:title").selectObject("?homepageTitle").after("}}").langGroupConcat());
 
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("dcat:landingPage").selectObject("?landingPage").after("}").groupConcat());
     queryBuild.addTriple( new Triple().before("OPTIONAL {").subject("?uri").predicate("esco:supplementaryDoc").selectObject("?supplementaryDoc").after("}").groupConcat());

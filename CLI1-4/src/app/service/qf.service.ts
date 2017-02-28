@@ -49,7 +49,7 @@ export class QfService {
                             if (values.publisherPage_group) qf.publisher.pages = ConcatsParser.makeStringArray(values.publisherPage_group.value);
                         }
                       if (values.sourceDistributionPage) qf.sourceDistributionPage = values.sourceDistributionPage.value;
-                        qfs.push(qf);
+                      qfs.push(qf);
                     }
                 }
                 return qfs;

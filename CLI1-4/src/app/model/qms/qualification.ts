@@ -41,7 +41,7 @@ export class Qualification {
   accreditationUris: string[];
   accreditations: Accreditation[];
   homepage: string;
-  homepageTitle: string;
+  homepageTitle: Map<string, string[]>;
   landingPages:string[];
   supplementaryDocs: string[];
   issued:string;
@@ -145,11 +145,18 @@ export class Qualification {
     }
     return null;
   }
-  getHomepageLinks():Link[] {
+
+  getHomepageLinks(prefLang: string): Link[] {
     if (!this.homepage) return null;
     let links: Link[] = [];
     if (!this.homepageTitle) links.push(new Link(this.homepage, this.homepage));
-    else links.push(new Link(this.homepage, this.homepageTitle));
+    else if (this.homepageTitle.get(prefLang)) links.push(new Link(this.homepage, this.homepageTitle.get(prefLang)[0]));
+    else if (this.homepageTitle.get("en")) links.push(new Link(this.homepage, this.homepageTitle.get("en")[0]));
+    else {
+      for (let lang of this.referenceLang) {
+        if (this.homepageTitle.has(lang)) links.push(new Link(this.homepage, this.homepageTitle.get(lang)[0]));
+      }
+    }
     return links;
   }
   getLandingPageLinks():Link[] {
@@ -207,10 +214,11 @@ export class Qualification {
   }
 
   getSourceDistributionPage(): Link {
+
     if (!this.sourceDistributionPage) return null;
 
     var link = this.sourceDistributionPage;
-    if (!this.sourceDistributionPage.startsWith("http://")) {
+    if (link.startsWith("http://")) {
       link = "http://" + link;
     }
     let name = this.sourceDistributionPage

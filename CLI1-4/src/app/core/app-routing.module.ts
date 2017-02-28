@@ -17,7 +17,7 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: 'index.html', //TODO redirect more appropriately
+    path: 'index.html',
     redirectTo: '/search',
     pathMatch: 'full'
   },
@@ -25,15 +25,7 @@ const routes: Routes = [
     path: '',
     redirectTo: '/search',
     pathMatch: 'full'
-  },
-  // {
-  //   path: '',
-  //   component: AppComponent
-  // },
-  // {
-  //   path: 'search',
-  //   component: SearchView
-  // },
+  }
 ];
 @NgModule({
   imports: [ RouterModule.forRoot(routes) ],

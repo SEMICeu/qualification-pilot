@@ -19,7 +19,6 @@ export class DetailView implements OnInit {
   lang = "en";
   fragment: string;
 
-  waitingForData = true;
   selectedTabData: TabData;
   selectedTabIndex = -1;
   qualification: Qualification;
@@ -57,7 +56,6 @@ export class DetailView implements OnInit {
 
   setupDataFromUri(uri:string): void {
     if (this.qualificationService.hasNewState(uri, this.lang) || !this.qualification) {
-
       this.qualificationService.getQualificationDetailed(uri, this.lang)
         .then(qualification => {
 

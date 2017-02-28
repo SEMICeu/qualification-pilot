@@ -1,4 +1,4 @@
-# Qualifications Pilot 2 Static Web page
+# Qualifications Pilot 2
 
 ## Requirements
 Angular CLI must be installed: https://github.com/angular/angular-cli#angular-cli
